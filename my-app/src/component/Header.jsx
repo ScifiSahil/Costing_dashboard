@@ -1,6 +1,15 @@
 import React from "react";
 
-const Header = ({ selectedPlant, currentPlant, kpis, getPeriodDisplay }) => {
+const Header = ({ selectedPlant, currentPlant, kpis, getPeriodDisplay,  realForgingData }) => {
+  const efficiency = realForgingData?.efficiency || {
+    current: 0,
+    target: 0,
+    trend: "flat",
+    change: 0,
+  };
+
+const category = realForgingData?.category || "N/A"; 
+
   return (
     <div className="h-20 bg-gradient-to-r from-blue-600 to-blue-700 border-b border-gray-200 px-6 flex items-center justify-between shadow-sm">
       {/* Left Section - Plant Info */}
@@ -10,12 +19,12 @@ const Header = ({ selectedPlant, currentPlant, kpis, getPeriodDisplay }) => {
             {selectedPlant} Plant
           </h1>
           <span className="bg-white/20 text-white text-xs px-3 py-1 rounded-full font-medium">
-            {currentPlant.efficiency}% Efficiency
+            {efficiency.current}% Efficiency
           </span>
         </div>
         <div className="flex items-center space-x-4 mt-1">
           <span className="text-sm text-blue-100">
-            {currentPlant.category} Division
+             {category} Division
           </span>
           <span className="text-sm text-blue-100">•</span>
           <span className="text-sm text-blue-100">
