@@ -1,0 +1,1343 @@
+{
+  "metadata": {
+    "title": "Kalyani Technoforge Ltd. - Production Data Analysis",
+    "reportingPeriod": "March 2025 - August 2025",
+    "lastUpdated": "2025-09-17",
+    "dataSource": "Plant-wise P&L Statements & Cost Analysis Reports",
+    "currency": "INR Lakhs",
+    "version": "1.0"
+  },
+  "production": {
+    "forging": {
+      "plants": {
+        "Mundhwa": {
+          "code": "MDWA",
+          "location": "Mundhwa, Pune",
+          "type": "Forging",
+          "capacity": "25000 MT/Year",
+          "monthlyData": {
+            "Mar2025": { 
+              "budget": 157.44, 
+              "actual": 147.34, 
+              "variance": -6.4,
+              "saleData": {
+                "budgetSales": 279.85,
+                "actualSales": 284.68,
+                "budgetSalePercentage": 56.26,
+                "actualSalePercentage": 51.76,
+                "budgetTotalIncome": 279.85,
+                "actualTotalIncome": 262.39
+              }
+            },
+            "Apr2025": { 
+              "budget": 157.52, 
+              "actual": 162.58, 
+              "variance": 3.2,
+              "saleData": {
+                "budgetSales": 279.99,
+                "actualSales": 275.33,
+                "budgetSalePercentage": 56.26,
+                "actualSalePercentage": 59.06,
+                "budgetTotalIncome": 279.99,
+                "actualTotalIncome": 287.68
+              }
+            },
+            "May2025": { 
+              "budget": 157.78, 
+              "actual": 173.06, 
+              "variance": 9.7,
+              "saleData": {
+                "budgetSales": 280.45,
+                "actualSales": 279.09,
+                "budgetSalePercentage": 56.26,
+                "actualSalePercentage": 62.01,
+                "budgetTotalIncome": 280.45,
+                "actualTotalIncome": 305.60
+              }
+            },
+            "Jun2025": { 
+              "budget": 168.46, 
+              "actual": 159.55, 
+              "variance": -5.3,
+              "saleData": {
+                "budgetSales": 299.43,
+                "actualSales": 284.79,
+                "budgetSalePercentage": 56.26,
+                "actualSalePercentage": 56.04,
+                "budgetTotalIncome": 299.43,
+                "actualTotalIncome": 286.40
+              }
+            },
+            "Jul2025": { 
+              "budget": 171.11, 
+              "actual": 161.82, 
+              "variance": -5.4,
+              "saleData": {
+                "budgetSales": 304.13,
+                "actualSales": 281.68,
+                "budgetSalePercentage": 56.26,
+                "actualSalePercentage": 57.46,
+                "budgetTotalIncome": 304.13,
+                "actualTotalIncome": 293.91
+              }
+            }
+          },
+          "kpis": [
+            {
+              "kpiName": "Raw Material Cost",
+              "trend": [157.44, 147.34, 157.52, 162.58, 157.78, 173.06, 168.46, 159.55, 171.11, 161.82],
+              "target": 157.78,
+              "budgetVsActual": {
+                "budget": 157.78,
+                "actual": 173.06,
+                "variance": 9.7
+              }
+            },
+            {
+              "kpiName": "Consumable",
+              "trend": [4.28, 3.81, 4.28, 5.52, 4.29, 4.68, 4.58, 4.11, 4.65, 4.68],
+              "target": 4.29,
+              "budgetVsActual": {
+                "budget": 4.29,
+                "actual": 4.68,
+                "variance": 9.1
+              }
+            },
+            {
+              "kpiName": "Power",
+              "trend": [11.52, 10.73, 11.52, 12.18, 11.54, 11.25, 12.32, 12.12, 12.52, 16.02],
+              "target": 11.54,
+              "budgetVsActual": {
+                "budget": 11.54,
+                "actual": 11.25,
+                "variance": -2.5
+              }
+            },
+            {
+              "kpiName": "Fuel",
+              "trend": [3.97, 4.01, 3.98, 4.08, 3.98, 4.51, 4.25, 4.82, 4.32, 3.85],
+              "target": 3.98,
+              "budgetVsActual": {
+                "budget": 3.98,
+                "actual": 4.51,
+                "variance": 13.3
+              }
+            },
+            {
+              "kpiName": "Sub Contract",
+              "trend": [11.40, 10.31, 11.36, 13.83, 9.71, 10.95, 13.34, 10.73, 10.36, 11.86],
+              "target": 21.07,
+              "budgetVsActual": {
+                "budget": 21.07,
+                "actual": 10.95,
+                "variance": -48.0
+              }
+            },
+            {
+              "kpiName": "Labour",
+              "trend": [2.36, 1.82, 2.47, 2.87, 1.94, 2.49, 2.44, 2.26, 2.63, 2.34],
+              "target": 4.14,
+              "budgetVsActual": {
+                "budget": 4.14,
+                "actual": 2.49,
+                "variance": -39.9
+              }
+            },
+            {
+              "kpiName": "Machine Hire Charges",
+              "trend": [0.84, 0.76, 0.67, 0.67, 0.49, 0.58, 0.76, 0.58, 0.64, 1.03],
+              "target": 0.87,
+              "budgetVsActual": {
+                "budget": 0.87,
+                "actual": 0.58,
+                "variance": -33.3
+              }
+            },
+            {
+              "kpiName": "Repair & Maintenance",
+              "trend": [4.33, 3.74, 3.40, 3.26, 1.58, 1.63, 1.66, 1.58, 2.37, 0.99],
+              "target": 3.42,
+              "budgetVsActual": {
+                "budget": 3.42,
+                "actual": 1.63,
+                "variance": -52.3
+              }
+            }
+          ]
+        },
+        "Ranjangaon": {
+          "code": "RNGN",
+          "location": "Ranjangaon, Pune", 
+          "type": "Forging",
+          "capacity": "45000 MT/Year",
+          "tonnageData": {
+            "monthlyTonnage": [4373.96, 4398.51, 4823.80, 5037.45, 4099.00],
+            "totalTonnage": 51951.25,
+            "avgTonnagePerMonth": 4329.27,
+            "costPerTon": {
+              "consumables": 3407.44,
+              "power": 7644.81,
+              "fuel": 3256.29,
+              "subContract": 7493.78,
+              "labour": 1968.31,
+              "machineHire": 684.72
+            }
+          },
+          "monthlyData": {
+            "Apr2025": { 
+              "budget": 635.13, 
+              "actual": 599.86, 
+              "variance": -5.55,
+              "saleData": {
+                "budgetSales": 781.94,
+                "actualSales": 771.49,
+                "budgetSalePercentage": 81.22,
+                "actualSalePercentage": 77.75,
+                "budgetTotalIncome": 781.94,
+                "actualTotalIncome": 721.14
+              }
+            },
+            "May2025": { 
+              "budget": 645.40, 
+              "actual": 628.51, 
+              "variance": -2.62,
+              "saleData": {
+                "budgetSales": 795.70,
+                "actualSales": 771.77,
+                "budgetSalePercentage": 81.11,
+                "actualSalePercentage": 81.44,
+                "budgetTotalIncome": 795.70,
+                "actualTotalIncome": 744.77
+              }
+            },
+            "Jun2025": { 
+              "budget": 649.60, 
+              "actual": 662.32, 
+              "variance": 1.96,
+              "saleData": {
+                "budgetSales": 801.32,
+                "actualSales": 683.93,
+                "budgetSalePercentage": 81.07,
+                "actualSalePercentage": 96.82,
+                "budgetTotalIncome": 801.32,
+                "actualTotalIncome": 762.17
+              }
+            },
+            "Jul2025": { 
+              "budget": 682.97, 
+              "actual": 708.46, 
+              "variance": 3.73,
+              "saleData": {
+                "budgetSales": 844.75,
+                "actualSales": 730.74,
+                "budgetSalePercentage": 80.85,
+                "actualSalePercentage": 96.95,
+                "budgetTotalIncome": 844.75,
+                "actualTotalIncome": 846.02
+              }
+            },
+            "Aug2025": { 
+              "budget": 706.73, 
+              "actual": 634.17, 
+              "variance": -10.26,
+              "saleData": {
+                "budgetSales": 874.66,
+                "actualSales": 693.93,
+                "budgetSalePercentage": 80.80,
+                "actualSalePercentage": 91.39,
+                "budgetTotalIncome": 874.66,
+                "actualTotalIncome": 759.81
+              }
+            }
+          },
+          "monthlyDetailedData": {
+            "Apr2025": {
+              "categories": {
+                "Consumables": {
+                  "budget": 15.17,
+                  "actual": 15.89,
+                  "costPerTon": 3633,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 1.94,
+                  "actualSalePercentage": 2.20,
+                  "variancePercentage": 0.26
+                },
+                "Power": {
+                  "budget": 33.16,
+                  "actual": 32.25,
+                  "costPerTon": 7374,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 4.24,
+                  "actualSalePercentage": 4.47,
+                  "variancePercentage": 0.23
+                },
+                "Fuel": {
+                  "budget": 12.65,
+                  "actual": 13.72,
+                  "costPerTon": 3136,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 1.62,
+                  "actualSalePercentage": 1.90,
+                  "variancePercentage": 0.29
+                },
+                "Labour Charges (Exps)": {
+                  "budget": 8.02,
+                  "actual": 9.93,
+                  "costPerTon": 2271,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 1.03,
+                  "actualSalePercentage": 1.38,
+                  "variancePercentage": 0.35
+                },
+                "Sub-Contract": {
+                  "budget": 29.71,
+                  "actual": 35.90,
+                  "costPerTon": 8207,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 3.80,
+                  "actualSalePercentage": 4.98,
+                  "variancePercentage": 1.18
+                },
+                "Machine Hire Charges": {
+                  "budget": 3.15,
+                  "actual": 2.77,
+                  "costPerTon": 632,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 0.40,
+                  "actualSalePercentage": 0.38,
+                  "variancePercentage": -0.02
+                },
+                "Repair & Maintenance (R)": {
+                  "budget": 7.18,
+                  "actual": 6.28,
+                  "costPerTon": 1436,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 0.92,
+                  "actualSalePercentage": 0.87,
+                  "variancePercentage": -0.05
+                },
+                "Employee Cost": {
+                  "budget": 25.32,
+                  "actual": 25.32,
+                  "costPerTon": 5788,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 3.24,
+                  "actualSalePercentage": 3.51,
+                  "variancePercentage": 0.27
+                },
+                "Establishment Exp": {
+                  "budget": 6.82,
+                  "actual": 5.15,
+                  "costPerTon": 1177,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 0.87,
+                  "actualSalePercentage": 0.71,
+                  "variancePercentage": -0.16
+                },
+                "Packing": {
+                  "budget": 7.98,
+                  "actual": 6.67,
+                  "costPerTon": 1524.32,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 1.02,
+                  "actualSalePercentage": 0.92,
+                  "variancePercentage": -0.10
+                },
+                "Fright": {
+                  "budget": 19.94,
+                  "actual": 16.54,
+                  "costPerTon": 3781.61,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 2.55,
+                  "actualSalePercentage": 2.29,
+                  "variancePercentage": -0.26
+                },
+                "Raw Material": {
+                  "budget": 466.04,
+                  "actual": 429.45,
+                  "costPerTon": 98182.44,
+                  "tonnage": 4374,
+                  "totalBudgetSale": 782,
+                  "totalActualSale": 721,
+                  "budgetSalePercentage": 59.60,
+                  "actualSalePercentage": 59.55,
+                  "variancePercentage": -0.05
+                }
+              },
+              "totals": {
+                "budget": 635.13,
+                "actual": 599.86,
+                "costPerTon": 137143.77,
+                "budgetSalePercentage": 81.22,
+                "actualSalePercentage": 83.18,
+                "variancePercentage": 1.96
+              },
+              "tonnage": 4374,
+              "ebita": {
+                "budgetPercentage": 18.78,
+                "actualPercentage": 16.82
+              }
+            },
+            "May2025": {
+              "categories": {
+                "Consumables": {
+                  "budget": 15.44,
+                  "actual": 17.04,
+                  "costPerTon": 3875,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 1.94,
+                  "actualSalePercentage": 2.29,
+                  "variancePercentage": 0.35
+                },
+                "Power": {
+                  "budget": 33.74,
+                  "actual": 31.59,
+                  "costPerTon": 7183,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 4.24,
+                  "actualSalePercentage": 4.24,
+                  "variancePercentage": 0.00
+                },
+                "Fuel": {
+                  "budget": 12.87,
+                  "actual": 14.71,
+                  "costPerTon": 3345,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 1.62,
+                  "actualSalePercentage": 1.98,
+                  "variancePercentage": 0.36
+                },
+                "Labour Charges (Exps)": {
+                  "budget": 8.16,
+                  "actual": 11.52,
+                  "costPerTon": 2619,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 1.03,
+                  "actualSalePercentage": 1.55,
+                  "variancePercentage": 0.52
+                },
+                "Sub-Contract": {
+                  "budget": 30.24,
+                  "actual": 34.68,
+                  "costPerTon": 7885,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 3.80,
+                  "actualSalePercentage": 4.66,
+                  "variancePercentage": 0.86
+                },
+                "Machine Hire Charges": {
+                  "budget": 3.21,
+                  "actual": 2.24,
+                  "costPerTon": 510,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 0.40,
+                  "actualSalePercentage": 0.30,
+                  "variancePercentage": -0.10
+                },
+                "Repair & Maintenance (R)": {
+                  "budget": 7.31,
+                  "actual": 17.03,
+                  "costPerTon": 3871,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 0.92,
+                  "actualSalePercentage": 2.29,
+                  "variancePercentage": 1.37
+                },
+                "Employee Cost": {
+                  "budget": 25.32,
+                  "actual": 25.32,
+                  "costPerTon": 5756,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 3.18,
+                  "actualSalePercentage": 3.40,
+                  "variancePercentage": 0.22
+                },
+                "Establishment Exp": {
+                  "budget": 6.48,
+                  "actual": 5.66,
+                  "costPerTon": 1287,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 0.81,
+                  "actualSalePercentage": 0.76,
+                  "variancePercentage": -0.05
+                },
+                "Packing": {
+                  "budget": 8.12,
+                  "actual": 7.21,
+                  "costPerTon": 1639.54,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 1.02,
+                  "actualSalePercentage": 0.97,
+                  "variancePercentage": -0.05
+                },
+                "Fright": {
+                  "budget": 20.29,
+                  "actual": 19.10,
+                  "costPerTon": 4342.38,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 2.55,
+                  "actualSalePercentage": 2.56,
+                  "variancePercentage": 0.01
+                },
+                "Raw Material": {
+                  "budget": 474.24,
+                  "actual": 442.41,
+                  "costPerTon": 100581.26,
+                  "tonnage": 4398.51,
+                  "totalBudgetSale": 795.70,
+                  "totalActualSale": 744.77,
+                  "budgetSalePercentage": 59.60,
+                  "actualSalePercentage": 59.40,
+                  "variancePercentage": -0.20
+                }
+              },
+              "totals": {
+                "budget": 645.40,
+                "actual": 628.51,
+                "costPerTon": 142892.69,
+                "budgetSalePercentage": 81.11,
+                "actualSalePercentage": 84.39,
+                "variancePercentage": 3.28
+              },
+              "tonnage": 4398.51,
+              "ebita": {
+                "budgetPercentage": 18.89,
+                "actualPercentage": 15.61
+              }
+            },
+            "Jun2025": {
+              "categories": {
+                "Consumables": {
+                  "budget": 15.55,
+                  "actual": 15.58,
+                  "costPerTon": 3230,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 1.94,
+                  "actualSalePercentage": 2.04,
+                  "variancePercentage": 0.10
+                },
+                "Power": {
+                  "budget": 33.98,
+                  "actual": 34.33,
+                  "costPerTon": 7116,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 4.24,
+                  "actualSalePercentage": 4.50,
+                  "variancePercentage": 0.26
+                },
+                "Fuel": {
+                  "budget": 12.96,
+                  "actual": 14.59,
+                  "costPerTon": 3025,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 1.62,
+                  "actualSalePercentage": 1.91,
+                  "variancePercentage": 0.30
+                },
+                "Labour Charges (Exps)": {
+                  "budget": 8.22,
+                  "actual": 9.71,
+                  "costPerTon": 2013,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 1.03,
+                  "actualSalePercentage": 1.27,
+                  "variancePercentage": 0.25
+                },
+                "Sub-Contract": {
+                  "budget": 30.45,
+                  "actual": 33.85,
+                  "costPerTon": 7017,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 3.80,
+                  "actualSalePercentage": 4.44,
+                  "variancePercentage": 0.64
+                },
+                "Machine Hire Charges": {
+                  "budget": 3.23,
+                  "actual": 4.14,
+                  "costPerTon": 858,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 0.40,
+                  "actualSalePercentage": 0.54,
+                  "variancePercentage": 0.14
+                },
+                "Repair & Maintenance (R)": {
+                  "budget": 7.36,
+                  "actual": 16.10,
+                  "costPerTon": 3337,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 0.92,
+                  "actualSalePercentage": 2.11,
+                  "variancePercentage": 1.19
+                },
+                "Employee Cost": {
+                  "budget": 25.32,
+                  "actual": 25.32,
+                  "costPerTon": 5248,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 3.16,
+                  "actualSalePercentage": 3.32,
+                  "variancePercentage": 0.16
+                },
+                "Establishment Exp": {
+                  "budget": 6.35,
+                  "actual": 6.18,
+                  "costPerTon": 1281,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 0.79,
+                  "actualSalePercentage": 0.81,
+                  "variancePercentage": 0.02
+                },
+                "Packing": {
+                  "budget": 8.17,
+                  "actual": 12.92,
+                  "costPerTon": 2678.39,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 1.02,
+                  "actualSalePercentage": 1.70,
+                  "variancePercentage": 0.68
+                },
+                "Fright": {
+                  "budget": 20.43,
+                  "actual": 19.26,
+                  "costPerTon": 3992.70,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 2.55,
+                  "actualSalePercentage": 2.53,
+                  "variancePercentage": -0.02
+                },
+                "Raw Material": {
+                  "budget": 477.59,
+                  "actual": 470.35,
+                  "costPerTon": 97506.01,
+                  "tonnage": 4823.80,
+                  "totalBudgetSale": 801.32,
+                  "totalActualSale": 762.17,
+                  "budgetSalePercentage": 59.60,
+                  "actualSalePercentage": 61.71,
+                  "variancePercentage": 2.11
+                }
+              },
+              "totals": {
+                "budget": 649.60,
+                "actual": 662.32,
+                "costPerTon": 137302.32,
+                "budgetSalePercentage": 81.07,
+                "actualSalePercentage": 86.90,
+                "variancePercentage": 5.83
+              },
+              "tonnage": 4823.80,
+              "ebita": {
+                "budgetPercentage": 18.93,
+                "actualPercentage": 13.10
+              }
+            },
+            "Jul2025": {
+              "categories": {
+                "Consumables": {
+                  "budget": 16.39,
+                  "actual": 17.48,
+                  "costPerTon": 3470,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 1.94,
+                  "actualSalePercentage": 2.07,
+                  "variancePercentage": 0.13
+                },
+                "Power": {
+                  "budget": 35.82,
+                  "actual": 37.67,
+                  "costPerTon": 7477,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 4.24,
+                  "actualSalePercentage": 4.45,
+                  "variancePercentage": 0.21
+                },
+                "Fuel": {
+                  "budget": 13.66,
+                  "actual": 16.31,
+                  "costPerTon": 3237,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 1.62,
+                  "actualSalePercentage": 1.93,
+                  "variancePercentage": 0.31
+                },
+                "Labour Charges (Exps)": {
+                  "budget": 8.66,
+                  "actual": 10.83,
+                  "costPerTon": 2150,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 1.03,
+                  "actualSalePercentage": 1.28,
+                  "variancePercentage": 0.25
+                },
+                "Sub-Contract": {
+                  "budget": 32.10,
+                  "actual": 38.09,
+                  "costPerTon": 7560,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 3.80,
+                  "actualSalePercentage": 4.50,
+                  "variancePercentage": 0.70
+                },
+                "Machine Hire Charges": {
+                  "budget": 3.41,
+                  "actual": 3.07,
+                  "costPerTon": 609,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 0.40,
+                  "actualSalePercentage": 0.36,
+                  "variancePercentage": -0.04
+                },
+                "Repair & Maintenance (R)": {
+                  "budget": 7.76,
+                  "actual": 15.87,
+                  "costPerTon": 3151,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 0.92,
+                  "actualSalePercentage": 1.88,
+                  "variancePercentage": 0.96
+                },
+                "Employee Cost": {
+                  "budget": 25.32,
+                  "actual": 25.32,
+                  "costPerTon": 5026,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 3.00,
+                  "actualSalePercentage": 2.99,
+                  "variancePercentage": 0.00
+                },
+                "Establishment Exp": {
+                  "budget": 6.23,
+                  "actual": 5.98,
+                  "costPerTon": 1188,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 0.74,
+                  "actualSalePercentage": 0.71,
+                  "variancePercentage": -0.03
+                },
+                "Packing": {
+                  "budget": 8.62,
+                  "actual": 12.11,
+                  "costPerTon": 2404.59,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 1.02,
+                  "actualSalePercentage": 1.43,
+                  "variancePercentage": 0.41
+                },
+                "Fright": {
+                  "budget": 21.54,
+                  "actual": 15.98,
+                  "costPerTon": 3172.26,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 2.55,
+                  "actualSalePercentage": 1.89,
+                  "variancePercentage": -0.66
+                },
+                "Raw Material": {
+                  "budget": 503.47,
+                  "actual": 509.76,
+                  "costPerTon": 101193.39,
+                  "tonnage": 5037.45,
+                  "totalBudgetSale": 844.75,
+                  "totalActualSale": 846.02,
+                  "budgetSalePercentage": 59.60,
+                  "actualSalePercentage": 60.25,
+                  "variancePercentage": 0.65
+                }
+              },
+              "totals": {
+                "budget": 682.97,
+                "actual": 708.46,
+                "costPerTon": 140638.29,
+                "budgetSalePercentage": 80.85,
+                "actualSalePercentage": 83.74,
+                "variancePercentage": 2.89
+              },
+              "tonnage": 5037.45,
+              "ebita": {
+                "budgetPercentage": 19.15,
+                "actualPercentage": 16.26
+              }
+            },
+            "Aug2025": {
+              "categories": {
+                "Consumables": {
+                  "budget": 16.97,
+                  "actual": 15.70,
+                  "costPerTon": 3542,
+                  "tonnage": 4432.82,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 1.94,
+                  "actualSalePercentage": 2.07,
+                  "variancePercentage": 0.13
+                },
+                "Power": {
+                  "budget": 37.09,
+                  "actual": 40.74,
+                  "costPerTon": 7290,
+                  "tonnage": 5588.21,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 4.24,
+                  "actualSalePercentage": 5.36,
+                  "variancePercentage": 1.12
+                },
+                "Fuel": {
+                  "budget": 14.15,
+                  "actual": 12.19,
+                  "costPerTon": 3184,
+                  "tonnage": 3827.77,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 1.62,
+                  "actualSalePercentage": 1.60,
+                  "variancePercentage": -0.01
+                },
+                "Labour Charges (Exps)": {
+                  "budget": 8.97,
+                  "actual": 10.93,
+                  "costPerTon": 2254,
+                  "tonnage": 4850.27,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 1.03,
+                  "actualSalePercentage": 1.44,
+                  "variancePercentage": 0.41
+                },
+                "Sub-Contract": {
+                  "budget": 33.24,
+                  "actual": 33.62,
+                  "costPerTon": 7667,
+                  "tonnage": 4384.53,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 3.80,
+                  "actualSalePercentage": 4.42,
+                  "variancePercentage": 0.62
+                },
+                "Machine Hire Charges": {
+                  "budget": 3.53,
+                  "actual": 3.05,
+                  "costPerTon": 656,
+                  "tonnage": 4656.36,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 0.40,
+                  "actualSalePercentage": 0.40,
+                  "variancePercentage": 0.00
+                },
+                "Repair & Maintenance (R)": {
+                  "budget": 8.03,
+                  "actual": 14.51,
+                  "costPerTon": 2967,
+                  "tonnage": 4891.20,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 0.92,
+                  "actualSalePercentage": 1.91,
+                  "variancePercentage": 0.99
+                },
+                "Employee Cost": {
+                  "budget": 25.32,
+                  "actual": 25.32,
+                  "costPerTon": 5434,
+                  "tonnage": 4658.43,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 2.89,
+                  "actualSalePercentage": 3.33,
+                  "variancePercentage": 0.44
+                },
+                "Establishment Exp": {
+                  "budget": 6.92,
+                  "actual": 6.06,
+                  "costPerTon": 1233,
+                  "tonnage": 4915.38,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 0.79,
+                  "actualSalePercentage": 0.80,
+                  "variancePercentage": 0.01
+                },
+                "Packing": {
+                  "budget": 8.92,
+                  "actual": 9.80,
+                  "costPerTon": 1994.59,
+                  "tonnage": 4915.38,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 1.02,
+                  "actualSalePercentage": 1.29,
+                  "variancePercentage": 0.27
+                },
+                "Fright": {
+                  "budget": 22.30,
+                  "actual": 15.56,
+                  "costPerTon": 3165.57,
+                  "tonnage": 4915.38,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 2.55,
+                  "actualSalePercentage": 2.05,
+                  "variancePercentage": -0.50
+                },
+                "Raw Material": {
+                  "budget": 521.30,
+                  "actual": 446.69,
+                  "costPerTon": 90876.69,
+                  "tonnage": 4915.38,
+                  "totalBudgetSale": 874.66,
+                  "totalActualSale": 759.81,
+                  "budgetSalePercentage": 59.60,
+                  "actualSalePercentage": 58.79,
+                  "variancePercentage": -0.81
+                }
+              },
+              "totals": {
+                "budget": 706.73,
+                "actual": 634.17,
+                "costPerTon": 130262.52,
+                "budgetSalePercentage": 80.80,
+                "actualSalePercentage": 83.46,
+                "variancePercentage": 2.66
+              },
+              "tonnage": 4915.38,
+              "ebita": {
+                "budgetPercentage": 19.20,
+                "actualPercentage": 16.54
+              }
+            }
+          }
+        }
+      }
+    },
+    "machining": {
+      "plants": {
+        "Khed": {
+          "code": "KHED",
+          "location": "Khed, Pune",
+          "type": "Precision Machining",
+          "capacity": "15000 Components/Year",
+          "monthlyData": {
+            "Apr2025": { 
+              "budget": 73.70, 
+              "actual": 65.89, 
+              "variance": -10.60,
+              "saleData": {
+                "budgetSales": 73.70,
+                "actualSales": 65.89,
+                "budgetSalePercentage": 100.0,
+                "actualSalePercentage": 92.37,
+                "budgetTotalIncome": 73.70,
+                "actualTotalIncome": 71.34
+              }
+            },
+            "May2025": { 
+              "budget": 80.93, 
+              "actual": 74.46, 
+              "variance": -7.99,
+              "saleData": {
+                "budgetSales": 80.93,
+                "actualSales": 74.46,
+                "budgetSalePercentage": 100.0,
+                "actualSalePercentage": 88.30,
+                "budgetTotalIncome": 80.93,
+                "actualTotalIncome": 84.32
+              }
+            },
+            "Jun2025": { 
+              "budget": 96.61, 
+              "actual": 68.20, 
+              "variance": -29.39,
+              "saleData": {
+                "budgetSales": 96.61,
+                "actualSales": 68.20,
+                "budgetSalePercentage": 100.0,
+                "actualSalePercentage": 90.33,
+                "budgetTotalIncome": 96.61,
+                "actualTotalIncome": 75.50
+              }
+            },
+            "Jul2025": { 
+              "budget": 102.80, 
+              "actual": 73.54, 
+              "variance": -28.47,
+              "saleData": {
+                "budgetSales": 102.80,
+                "actualSales": 73.54,
+                "budgetSalePercentage": 100.0,
+                "actualSalePercentage": 97.70,
+                "budgetTotalIncome": 102.80,
+                "actualTotalIncome": 75.28
+              }
+            },
+            "Aug2025": { 
+              "budget": 105.17, 
+              "actual": 68.85, 
+              "variance": -34.53,
+              "saleData": {
+                "budgetSales": 105.17,
+                "actualSales": 68.85,
+                "budgetSalePercentage": 100.0,
+                "actualSalePercentage": 97.05,
+                "budgetTotalIncome": 105.17,
+                "actualTotalIncome": 70.98
+              }
+            }
+          }
+        },
+        "Chakan": {
+          "code": "CHKN",
+          "location": "Chakan, Pune",
+          "type": "Precision Machining", 
+          "capacity": "12000 Components/Year",
+          "monthlyData": {
+            "Mar2025": { 
+              "budget": 13.38, 
+              "actual": 11.34, 
+              "variance": -15.2,
+              "saleData": {
+                "budgetSales": 157.30,
+                "actualSales": 191.64,
+                "budgetSalePercentage": 8.51,
+                "actualSalePercentage": 5.92,
+                "budgetTotalIncome": 157.30,
+                "actualTotalIncome": 184.22
+              }
+            },
+            "Apr2025": { 
+              "budget": 13.58, 
+              "actual": 16.76, 
+              "variance": 23.4,
+              "saleData": {
+                "budgetSales": 159.62,
+                "actualSales": 183.32,
+                "budgetSalePercentage": 8.51,
+                "actualSalePercentage": 9.14,
+                "budgetTotalIncome": 159.62,
+                "actualTotalIncome": 185.01
+              }
+            },
+            "May2025": { 
+              "budget": 14.81, 
+              "actual": 14.45, 
+              "variance": -2.4,
+              "saleData": {
+                "budgetSales": 174.17,
+                "actualSales": 177.79,
+                "budgetSalePercentage": 8.51,
+                "actualSalePercentage": 8.13,
+                "budgetTotalIncome": 174.17,
+                "actualTotalIncome": 175.09
+              }
+            },
+            "Jun2025": { 
+              "budget": 6.03, 
+              "actual": 6.87, 
+              "variance": 14.0,
+              "saleData": {
+                "budgetSales": 182.70,
+                "actualSales": 168.13,
+                "budgetSalePercentage": 3.30,
+                "actualSalePercentage": 4.09,
+                "budgetTotalIncome": 182.70,
+                "actualTotalIncome": 165.70
+              }
+            },
+            "Jul2025": { 
+              "budget": 6.11, 
+              "actual": 6.38, 
+              "variance": 4.4,
+              "saleData": {
+                "budgetSales": 185.84,
+                "actualSales": 154.04,
+                "budgetSalePercentage": 3.29,
+                "actualSalePercentage": 4.14,
+                "budgetTotalIncome": 185.84,
+                "actualTotalIncome": 151.54
+              }
+            },
+            "Aug2025": { 
+              "budget": 6.67, 
+              "actual": 5.98, 
+              "variance": -10.3,
+              "saleData": {
+                "budgetSales": 185.84,
+                "actualSales": 154.04,
+                "budgetSalePercentage": 3.59,
+                "actualSalePercentage": 3.88,
+                "budgetTotalIncome": 185.84,
+                "actualTotalIncome": 151.54
+              }
+            }
+          },
+          "kpis": [
+            {
+              "kpiName": "Consumable",
+              "trend": [13.38, 11.34, 13.58, 16.76, 14.81, 14.45, 6.03, 6.87, 6.11, 6.38, 6.67, 5.98],
+              "target": 14.81,
+              "budgetVsActual": {
+                "budget": 14.81,
+                "actual": 14.45,
+                "variance": -2.4
+              }
+            },
+            {
+              "kpiName": "Power",
+              "trend": [6.03, 6.87, 6.11, 6.38, 6.67, 5.98, 6.02, 6.87, 6.11, 6.38, 6.67, 5.98],
+              "target": 6.67,
+              "budgetVsActual": {
+                "budget": 6.67,
+                "actual": 5.98,
+                "variance": -10.3
+              }
+            },
+            {
+              "kpiName": "Fuel",
+              "trend": [0.28, 0.32, 0.29, 2.32, 0.31, 0.64, 0.28, 0.32, 0.29, 2.32, 0.31, 0.64],
+              "target": 0.31,
+              "budgetVsActual": {
+                "budget": 0.31,
+                "actual": 0.64,
+                "variance": 106.5
+              }
+            },
+            {
+              "kpiName": "Sub Contract",
+              "trend": [19.03, 23.52, 19.31, 22.36, 21.07, 20.83, 19.03, 23.52, 19.31, 22.36, 21.07, 20.83],
+              "target": 21.07,
+              "budgetVsActual": {
+                "budget": 21.07,
+                "actual": 20.83,
+                "variance": -1.1
+              }
+            },
+            {
+              "kpiName": "Labour",
+              "trend": [6.71, 8.94, 6.81, 8.76, 7.43, 9.82, 6.71, 8.94, 6.81, 8.76, 7.43, 9.82],
+              "target": 7.43,
+              "budgetVsActual": {
+                "budget": 7.43,
+                "actual": 9.82,
+                "variance": 32.2
+              }
+            },
+            {
+              "kpiName": "Machine Hire Charges",
+              "trend": [0.79, 1.23, 0.80, 1.90, 0.87, 1.86, 0.79, 1.23, 0.80, 1.90, 0.87, 1.86],
+              "target": 0.87,
+              "budgetVsActual": {
+                "budget": 0.87,
+                "actual": 1.86,
+                "variance": 113.8
+              }
+            },
+            {
+              "kpiName": "Repair & Maintenance",
+              "trend": [1.29, 0.46, 1.31, 1.08, 1.43, 1.41, 1.29, 0.46, 1.31, 1.08, 1.43, 1.41],
+              "target": 1.43,
+              "budgetVsActual": {
+                "budget": 1.43,
+                "actual": 1.41,
+                "variance": -1.4
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tonnageData": {
+    "Mundhwa": {
+      "monthlyTonnage": [1559.89, 1827.27, 1830.10, 1686.65, 1686.00],
+      "totalTonnage": 19949.35,
+      "avgTonnagePerMonth": 1659.11,
+      "costPerTon": {
+        "consumables": 2576.11,
+        "power": 6960.78,
+        "fuel": 2403.37,
+        "subContract": 10728.69,
+        "labour": 2485.46,
+        "machineHire": 747.99,
+        "repairMaintenance": 2194.32
+      }
+    },
+    "Ranjangaon": {
+      "monthlyTonnage": [4373.96, 4398.51, 4823.80, 5037.45, 4099.00],
+      "totalTonnage": 51951.25,
+      "avgTonnagePerMonth": 4329.27,
+      "costPerTon": {
+        "consumables": 3407.44,
+        "power": 7644.81,
+        "fuel": 3256.29,
+        "subContract": 7493.78,
+        "labour": 1968.31,
+        "machineHire": 684.72
+      }
+    }
+  },
+  "plantSummary": {
+    "totalPlants": 4,
+    "forgingPlants": 2,
+    "machiningPlants": 2,
+    "totalCapacity": {
+      "forging": "70000 MT/Year",
+      "machining": "27000 Components/Year"
+    },
+    "performanceMetrics": {
+      "averageBudgetVariance": {
+        "Mundhwa": -1.54,
+        "Ranjangaon": -2.95,
+        "Chakan": 1.57,
+        "Khed": -22.20
+      },
+      "saleEfficiency": {
+        "Mundhwa": "56.26% (Budget) vs 57.26% (Actual Avg)",
+        "Ranjangaon": "81.05% (Budget) vs 88.49% (Actual Avg)", 
+        "Chakan": "5.54% (Budget) vs 5.88% (Actual Avg)",
+        "Khed": "100% (Budget) vs 93.15% (Actual Avg)"
+      },
+      "topPerformingPlant": {
+        "costEfficiency": "Ranjangaon",
+        "salePerformance": "Mundhwa", 
+        "budgetAdherence": "Chakan"
+      },
+      "keyInsights": {
+        "highestCostCategory": "Raw Material (59.60% of total costs)",
+        "mostVolatileCost": "Repair & Maintenance",
+        "bestMarginPlant": "Ranjangaon (16.82% actual EBITA)",
+        "improvementOpportunity": "Khed plant variance reduction needed"
+      }
+    }
+  },
+  "alerts": {
+    "budgetOverruns": [
+      {
+        "plant": "Mundhwa",
+        "category": "Raw Material Cost",
+        "variance": 9.7,
+        "severity": "Medium",
+        "month": "May2025"
+      },
+      {
+        "plant": "Khed",
+        "category": "Overall Performance", 
+        "variance": -34.53,
+        "severity": "High",
+        "month": "Aug2025"
+      },
+      {
+        "plant": "Ranjangaon",
+        "category": "Repair & Maintenance",
+        "variance": 1.37,
+        "severity": "Medium",
+        "month": "May2025"
+      }
+    ],
+    "positiveVariances": [
+      {
+        "plant": "Mundhwa",
+        "category": "Sub Contract",
+        "variance": -48.0,
+        "impact": "Cost Savings",
+        "sustainabilityRisk": "Low"
+      },
+      {
+        "plant": "Ranjangaon",
+        "category": "Machine Hire",
+        "variance": -33.3,
+        "impact": "Efficiency Gain",
+        "sustainabilityRisk": "Medium"
+      }
+    ]
+  }
+}
