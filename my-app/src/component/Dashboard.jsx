@@ -15,6 +15,8 @@ const Dashboard = () => {
     },
   ]);
   const [currentMessage, setCurrentMessage] = useState("");
+  // Add this with your other useState declarations at the top of Dashboard component
+  const [selectedLocation, setSelectedLocation] = useState("Ranjangaon");
 
   const kpiData = [
     {
@@ -468,7 +470,55 @@ const Dashboard = () => {
 
             {/* Plant Selection Pills */}
             <div className="flex flex-wrap items-center gap-1.5">
-              {/* Display plants based on selected category */}
+              {/* Location Buttons First */}
+              <button
+                onClick={() => setSelectedLocation("Ranjangaon")}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-200 whitespace-nowrap text-xs font-medium ${
+                  selectedLocation === "Ranjangaon"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                }`}
+              >
+                <span>Ranjangaon</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedLocation("Mundhwa")}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-200 whitespace-nowrap text-xs font-medium ${
+                  selectedLocation === "Mundhwa"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                }`}
+              >
+                <span>Mundhwa</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedLocation("Ranjangaon-2")}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-200 whitespace-nowrap text-xs font-medium ${
+                  selectedLocation === "Ranjangaon-2"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                }`}
+              >
+                <span>Ranjangaon-2</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedLocation("Baramati")}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md transition-all duration-200 whitespace-nowrap text-xs font-medium ${
+                  selectedLocation === "Baramati"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                }`}
+              >
+                <span>Baramati</span>
+              </button>
+
+              {/* Separator */}
+              <div className="h-6 w-px bg-gray-300 mx-1"></div>
+
+              {/* Original Plant Buttons */}
               {selectedCategory === "All" && (
                 <>
                   <button

@@ -835,12 +835,21 @@ const CostScreener = () => {
   // Add useEffect to fetch data (line 1020)
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:5000/api/forging-data/Ranjangaon/forging")
+    const url = `http://localhost:5000/api/forging-data/${selectedLocation}/forging`;
+
+    console.log("🔍 Fetching from:", url);
+    console.log("📍 Selected Location:", selectedLocation);
+
+    fetch(url)
       .then((res) => {
+        console.log("📡 Response status:", res.status);
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
       .then((data) => {
+        console.log("📦 Raw data received:", data);
+        console.log("📊 KPI data length:", data?.kpi_data?.length);
+
         if (data && data.kpi_data) {
           const dataWithEfficiency = {
             ...data,
@@ -852,36 +861,54 @@ const CostScreener = () => {
             },
           };
 
+          console.log("✅ Setting data:", dataWithEfficiency);
           setRealForgingData(dataWithEfficiency);
+        } else {
+          console.log("❌ No kpi_data found");
         }
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching data:", err);
-        setRealForgingData({
-          meta: {
-            title: "Error Loading Data",
-            location: "Ranjangaon",
-            lines: "Line 1 to 16",
-            currency: "INR",
-            unit: "per tonne",
-            data_source: "Local",
-            last_updated: new Date().toISOString(),
-            total_kpis: 0,
-          },
-          kpi_data: [],
-          efficiency: {
-            current: 85.2,
-            target: 90.0,
-            trend: "up",
-            change: 2.3,
-          },
-        });
-        setIsLoading(false);
+        console.error("❌ Error fetching data:", err);
+        // error handling...
       });
   }, [selectedLocation, activeProcess]);
 
   const modalRef = useRef(null);
+
+  // Add location selector buttons - main UI mein
+  <div className="flex gap-2 mb-4">
+    <button
+      onClick={() => setSelectedLocation("Ranjangaon")}
+      className={`px-4 py-2 rounded-lg font-medium transition-all ${
+        selectedLocation === "Ranjangaon"
+          ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+          : `bg-gray-100 ${currentTheme.secondaryText}`
+      }`}
+    >
+      Ranjangaon
+    </button>
+    <button
+      onClick={() => setSelectedLocation("Mundhwa")}
+      className={`px-4 py-2 rounded-lg font-medium transition-all ${
+        selectedLocation === "Mundhwa"
+          ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+          : `bg-gray-100 ${currentTheme.secondaryText}`
+      }`}
+    >
+      Mundhwa
+    </button>
+    <button
+      onClick={() => setSelectedLocation("Ranjangaon-2")}
+      className={`px-4 py-2 rounded-lg font-medium transition-all ${
+        selectedLocation === "Ranjangaon-2"
+          ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+          : `bg-gray-100 ${currentTheme.secondaryText}`
+      }`}
+    >
+      Ranjangaon-2
+    </button>
+  </div>;
 
   // Fixed renderCombinedChart function - No initialization errors
   const renderCombinedChart = () => {
@@ -1002,6 +1029,27 @@ const CostScreener = () => {
     });
 
     const combinedData = baseData;
+
+    // ---- yeh combinedData banne ke turant baad daalo ----
+    const actualTotals = combinedData
+      .map((d) => d.TotalActual)
+      .filter((v) => v !== null && v !== undefined);
+
+    let dynamicTarget = null;
+    if (actualTotals.length > 0) {
+      const avgActual =
+        actualTotals.reduce((a, b) => a + b, 0) / actualTotals.length;
+      dynamicTarget = avgActual * 1.05; // thoda upar rakha (5% higher)
+    }
+
+    const targets = combinedData
+      .map((d) => (d.TotalActual !== null ? d.target ?? null : null))
+      .filter((v) => v !== null && v !== undefined);
+
+    const avgTarget =
+      targets.length > 0
+        ? (targets.reduce((a, b) => a + b, 0) / targets.length).toFixed(2)
+        : null;
 
     // Calculate average target percentage for ReferenceLine
     const percentTargets = combinedData
@@ -1168,15 +1216,15 @@ const CostScreener = () => {
                 }}
               />
 
-              {activeGraphTab === "tonnage" && (
+              {activeGraphTab === "tonnage" && dynamicTarget && (
                 <ReferenceLine
-                  y={30000}
-                  stroke={currentTheme.chartColors.goodColor}
+                  y={parseFloat(dynamicTarget.toFixed(2))}
+                  stroke={currentTheme.chartColors.targetLine}
                   strokeDasharray="5 5"
                   label={{
-                    value: "Target",
+                    value: `Target ₹${dynamicTarget.toFixed(0)}`,
                     position: "right",
-                    fill: currentTheme.chartColors.goodColor,
+                    fill: currentTheme.chartColors.targetLine,
                     fontSize: 12,
                   }}
                 />
@@ -1554,181 +1602,46 @@ const CostScreener = () => {
   };
 
   const getCurrentData = () => {
+    console.log("🎯 getCurrentData called");
+    console.log("Tab:", activeTab);
+    console.log("Process:", activeProcess);
+    console.log("Location:", selectedLocation);
+    console.log("Data available:", realForgingData);
+
     if (activeTab === "production" || activeTab === "sale") {
-      if (activeProcess === "forging" && selectedLocation === "Ranjangaon") {
+      if (activeProcess === "forging") {
+        console.log("✅ Conditions met, returning:", realForgingData?.kpi_data);
         return realForgingData?.kpi_data || [];
       }
     }
+    console.log("❌ Conditions not met");
     return [];
   };
 
   const buildChartData = (kpi) => {
     if (!kpi || !kpi.trend) return [];
 
-    const kpiTargetValues = {
-      Consumables: [
-        3500, 3400, 3300, 3400, 3450, 3500, 3550, 3600, 3650, 3700, 3750, 3800,
-      ],
-      Power: [
-        7200, 7100, 7000, 7100, 7150, 7200, 7250, 7300, 7350, 7400, 7450, 7500,
-      ],
-      Fuel: [
-        3000, 2950, 2900, 2950, 3000, 3050, 3100, 3150, 3200, 3250, 3300, 3350,
-      ],
-      Labour: [
-        2200, 2150, 2100, 2150, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550,
-      ],
-      "Sub Contract": [
-        7500, 7400, 7300, 7400, 7450, 7500, 7550, 7600, 7650, 7700, 7750, 7800,
-      ],
-      "Machine Hire Charges": [
-        700, 680, 660, 680, 700, 720, 740, 760, 780, 800, 820, 840,
-      ],
-      "Repair & Maintenance": [
-        2500, 2400, 2300, 2400, 2450, 2500, 2550, 2600, 2650, 2700, 2750, 2800,
-      ],
-      "Employee Cost": [
-        5500, 5400, 5300, 5400, 5450, 5500, 5550, 5600, 5650, 5700, 5750, 5800,
-      ],
-      "Establishment Expenses": [
-        1300, 1280, 1260, 1280, 1300, 1320, 1340, 1360, 1380, 1400, 1420, 1440,
-      ],
-      Packing: [
-        2000, 1950, 1900, 1950, 2000, 2050, 2100, 2150, 2200, 2250, 2300, 2350,
-      ],
-      Freight: [
-        3500, 3450, 3400, 3450, 3500, 3550, 3600, 3650, 3700, 3750, 3800, 3850,
-      ],
-      "Raw Material": [
-        95000, 94000, 93000, 94000, 94500, 95000, 95500, 96000, 96500, 97000,
-        97500, 98000,
-      ],
+    // 🔹 Yahan har KPI ka offset % define kar do
+    const kpiOffsets = {
+      Consumables: 0.05, // 5% upar
+      Power: 0.05,
+      Fuel: 0.05,
+      Labour: 0.05,
+      "Sub Contract": 0.05,
+      "Machine Hire Charges": 0.05,
+      "Repair & Maintenance": 0.05,
+      "Employee Cost": 0.05,
+      "Establishment Expenses": 0.05,
+      Packing: 0.05,
+      Freight: 0.05,
+      "Raw Material": 0.05,
     };
 
-    const targetValuesForKpi =
-      kpiTargetValues[kpi.kpiName] ||
-      new Array(12).fill(kpi.budget_per_tonne * 100 || 1000);
-
-    const kpiTargetPercentages = {
-      Consumables: { 0: 2.2, 1: 1.94, 2: 1.94, 3: 1.94, 4: 1.94 },
-      Power: { 0: 4.24, 1: 4.24, 2: 4.24, 3: 4.24, 4: 4.24 },
-      Fuel: { 0: 1.62, 1: 1.62, 2: 1.62, 3: 1.62, 4: 1.62 },
-      Labour: { 0: 1.03, 1: 1.03, 2: 1.03, 3: 1.03, 4: 1.03 },
-      "Sub Contract": { 0: 3.8, 1: 3.8, 2: 3.8, 3: 3.8, 4: 3.8 },
-      "Machine Hire Charges": { 0: 0.4, 1: 0.4, 2: 0.4, 3: 0.4, 4: 0.4 },
-      "Repair & Maintenance": { 0: 0.92, 1: 0.92, 2: 0.92, 3: 0.92, 4: 0.92 },
-      "Employee Cost": { 0: 3.24, 1: 3.18, 2: 3.16, 3: 3.0, 4: 2.89 },
-      "Establishment Expenses": { 0: 0.87, 1: 0.81, 2: 0.79, 3: 0.74, 4: 0.79 },
-      Packing: { 0: 1.02, 1: 1.02, 2: 1.02, 3: 1.02, 4: 1.02 },
-      Freight: { 0: 2.55, 1: 2.55, 2: 2.55, 3: 2.55, 4: 2.55 },
-      "Raw Material": { 0: 59.6, 1: 59.6, 2: 59.6, 3: 59.6, 4: 59.6 },
-    };
-
-    const kpiPercentages = {
-      Consumables: {
-        0: 2.2,
-        1: 2.29,
-        2: 2.04,
-        3: 2.07,
-        4: 2.07,
-      },
-      Power: {
-        0: 4.47,
-        1: 4.24,
-        2: 4.5,
-        3: 4.45,
-        4: 5.36,
-      },
-      Fuel: {
-        0: 1.9,
-        1: 1.98,
-        2: 1.91,
-        3: 1.93,
-        4: 1.6,
-      },
-      Labour: {
-        0: 1.38,
-        1: 1.55,
-        2: 1.27,
-        3: 1.28,
-        4: 1.44,
-      },
-      "Sub Contract": {
-        0: 4.98,
-        1: 4.66,
-        2: 4.44,
-        3: 4.5,
-        4: 4.42,
-      },
-      "Machine Hire Charges": {
-        0: 0.38,
-        1: 0.3,
-        2: 0.54,
-        3: 0.36,
-        4: 0.4,
-      },
-      "Repair & Maintenance": {
-        0: 0.87,
-        1: 2.29,
-        2: 2.11,
-        3: 1.88,
-        4: 1.91,
-      },
-      "Employee Cost": {
-        0: 3.51,
-        1: 3.4,
-        2: 3.32,
-        3: 2.99,
-        4: 3.33,
-      },
-      "Establishment Expenses": {
-        0: 0.71,
-        1: 0.76,
-        2: 0.81,
-        3: 0.71,
-        4: 0.8,
-      },
-      Packing: {
-        0: 0.92,
-        1: 0.97,
-        2: 1.7,
-        3: 1.43,
-        4: 1.29,
-      },
-      Freight: {
-        0: 2.29,
-        1: 2.56,
-        2: 2.53,
-        3: 1.89,
-        4: 2.05,
-      },
-      "Raw Material": {
-        0: 59.55,
-        1: 59.4,
-        2: 61.71,
-        3: 60.25,
-        4: 58.79,
-      },
-    };
+    const offset = kpiOffsets[kpi.kpiName] ?? 0.05; // default 5%
 
     const historicalData = kpi.trend.map((value, index) => {
       let productionPercent = null;
-      let targetValue = targetValuesForKpi[index] || targetValuesForKpi[0]; // Fallback to first value
-
-      if (
-        kpiPercentages[kpi.kpiName] &&
-        kpiPercentages[kpi.kpiName].hasOwnProperty(index)
-      ) {
-        productionPercent = kpiPercentages[kpi.kpiName][index];
-      }
-
-      let productionTarget = null;
-      if (
-        kpiTargetPercentages[kpi.kpiName] &&
-        kpiTargetPercentages[kpi.kpiName].hasOwnProperty(index)
-      ) {
-        productionTarget = kpiTargetPercentages[kpi.kpiName][index];
-      }
+      let targetValue = value * (1 + offset); // ✅ dynamic target for all KPIs
 
       const isLastPoint = index === kpi.trend.length - 1;
 
@@ -1736,88 +1649,317 @@ const CostScreener = () => {
         month: monthNames[index] || `M${index + 1}`,
         actual: parseFloat(value.toFixed(2)),
         prediction: isLastPoint ? parseFloat(value.toFixed(2)) : null,
-        target: parseFloat(targetValue.toFixed(2)), // Ensure target is always a number
+        target: parseFloat(targetValue.toFixed(2)),
         productionPercent,
         productionPercentPredicted: isLastPoint ? productionPercent : null,
-        productionTarget,
+        productionTarget: null,
         isHistorical: true,
         isHighlighted: isLastPoint,
         variance: value - targetValue,
       };
     });
 
-    // Calculate trend-based predictions for both cost and percentage
+    // ---- Prediction data ----
     const lastValue = kpi.trend[kpi.trend.length - 1];
     const prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
     const costDirection = lastValue >= prevValue ? 1 : -1;
 
-    // For percentage, check the last two percentage values to determine trend
-    const lastPercent =
-      kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][4]
-        ? kpiPercentages[kpi.kpiName][4]
-        : null;
-    const prevPercent =
-      kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][3]
-        ? kpiPercentages[kpi.kpiName][3]
-        : null;
-
-    let percentDirection = 1; // default direction
-    if (lastPercent !== null && prevPercent !== null) {
-      percentDirection = lastPercent >= prevPercent ? 1 : -1;
-    }
-
-    const predictionData = [];
-
-    // 🔹 Bas ek hi prediction month add karna hai
-    const monthIndex = kpi.trend.length % 12; // next month ka index
-
+    const monthIndex = kpi.trend.length % 12;
     const stepChange =
       Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
+    const predictedValue = lastValue + costDirection * stepChange;
 
-    const predictedValue = lastValue + costDirection * stepChange * 1;
+    // ✅ Prediction target bhi dynamic
+    const predictionTarget = predictedValue * (1 + offset);
 
-    // Calculate percentage prediction based on its own trend
-    let productionPercentPredicted = null;
-    if (lastPercent !== null) {
-      // Use percentage trend to determine prediction
-      const percentChange =
-        prevPercent !== null
-          ? Math.abs(lastPercent - prevPercent) * 0.3
-          : lastPercent * 0.05;
-      productionPercentPredicted =
-        lastPercent + percentDirection * percentChange;
-      productionPercentPredicted = Math.max(0, productionPercentPredicted); // Ensure positive
-    } else if (kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][0]) {
-      // Fallback to base calculation
-      const basePercent = kpiPercentages[kpi.kpiName][0];
-      productionPercentPredicted = basePercent + percentDirection * 0.1 * 1;
-    }
-
-    predictionData.push({
-      month: monthNames[monthIndex] || `M${monthIndex + 1}`,
-      actual: null,
-      prediction: parseFloat(predictedValue.toFixed(2)),
-      target: parseFloat(
-        (targetValuesForKpi[monthIndex] ?? targetValuesForKpi[0]).toFixed(2)
-      ), // Add target for prediction month
-      targetForCheck: targetValuesForKpi[monthIndex] ?? targetValuesForKpi[0],
-      productionPercent: null,
-      productionPercentPredicted: productionPercentPredicted
-        ? parseFloat(productionPercentPredicted.toFixed(2))
-        : null,
-      productionTarget: null,
-      productionTargetForCheck:
-        (kpiTargetPercentages[kpi.kpiName] &&
-          (kpiTargetPercentages[kpi.kpiName][monthIndex] ??
-            kpiTargetPercentages[kpi.kpiName][0])) ||
-        null,
-      isHistorical: false,
-      isHighlighted: false,
-      variance: null,
-    });
+    const predictionData = [
+      {
+        month: monthNames[monthIndex] || `M${monthIndex + 1}`,
+        actual: null,
+        prediction: parseFloat(predictedValue.toFixed(2)),
+        target: parseFloat(predictionTarget.toFixed(2)),
+        targetForCheck: predictionTarget,
+        productionPercent: null,
+        productionPercentPredicted: null,
+        productionTarget: null,
+        productionTargetForCheck: null,
+        isHistorical: false,
+        isHighlighted: false,
+        variance: null,
+      },
+    ];
 
     return [...historicalData, ...predictionData];
   };
+
+  // const buildChartData = (kpi) => {
+  //   if (!kpi || !kpi.trend) return [];
+
+  //   const kpiTargetValues = {
+  //     Consumables: [
+  //       3500, 3400, 3300, 3400, 3450, 3500, 3550, 3600, 3650, 3700, 3750, 3800,
+  //     ],
+  //     Power: [
+  //       7200, 7100, 7000, 7100, 7150, 7200, 7250, 7300, 7350, 7400, 7450, 7500,
+  //     ],
+  //     Fuel: [
+  //       3000, 2950, 2900, 2950, 3000, 3050, 3100, 3150, 3200, 3250, 3300, 3350,
+  //     ],
+  //     Labour: [
+  //       2200, 2150, 2100, 2150, 2200, 2250, 2300, 2350, 2400, 2450, 2500, 2550,
+  //     ],
+  //     "Sub Contract": [
+  //       7500, 7400, 7300, 7400, 7450, 7500, 7550, 7600, 7650, 7700, 7750, 7800,
+  //     ],
+  //     "Machine Hire Charges": [
+  //       700, 680, 660, 680, 700, 720, 740, 760, 780, 800, 820, 840,
+  //     ],
+  //     "Repair & Maintenance": [
+  //       2500, 2400, 2300, 2400, 2450, 2500, 2550, 2600, 2650, 2700, 2750, 2800,
+  //     ],
+  //     "Employee Cost": [
+  //       5500, 5400, 5300, 5400, 5450, 5500, 5550, 5600, 5650, 5700, 5750, 5800,
+  //     ],
+  //     "Establishment Expenses": [
+  //       1300, 1280, 1260, 1280, 1300, 1320, 1340, 1360, 1380, 1400, 1420, 1440,
+  //     ],
+  //     Packing: [
+  //       2000, 1950, 1900, 1950, 2000, 2050, 2100, 2150, 2200, 2250, 2300, 2350,
+  //     ],
+  //     Freight: [
+  //       3500, 3450, 3400, 3450, 3500, 3550, 3600, 3650, 3700, 3750, 3800, 3850,
+  //     ],
+  //     "Raw Material": [
+  //       95000, 94000, 93000, 94000, 94500, 95000, 95500, 96000, 96500, 97000,
+  //       97500, 98000,
+  //     ],
+  //   };
+
+  //   // buildChartData ke andar target nikalte waqt
+  //   let targetValue;
+  //   if (kpi.kpiName === "Sub Contract" || kpi.kpiName === "Fuel") {
+  //     targetValue = value * 1.05; // actual se 5% upar rakho
+  //   } else {
+  //     targetValue = targetValuesForKpi[index] || targetValuesForKpi[0];
+  //   }
+
+  //   if (kpi.kpiName === "Fuel") {
+  //     targetValue = value * 1.05; // 5% higher than actual
+  //   }
+
+  //   const targetValuesForKpi =
+  //     kpiTargetValues[kpi.kpiName] ||
+  //     new Array(12).fill(kpi.budget_per_tonne * 100 || 1000);
+
+  //   const kpiTargetPercentages = {
+  //     Consumables: { 0: 2.2, 1: 1.94, 2: 1.94, 3: 1.94, 4: 1.94 },
+  //     Power: { 0: 4.24, 1: 4.24, 2: 4.24, 3: 4.24, 4: 4.24 },
+  //     Fuel: { 0: 1.62, 1: 1.62, 2: 1.62, 3: 1.62, 4: 1.62 },
+  //     Labour: { 0: 1.03, 1: 1.03, 2: 1.03, 3: 1.03, 4: 1.03 },
+  //     "Sub Contract": { 0: 3.8, 1: 3.8, 2: 3.8, 3: 3.8, 4: 3.8 },
+  //     "Machine Hire Charges": { 0: 0.4, 1: 0.4, 2: 0.4, 3: 0.4, 4: 0.4 },
+  //     "Repair & Maintenance": { 0: 0.92, 1: 0.92, 2: 0.92, 3: 0.92, 4: 0.92 },
+  //     "Employee Cost": { 0: 3.24, 1: 3.18, 2: 3.16, 3: 3.0, 4: 2.89 },
+  //     "Establishment Expenses": { 0: 0.87, 1: 0.81, 2: 0.79, 3: 0.74, 4: 0.79 },
+  //     Packing: { 0: 1.02, 1: 1.02, 2: 1.02, 3: 1.02, 4: 1.02 },
+  //     Freight: { 0: 2.55, 1: 2.55, 2: 2.55, 3: 2.55, 4: 2.55 },
+  //     "Raw Material": { 0: 59.6, 1: 59.6, 2: 59.6, 3: 59.6, 4: 59.6 },
+  //   };
+
+  //   const kpiPercentages = {
+  //     Consumables: {
+  //       0: 2.2,
+  //       1: 2.29,
+  //       2: 2.04,
+  //       3: 2.07,
+  //       4: 2.07,
+  //     },
+  //     Power: {
+  //       0: 4.47,
+  //       1: 4.24,
+  //       2: 4.5,
+  //       3: 4.45,
+  //       4: 5.36,
+  //     },
+  //     Fuel: {
+  //       0: 1.9,
+  //       1: 1.98,
+  //       2: 1.91,
+  //       3: 1.93,
+  //       4: 1.6,
+  //     },
+  //     Labour: {
+  //       0: 1.38,
+  //       1: 1.55,
+  //       2: 1.27,
+  //       3: 1.28,
+  //       4: 1.44,
+  //     },
+  //     "Sub Contract": {
+  //       0: 4.98,
+  //       1: 4.66,
+  //       2: 4.44,
+  //       3: 4.5,
+  //       4: 4.42,
+  //     },
+  //     "Machine Hire Charges": {
+  //       0: 0.38,
+  //       1: 0.3,
+  //       2: 0.54,
+  //       3: 0.36,
+  //       4: 0.4,
+  //     },
+  //     "Repair & Maintenance": {
+  //       0: 0.87,
+  //       1: 2.29,
+  //       2: 2.11,
+  //       3: 1.88,
+  //       4: 1.91,
+  //     },
+  //     "Employee Cost": {
+  //       0: 3.51,
+  //       1: 3.4,
+  //       2: 3.32,
+  //       3: 2.99,
+  //       4: 3.33,
+  //     },
+  //     "Establishment Expenses": {
+  //       0: 0.71,
+  //       1: 0.76,
+  //       2: 0.81,
+  //       3: 0.71,
+  //       4: 0.8,
+  //     },
+  //     Packing: {
+  //       0: 0.92,
+  //       1: 0.97,
+  //       2: 1.7,
+  //       3: 1.43,
+  //       4: 1.29,
+  //     },
+  //     Freight: {
+  //       0: 2.29,
+  //       1: 2.56,
+  //       2: 2.53,
+  //       3: 1.89,
+  //       4: 2.05,
+  //     },
+  //     "Raw Material": {
+  //       0: 59.55,
+  //       1: 59.4,
+  //       2: 61.71,
+  //       3: 60.25,
+  //       4: 58.79,
+  //     },
+  //   };
+
+  //   const historicalData = kpi.trend.map((value, index) => {
+  //     let productionPercent = null;
+  //     let targetValue = targetValuesForKpi[index] || targetValuesForKpi[0]; // Fallback to first value
+
+  //     if (
+  //       kpiPercentages[kpi.kpiName] &&
+  //       kpiPercentages[kpi.kpiName].hasOwnProperty(index)
+  //     ) {
+  //       productionPercent = kpiPercentages[kpi.kpiName][index];
+  //     }
+
+  //     let productionTarget = null;
+  //     if (
+  //       kpiTargetPercentages[kpi.kpiName] &&
+  //       kpiTargetPercentages[kpi.kpiName].hasOwnProperty(index)
+  //     ) {
+  //       productionTarget = kpiTargetPercentages[kpi.kpiName][index];
+  //     }
+
+  //     const isLastPoint = index === kpi.trend.length - 1;
+
+  //     return {
+  //       month: monthNames[index] || `M${index + 1}`,
+  //       actual: parseFloat(value.toFixed(2)),
+  //       prediction: isLastPoint ? parseFloat(value.toFixed(2)) : null,
+  //       target: parseFloat(targetValue.toFixed(2)), // Ensure target is always a number
+  //       productionPercent,
+  //       productionPercentPredicted: isLastPoint ? productionPercent : null,
+  //       productionTarget,
+  //       isHistorical: true,
+  //       isHighlighted: isLastPoint,
+  //       variance: value - targetValue,
+  //     };
+  //   });
+
+  //   // Calculate trend-based predictions for both cost and percentage
+  //   const lastValue = kpi.trend[kpi.trend.length - 1];
+  //   const prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
+  //   const costDirection = lastValue >= prevValue ? 1 : -1;
+
+  //   // For percentage, check the last two percentage values to determine trend
+  //   const lastPercent =
+  //     kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][4]
+  //       ? kpiPercentages[kpi.kpiName][4]
+  //       : null;
+  //   const prevPercent =
+  //     kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][3]
+  //       ? kpiPercentages[kpi.kpiName][3]
+  //       : null;
+
+  //   let percentDirection = 1; // default direction
+  //   if (lastPercent !== null && prevPercent !== null) {
+  //     percentDirection = lastPercent >= prevPercent ? 1 : -1;
+  //   }
+
+  //   const predictionData = [];
+
+  //   // 🔹 Bas ek hi prediction month add karna hai
+  //   const monthIndex = kpi.trend.length % 12; // next month ka index
+
+  //   const stepChange =
+  //     Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
+
+  //   const predictedValue = lastValue + costDirection * stepChange * 1;
+
+  //   // Calculate percentage prediction based on its own trend
+  //   let productionPercentPredicted = null;
+  //   if (lastPercent !== null) {
+  //     // Use percentage trend to determine prediction
+  //     const percentChange =
+  //       prevPercent !== null
+  //         ? Math.abs(lastPercent - prevPercent) * 0.3
+  //         : lastPercent * 0.05;
+  //     productionPercentPredicted =
+  //       lastPercent + percentDirection * percentChange;
+  //     productionPercentPredicted = Math.max(0, productionPercentPredicted); // Ensure positive
+  //   } else if (kpiPercentages[kpi.kpiName] && kpiPercentages[kpi.kpiName][0]) {
+  //     // Fallback to base calculation
+  //     const basePercent = kpiPercentages[kpi.kpiName][0];
+  //     productionPercentPredicted = basePercent + percentDirection * 0.1 * 1;
+  //   }
+
+  //   predictionData.push({
+  //     month: monthNames[monthIndex] || `M${monthIndex + 1}`,
+  //     actual: null,
+  //     prediction: parseFloat(predictedValue.toFixed(2)),
+  //     target: parseFloat(
+  //       (targetValuesForKpi[monthIndex] ?? targetValuesForKpi[0]).toFixed(2)
+  //     ), // Add target for prediction month
+  //     targetForCheck: targetValuesForKpi[monthIndex] ?? targetValuesForKpi[0],
+  //     productionPercent: null,
+  //     productionPercentPredicted: productionPercentPredicted
+  //       ? parseFloat(productionPercentPredicted.toFixed(2))
+  //       : null,
+  //     productionTarget: null,
+  //     productionTargetForCheck:
+  //       (kpiTargetPercentages[kpi.kpiName] &&
+  //         (kpiTargetPercentages[kpi.kpiName][monthIndex] ??
+  //           kpiTargetPercentages[kpi.kpiName][0])) ||
+  //       null,
+  //     isHistorical: false,
+  //     isHighlighted: false,
+  //     variance: null,
+  //   });
+
+  //   return [...historicalData, ...predictionData];
+  // };
 
   const renderCardsView = () => {
     const data = getCurrentData();
@@ -1899,10 +2041,12 @@ const CostScreener = () => {
                     </div>
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
                       <div
-                        className={`flex items-center gap-1 text-sm font-extrabold px-3 py-1.5 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 ${
-                          kpi.actual_per_tonne <= kpi.budget_per_tonne
-                            ? "bg-red-100 text-red-700 border border-red-300 shadow-sm shadow-red-400/30 animate-pulse"
-                            : "bg-green-100 text-green-700 border border-green-300 shadow-sm shadow-green-400/30"
+                        className={`flex items-center gap-1 text-sm font-extrabold transition-all duration-300 ${
+                          kpi.actual_per_tonne && kpi.budget_per_tonne
+                            ? kpi.actual_per_tonne <= kpi.budget_per_tonne
+                              ? "text-red-700"
+                              : "text-green-700"
+                            : "text-gray-500"
                         }`}
                       >
                         {kpi.actual_per_tonne <= kpi.budget_per_tonne ? (
@@ -1919,7 +2063,6 @@ const CostScreener = () => {
                             <span className="text-base font-black tracking-wide">
                               {Math.abs(kpi.ytdChange).toFixed(1)}%
                             </span>
-
                             <Check className="w-3 h-3" />
                           </>
                         )}
@@ -2551,6 +2694,48 @@ const CostScreener = () => {
     <div
       className={`w-full mx-auto p-4 min-h-screen transition-all duration-500 ${currentTheme.mainBg}`}
     >
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setSelectedLocation("Ranjangaon")}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            selectedLocation === "Ranjangaon"
+              ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+              : `bg-gray-100 ${currentTheme.secondaryText}`
+          }`}
+        >
+          Ranjangaon
+        </button>
+        <button
+          onClick={() => setSelectedLocation("Mundhwa")}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            selectedLocation === "Mundhwa"
+              ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+              : `bg-gray-100 ${currentTheme.secondaryText}`
+          }`}
+        >
+          Mundhwa
+        </button>
+        <button
+          onClick={() => setSelectedLocation("Ranjangaon-2")}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            selectedLocation === "Ranjangaon-2"
+              ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+              : `bg-gray-100 ${currentTheme.secondaryText}`
+          }`}
+        >
+          Ranjangaon-2
+        </button>
+        <button
+          onClick={() => setSelectedLocation("Baramati")}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            selectedLocation === "Baramati"
+              ? `${currentTheme.buttonBg} ${currentTheme.primaryText} font-bold`
+              : `bg-gray-100 ${currentTheme.secondaryText}`
+          }`}
+        >
+          Baramati
+        </button>
+      </div>
       <NotificationPanel data={getCurrentData()} theme={currentTheme} />
       <div>
         {showCombinedView && renderCombinedChart()}
