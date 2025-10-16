@@ -1,10 +1,4 @@
 import React, { useState } from "react";
-import {
-  CheckCircle,
-  AlertCircle,
-  Target,
-  TrendingUp as TrendIcon,
-} from "lucide-react";
 import RawMaterialCostChart from "./RawMaterialCostChart";
 import CostScreener from "./costscreener";
 
