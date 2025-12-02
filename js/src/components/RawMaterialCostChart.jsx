@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CleanPlantCostChart = ({ mode }) => {
+const RawMaterialCostChart = ({ mode }) => {
   // 🔹 Machining Data (sirf required plants)
   const dataMachining = [
     {
@@ -770,4 +770,4 @@ const CleanPlantCostChart = ({ mode }) => {
   );
 };
 
-export default CleanPlantCostChart;
+export default RawMaterialCostChart

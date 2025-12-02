@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { SinglePage, PageFrame } from "cs-web-components-base";
+// import { SinglePage, PageFrame } from "cs-web-components-base";
 import Dashboard from "../components/Dashboard";
 
 export default class MainComponent extends React.Component {
