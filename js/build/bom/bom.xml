@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bom xmlns="http://cyclonedx.org/schema/bom/1.4" version="1" serialNumber="urn:uuid:36c74bea-8d4a-44e5-9993-7450eabe693b">
+<bom xmlns="http://cyclonedx.org/schema/bom/1.4" version="1" serialNumber="urn:uuid:83bc94a6-d637-4967-b811-d3a8e09f1d20">
   <metadata>
-    <timestamp>2025-11-28T06:06:02.489Z</timestamp>
+    <timestamp>2026-01-01T08:07:08.694Z</timestamp>
     <tools>
       <tool>
         <vendor>@cyclonedx</vendor>
@@ -80,6 +80,32 @@
         </reference>
       </externalReferences>
     </component>
+    <component type="library" bom-ref="pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react">
+      <author>Eric Fennis</author>
+      <name>lucide-react</name>
+      <version>0.555.0</version>
+      <description>A Lucide icon library package for React applications.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/lucide-icons/lucide.git#packages/lucide-react</url>
+          <comment>as detected from PackageJson property "repository.url" and "repository.directory"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://lucide.dev</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/lucide-icons/lucide/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
     <component type="library" bom-ref="pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git">
       <author>Tobias Koppers @sokra</author>
       <name>css-loader</name>
@@ -106,13 +132,842 @@
         </reference>
       </externalReferences>
     </component>
+    <component type="library" bom-ref="pkg:npm/zustand@5.0.9?vcs_url=git%2Bhttps%3A//github.com/pmndrs/zustand.git">
+      <author>Paul Henschel</author>
+      <name>zustand</name>
+      <version>5.0.9</version>
+      <description>🐻 Bear necessities for state management in React</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/zustand@5.0.9?vcs_url=git%2Bhttps%3A//github.com/pmndrs/zustand.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/pmndrs/zustand.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/pmndrs/zustand</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/pmndrs/zustand/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/recharts@3.6.0?vcs_url=git%2Bhttps%3A//github.com/recharts/recharts.git">
+      <author>recharts group</author>
+      <name>recharts</name>
+      <version>3.6.0</version>
+      <description>React charts</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/recharts@3.6.0?vcs_url=git%2Bhttps%3A//github.com/recharts/recharts.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/recharts/recharts.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/recharts/recharts</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/recharts/recharts/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git">
+      <name>es-toolkit</name>
+      <version>1.43.0</version>
+      <description>A state-of-the-art, high-performance JavaScript utility library with a small bundle size and strong type annotations.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/toss/es-toolkit.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://es-toolkit.dev</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/toss/es-toolkit/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git">
+      <author>Formidable</author>
+      <name>victory-vendor</name>
+      <version>37.3.6</version>
+      <description>Vendored dependencies for Victory</description>
+      <licenses>
+        <license>
+          <name>MIT AND ISC</name>
+        </license>
+      </licenses>
+      <purl>pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/FormidableLabs/victory.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://commerce.nearform.com/open-source/victory</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/FormidableLabs/victory/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/clsx@2.1.1?vcs_url=git%2Bhttps%3A//github.com/lukeed/clsx.git">
+      <author>Luke Edwards</author>
+      <name>clsx</name>
+      <version>2.1.1</version>
+      <description>A tiny (239B) utility for constructing className strings conditionally.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/clsx@2.1.1?vcs_url=git%2Bhttps%3A//github.com/lukeed/clsx.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/lukeed/clsx.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/lukeed/clsx#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/lukeed/clsx/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git">
+      <author>Michael Mclaughlin</author>
+      <name>decimal.js-light</name>
+      <version>2.5.1</version>
+      <description>An arbitrary-precision Decimal type for JavaScript.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/MikeMcl/decimal.js-light.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/MikeMcl/decimal.js-light#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/MikeMcl/decimal.js-light/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store">
+      <name>use-sync-external-store</name>
+      <version>1.6.0</version>
+      <description>Backwards compatible shim for React's useSyncExternalStore. Works with any React that supports hooks.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/facebook/react.git#packages/use-sync-external-store</url>
+          <comment>as detected from PackageJson property "repository.url" and "repository.directory"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/facebook/react#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/facebook/react/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git">
+      <author>Michel Weststrate</author>
+      <name>immer</name>
+      <version>10.2.0</version>
+      <description>Create your next immutable state by mutating the current one</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/immerjs/immer.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/immerjs/immer#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/immerjs/immer/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git">
+      <name>reselect</name>
+      <version>5.1.1</version>
+      <description>Selectors for Redux.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/reduxjs/reselect.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/reduxjs/reselect#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/reduxjs/reselect/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git">
+      <author>Mark Erikson</author>
+      <group>@reduxjs</group>
+      <name>toolkit</name>
+      <version>2.11.2</version>
+      <description>The official, opinionated, batteries-included toolset for efficient Redux development</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/reduxjs/redux-toolkit.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://redux-toolkit.js.org</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/reduxjs/redux-toolkit/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is">
+      <name>react-is</name>
+      <version>16.13.1</version>
+      <description>Brand checking of React Elements.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/facebook/react.git#packages/react-is</url>
+          <comment>as detected from PackageJson property "repository.url" and "repository.directory"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://reactjs.org/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/facebook/react/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git">
+      <author>Dan Abramov</author>
+      <name>react-redux</name>
+      <version>9.2.0</version>
+      <description>Official React bindings for Redux</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/reduxjs/react-redux.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/reduxjs/react-redux</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/reduxjs/react-redux/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-shape@3.2.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-shape.git">
+      <author>Mike Bostock</author>
+      <name>d3-shape</name>
+      <version>3.2.0</version>
+      <description>Graphical primitives for visualization, such as lines and areas.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-shape@3.2.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-shape.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-shape.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-shape/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-shape/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git">
+      <author>Mike Bostock</author>
+      <name>d3-scale</name>
+      <version>4.0.2</version>
+      <description>Encodings that map abstract data to visual representation.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-scale.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-scale/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-scale/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git">
+      <author>Arnout Kazemier</author>
+      <name>eventemitter3</name>
+      <version>5.0.1</version>
+      <description>EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git://github.com/primus/eventemitter3.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/primus/eventemitter3#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/primus/eventemitter3/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git">
+      <author>Michel Weststrate</author>
+      <name>immer</name>
+      <version>11.1.3</version>
+      <description>Create your next immutable state by mutating the current one</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/immerjs/immer.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/immerjs/immer#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/immerjs/immer/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git">
+      <author>Dan Abramov</author>
+      <name>redux-thunk</name>
+      <version>3.1.0</version>
+      <description>Thunk middleware for Redux.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/reduxjs/redux-thunk.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/reduxjs/redux-thunk</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/reduxjs/redux-thunk/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git">
+      <name>redux</name>
+      <version>5.0.1</version>
+      <description>Predictable state container for JavaScript apps</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/reduxjs/redux.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>http://redux.js.org</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/reduxjs/redux/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git">
+      <author>Mike Bostock</author>
+      <name>d3-array</name>
+      <version>3.2.4</version>
+      <description>Array manipulation, ordering, searching, summarizing, etc.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-array.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-array/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-array/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git">
+      <author>Mike Bostock</author>
+      <name>d3-time</name>
+      <version>3.1.0</version>
+      <description>A calculator for humanity’s peculiar conventions of time.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-time.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-time/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-time/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
+      <author>Mike Bostock</author>
+      <name>d3-time-format</name>
+      <version>4.1.0</version>
+      <description>A JavaScript time formatter and parser inspired by strftime and strptime.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-time-format.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-time-format/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-time-format/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git">
+      <author>Mike Bostock</author>
+      <name>d3-interpolate</name>
+      <version>3.0.1</version>
+      <description>Interpolate numbers, colors, strings, arrays, objects, whatever!</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-interpolate.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-interpolate/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-interpolate/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git">
+      <author>Mike Bostock</author>
+      <name>d3-format</name>
+      <version>3.1.0</version>
+      <description>Format numbers for human consumption.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-format.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-format/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-format/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
+      <author>Feross Aboukhadijeh</author>
+      <name>buffer</name>
+      <version>5.7.1</version>
+      <description>Node.js Buffer API, for the browser</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git://github.com/feross/buffer.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/feross/buffer</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/feross/buffer/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git">
+      <author>Mike Bostock</author>
+      <name>d3-path</name>
+      <version>3.1.0</version>
+      <description>Serialize Canvas path commands to SVG.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-path.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-path/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-path/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git">
+      <author>Mike Bostock</author>
+      <name>internmap</name>
+      <version>2.0.3</version>
+      <description>Map and Set with automatic key interning</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/mbostock/internmap.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/mbostock/internmap/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/mbostock/internmap/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git">
+      <author>Feross Aboukhadijeh</author>
+      <name>ieee754</name>
+      <version>1.2.1</version>
+      <description>Read/write IEEE754 floating point numbers from/to a Buffer or array-like object</description>
+      <licenses>
+        <license>
+          <id>BSD-3-Clause</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git://github.com/feross/ieee754.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/feross/ieee754#readme</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/feross/ieee754/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git">
+      <author>T. Jameson Little</author>
+      <name>base64-js</name>
+      <version>1.5.1</version>
+      <description>Base64 encoding/decoding in pure JS</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git://github.com/beatgammit/base64-js.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/beatgammit/base64-js</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/beatgammit/base64-js/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git">
+      <author>Mike Bostock</author>
+      <name>d3-color</name>
+      <version>3.1.0</version>
+      <description>Color spaces! RGB, HSL, Cubehelix, Lab and HCL (Lch).</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-color.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-color/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-color/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
   </components>
   <dependencies>
     <dependency ref="pkg:npm/cost-screener-backend@1.0.0">
+      <dependency ref="pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react"/>
       <dependency ref="pkg:npm/style-loader@3.3.2?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/style-loader.git"/>
       <dependency ref="pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git"/>
+      <dependency ref="pkg:npm/zustand@5.0.9?vcs_url=git%2Bhttps%3A//github.com/pmndrs/zustand.git"/>
+      <dependency ref="pkg:npm/recharts@3.6.0?vcs_url=git%2Bhttps%3A//github.com/recharts/recharts.git"/>
     </dependency>
     <dependency ref="pkg:npm/style-loader@3.3.2?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/style-loader.git"/>
+    <dependency ref="pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react"/>
     <dependency ref="pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git"/>
+    <dependency ref="pkg:npm/zustand@5.0.9?vcs_url=git%2Bhttps%3A//github.com/pmndrs/zustand.git"/>
+    <dependency ref="pkg:npm/recharts@3.6.0?vcs_url=git%2Bhttps%3A//github.com/recharts/recharts.git">
+      <dependency ref="pkg:npm/clsx@2.1.1?vcs_url=git%2Bhttps%3A//github.com/lukeed/clsx.git"/>
+      <dependency ref="pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git"/>
+      <dependency ref="pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git"/>
+      <dependency ref="pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git"/>
+      <dependency ref="pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git"/>
+      <dependency ref="pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
+      <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
+      <dependency ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
+      <dependency ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"/>
+      <dependency ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"/>
+      <dependency ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git"/>
+      <dependency ref="pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"/>
+      <dependency ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git">
+      <dependency ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git">
+      <dependency ref="pkg:npm/d3-shape@3.2.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-shape.git"/>
+      <dependency ref="pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/clsx@2.1.1?vcs_url=git%2Bhttps%3A//github.com/lukeed/clsx.git"/>
+    <dependency ref="pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git"/>
+    <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
+    <dependency ref="pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
+    <dependency ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"/>
+    <dependency ref="pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git">
+      <dependency ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"/>
+      <dependency ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
+      <dependency ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"/>
+      <dependency ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"/>
+    <dependency ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git">
+      <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-shape@3.2.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-shape.git">
+      <dependency ref="pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git">
+      <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git"/>
+      <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
+      <dependency ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"/>
+      <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"/>
+      <dependency ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git"/>
+      <dependency ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"/>
+    <dependency ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
+    <dependency ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"/>
+    <dependency ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"/>
+    <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git">
+      <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git">
+      <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
+      <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git">
+      <dependency ref="pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"/>
+    <dependency ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
+      <dependency ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"/>
+      <dependency ref="pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git"/>
+    <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
+    <dependency ref="pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"/>
+    <dependency ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"/>
+    <dependency ref="pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"/>
   </dependencies>
 </bom>

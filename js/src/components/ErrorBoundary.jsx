@@ -1,0 +1,28 @@
+class ErrorBoundary extends React.Component {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-6 bg-red-50 rounded-lg">
+          <h2 className="text-red-800 font-bold">Something went wrong</h2>
+          <p className="text-red-600">{this.state.error?.message}</p>
+          <button 
+            onClick={() => this.setState({ hasError: false })}
+            className="mt-2 px-4 py-2 bg-red-600 text-white rounded"
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;

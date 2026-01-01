@@ -3,10 +3,13 @@ import {prefixNS} from './helpers';
 import reducer from './reducers/reducers';
 import MainComponent from './containers/MainComponent';
 import './output.css';
+import Entryform from './containers/Entryform';
 
+Registry.registerComponent(prefixNS('Entryform'), Entryform);
 Registry.registerComponent(prefixNS('MainComponent'), MainComponent);
 Registry.registerReducer(prefixNS('reducer'), reducer);
 
 export default {
-    MainComponent
+    MainComponent,
+    Entryform
 };
