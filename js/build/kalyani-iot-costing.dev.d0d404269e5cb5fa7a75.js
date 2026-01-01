@@ -35238,7 +35238,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-// Apne CostScreener.jsx mein simply import karein
 
 
 
@@ -35600,7 +35599,6 @@ var iconMap = {
   "Repair & Maintenance": lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"],
   "Employee Cost": lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"],
   "Establishment Expenses": lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"],
-  // ⭐ Change from "Establishment Exp"
   Packing: lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"],
   Freight: lucide_react__WEBPACK_IMPORTED_MODULE_14__["default"],
   "Raw Material": lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"]
@@ -35732,9 +35730,6 @@ var CostScreener = function CostScreener() {
   var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
     return state.apiLoading;
   });
-  var kpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
-    return state.kpiTargets;
-  }); // ⭐ ADD THIS
   var apiError = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
     return state.apiError;
   });
@@ -35764,6 +35759,17 @@ var CostScreener = function CostScreener() {
   });
   var setCurrentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
     return state.setCurrentPeriodMonth;
+  });
+
+  // ⭐⭐⭐ ADD THESE THREE NEW LINES ⭐⭐⭐
+  var kpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+    return state.kpiTargets;
+  });
+  var targetLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+    return state.targetLoading;
+  });
+  var fetchKpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+    return state.fetchKpiTargets;
   });
 
   // Local States
@@ -35802,6 +35808,12 @@ var CostScreener = function CostScreener() {
   var cardRefs = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({});
   var themeSelectorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var currentTheme = themes[selectedTheme];
+
+  // ⭐⭐⭐ NEW: Fetch targets when filters change ⭐⭐⭐
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    console.log("🔄 Filters changed, fetching KPI targets...");
+    fetchKpiTargets();
+  }, [viewType, selectedLocation, currentYear, monthRange.from, monthRange.to, fetchKpiTargets]);
   var handleLocationSelect = /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(locationName) {
       var _useCostStore$getStat, monthRange, currentYear, viewType;
@@ -35944,26 +35956,6 @@ var CostScreener = function CostScreener() {
       capacity: "82%"
     }]
   };
-
-  // useEffect(() => {
-  //   console.log("🚀 Component Mounted - Initializing");
-
-  //   const today = new Date();
-  //   const currentMonth = today.getMonth() + 1;
-
-  //   setCurrentPeriodMonth(currentMonth);
-
-  //   let to = currentMonth;
-  //   let from = currentMonth - 5;
-
-  //   if (from < 1) {
-  //     from = 1;
-  //     to = 6;
-  //   }
-
-  //   fetchCostData(from, to, currentYear, viewType);
-  // }, []);
-
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     console.log("🚀 Component Mounted - Initializing");
     var today = new Date();
@@ -36153,45 +36145,40 @@ var CostScreener = function CostScreener() {
     return [];
   };
 
-  // Build Chart Data for Individual KPI Card with specific current month
-  var buildChartData = function buildChartData(kpi, cardCurrentMonth) {
-    var _kpi$target_percentag, _historicalData, _kpi$production_perce2;
-    if (!kpi || !kpi.trend) return [];
-    var avgTrendValue = kpi.trend.reduce(function (a, b) {
-      return a + b;
-    }, 0) / kpi.trend.length;
+  // ⭐⭐⭐ UPDATED: Build Chart Data with Target Support ⭐⭐⭐
+  var buildChartData = function buildChartData(kpi, currentMonthToUse) {
+    var _historicalData, _kpi$production_perce2;
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    // ⭐ USE TARGET FROM STORE IF AVAILABLE
-    var targetFromStore = kpiTargets[kpi.kpiName];
-    var targetValue = targetFromStore && targetFromStore > 0 ? targetFromStore // Use stored target
-    : kpi.budget_per_tonne && kpi.actual_per_tonne ? avgTrendValue * (kpi.budget_per_tonne / kpi.actual_per_tonne) : (avgTrendValue || 0) * 1.05; // Fallback
-
-    console.log("\uD83C\uDFAF Target for ".concat(kpi.kpiName, ":"), {
-      fromStore: targetFromStore,
-      used: targetValue
-    });
-    var avgTargetPercent = ((_kpi$target_percentag = kpi.target_percentage) === null || _kpi$target_percentag === void 0 ? void 0 : _kpi$target_percentag.length) > 0 ? kpi.target_percentage.reduce(function (a, b) {
+    // ⭐ Get target for this specific KPI
+    var normalizedKpiName = kpi.kpiName;
+    var targetValue = kpiTargets[normalizedKpiName] || null;
+    console.log("\uD83C\uDFAF Building chart for: ".concat(normalizedKpiName));
+    console.log("\uD83D\uDCCA Target value: ".concat(targetValue ? "\u20B9".concat(targetValue) : "NOT FOUND"));
+    var avgTargetPercent = kpi.production_percentage && kpi.production_percentage.length > 0 ? kpi.production_percentage.reduce(function (a, b) {
       return a + b;
-    }, 0) / kpi.target_percentage.length : null;
+    }, 0) / kpi.production_percentage.length : null;
     var historicalData = kpi.trend.map(function (value, index) {
       var _kpi$production_perce;
-      var actualMonthNo = kpi.months ? kpi.months[index] : monthRange.from + index;
+      var actualMonthNo = (monthRange.from + index - 1) % 12 || 12;
       var monthIndex = (actualMonthNo - 1) % 12;
-      var isCurrentMonth = actualMonthNo === cardCurrentMonth;
+      var isCurrentMonth = actualMonthNo === currentMonthToUse;
       return {
         month: monthNames[monthIndex] || "M".concat(index + 1),
         monthNo: actualMonthNo,
         actual: parseFloat(value.toFixed(2)),
         prediction: null,
         target: targetValue,
+        // ⭐ ADD TARGET
         productionPercentPredicted: null,
         productionPercent: ((_kpi$production_perce = kpi.production_percentage) === null || _kpi$production_perce === void 0 ? void 0 : _kpi$production_perce[index]) || null,
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: value - targetValue
+        variance: targetValue ? value - targetValue : 0 // ⭐ VARIANCE
       };
     });
+
     var lastValue = kpi.trend[kpi.trend.length - 1];
     var prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
     var costDirection = lastValue >= prevValue ? 1 : -1;
@@ -36208,6 +36195,7 @@ var CostScreener = function CostScreener() {
       actual: null,
       prediction: parseFloat(predictedValue.toFixed(2)),
       target: targetValue,
+      // ⭐ ADD TARGET
       targetForCheck: null,
       productionPercent: null,
       productionPercentPredicted: lastPercent,
@@ -36215,8 +36203,10 @@ var CostScreener = function CostScreener() {
       productionTargetForCheck: avgTargetPercent,
       isHistorical: false,
       isHighlighted: false,
-      variance: predictedValue - targetValue
+      variance: targetValue ? predictedValue - targetValue : 0 // ⭐ VARIANCE
     }];
+
+    console.log("\u2705 Chart data built: ".concat(historicalData.length + 1, " points with target: ").concat(targetValue));
     return [].concat(_toConsumableArray(historicalData), predictionData);
   };
 
@@ -36303,15 +36293,14 @@ var CostScreener = function CostScreener() {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "fixed top-4 right-4 z-50 flex items-center gap-3"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-      onClick: openPowerForm // 👈 Yahan click pe navigate hoga
-      ,
+      onClick: openPowerForm,
       className: "p-3 rounded-full ".concat(currentTheme.cardBg, " ").concat(currentTheme.border, " border ").concat(currentTheme.shadow, " transition-all duration-300 hover:scale-110 group relative overflow-hidden"),
       title: "Machine Power Unit Entry"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "absolute inset-0 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
       className: "w-6 h-6 relative z-10 text-blue-600"
-    }), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "relative",
       ref: themeSelectorRef
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
@@ -36624,19 +36613,28 @@ var CostScreener = function CostScreener() {
         })
       }), function () {
         var targetForKpi = kpiTargets[kpi.kpiName];
-        return targetForKpi && targetForKpi > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_24__.ReferenceLine, {
+        console.log("\uD83C\uDFA8 Rendering chart: ".concat(kpi.kpiName, ", Target: ").concat(targetForKpi));
+        if (!targetForKpi || targetForKpi <= 0) {
+          console.warn("\u26A0\uFE0F No target line for ".concat(kpi.kpiName, " (value: ").concat(targetForKpi, ")"));
+          return null;
+        }
+        console.log("\u2705 Drawing ORANGE target line for ".concat(kpi.kpiName, " at \u20B9").concat(targetForKpi));
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_24__.ReferenceLine, {
           y: targetForKpi,
-          stroke: "#ef4444",
-          strokeWidth: 2,
+          stroke: "#ff8c00" // ⭐ ORANGE COLOR
+          ,
+          strokeWidth: 2.5,
           strokeDasharray: "5 5",
           label: {
             value: "Target: \u20B9".concat(Math.round(targetForKpi).toLocaleString()),
             position: "right",
-            fill: "#ef4444",
-            fontSize: 11,
-            fontWeight: "bold"
+            fill: "#ff8c00",
+            // ⭐ ORANGE COLOR
+            fontSize: 12,
+            fontWeight: "bold",
+            offset: 10
           }
-        }) : null;
+        });
       }(), highlightIndex >= 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_30__.ReferenceArea, {
         x1: (_chartData$Math$max = chartData[Math.max(0, highlightIndex - 0.4)]) === null || _chartData$Math$max === void 0 ? void 0 : _chartData$Math$max.month,
         x2: (_chartData$Math$min = chartData[Math.min(chartData.length - 1, highlightIndex + 0.4)]) === null || _chartData$Math$min === void 0 ? void 0 : _chartData$Math$min.month,
@@ -36793,21 +36791,14 @@ var CostScreener = function CostScreener() {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               setSelectedCategory(category);
-
-              // ⭐ FIX: Reset location - don't set first location
-              // When category changes, we want ALL PLANTS, not specific plant
               if (category === "All") {
-                setSelectedLocation(null); // or "All"
+                setSelectedLocation(null);
               } else {
-                // Forging या Machining selected - still show all plants initially
-                setSelectedLocation(null); // ⭐ KEY CHANGE
+                setSelectedLocation(null);
               }
-
-              // ⭐ IMPORTANT: Set viewType to production (not sale)
               _useCostStore$getStat2 = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState(), monthRange = _useCostStore$getStat2.monthRange, currentYear = _useCostStore$getStat2.currentYear;
               _context3.next = 5;
-              return fetchCostData(monthRange.from, monthRange.to, currentYear, "production" // ⭐ Hardcode to production for category selection
-              );
+              return fetchCostData(monthRange.from, monthRange.to, currentYear, "production");
             case 5:
             case "end":
               return _context3.stop();
@@ -37110,9 +37101,7 @@ var KPI_NAME_MAPPING = {
   "machine hire charges": "Machine Hire Charges",
   "Machine Hire Charges": "Machine Hire Charges",
   "Establishment Exp": "Establishment Expenses",
-  // Frontend → API
   "Establishment Expenses": "Establishment Expenses",
-  // API → API (identity)
   "establishment expenses": "Establishment Expenses",
   "eastablishment expenses": "Establishment Expenses",
   // Packing
@@ -37124,7 +37113,7 @@ var KPI_NAME_MAPPING = {
   "Raw Material": "Raw Material",
   "raw material": "Raw Material",
   "Raw Material Cost": "Raw Material",
-  // ⭐ Employee Cost - Add this!
+  // Employee Cost
   "employee cost": "Employee Cost",
   "Employee Cost": "Employee Cost"
 };
@@ -37147,6 +37136,16 @@ var normalizeKpiName = function normalizeKpiName(name) {
 
   // Return original if no mapping found
   return trimmed;
+};
+
+// ============================================================================
+// ⭐⭐⭐ TYPE MAPPING - CRITICAL FOR TARGET API ⭐⭐⭐
+// ============================================================================
+var TYPE_MAPPING = {
+  "Forging": "ALL_FRG",
+  "Machining": "ALL_MCH",
+  "Heat Treatment": "ALL_HT",
+  "ALL": null
 };
 
 // ============================================================================
@@ -37511,7 +37510,6 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     // ====================================================================
     // DATE RANGE
     // ====================================================================
-    // currentYear: new Date().getFullYear(),
     currentYear: 2025,
     monthRange: {
       from: 1,
@@ -37554,94 +37552,275 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     kpiTargets: {},
     targetLoading: false,
     // ====================================================================
-    // ⭐ FETCH KPI TARGETS WITH NAME NORMALIZATION
+    // ⭐⭐⭐ UPDATED: FETCH KPI TARGETS WITH TYPE MAPPING ⭐⭐⭐
     // ====================================================================
     fetchKpiTargets: function () {
       var _fetchKpiTargets = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _get3, selectedPlantCode, selectedType, viewType, prodOrSale, apiUrl, response, result, normalizedTargets;
+        var _get3, selectedPlantCode, selectedType, viewType, currentYear, monthRange, apiData, prodOrSale, apiType, filters, _apiUrl, _response, _result, currentKpis, targetsData, normalizedTargets, targets, latestTargets, matchedTargets, unmatchedTargets, apiUrl, response, result, _normalizedTargets;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
-              _get3 = get(), selectedPlantCode = _get3.selectedPlantCode, selectedType = _get3.selectedType, viewType = _get3.viewType;
+              _get3 = get(), selectedPlantCode = _get3.selectedPlantCode, selectedType = _get3.selectedType, viewType = _get3.viewType, currentYear = _get3.currentYear, monthRange = _get3.monthRange, apiData = _get3.apiData;
               set({
                 targetLoading: true
               });
-              prodOrSale = viewType === "production" ? "Production" : "Sale";
-              if (_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS) {
-                _context3.next = 8;
+              console.log("🎯 ========== FETCHING KPI TARGETS ==========");
+              console.log("📊 Current Filters:", {
+                viewType: viewType,
+                selectedType: selectedType,
+                selectedPlantCode: selectedPlantCode,
+                year: currentYear,
+                months: monthRange
+              });
+              prodOrSale = viewType === "production" ? "Production" : "Sale"; // ⭐⭐⭐ TYPE MAPPING - CRITICAL! ⭐⭐⭐
+              apiType = null;
+              if (selectedType && selectedType !== "ALL") {
+                apiType = TYPE_MAPPING[selectedType] || selectedType;
+                console.log("\uD83D\uDD04 Type Mapping: \"".concat(selectedType, "\" \u2192 \"").concat(apiType, "\""));
+              }
+
+              // ⭐ TRY NEW ENDPOINT FIRST (WITH FILTERS)
+              if (!_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS_FILTERED) {
+                _context3.next = 72;
                 break;
               }
-              console.warn("⚠️ KPI_TARGETS endpoint not configured");
+              console.log("✅ Using NEW filtered endpoint");
+              filters = {
+                year: currentYear,
+                fromMonth: monthRange.from,
+                toMonth: monthRange.to,
+                prodOrSale: prodOrSale
+              };
+              if (selectedPlantCode) {
+                filters.plantCode = selectedPlantCode;
+                console.log("\uD83D\uDCCD Plant Filter: ".concat(selectedPlantCode));
+              }
+              if (apiType) {
+                filters.type = apiType;
+                console.log("\uD83C\uDFED Type Filter: ".concat(apiType));
+              }
+              _apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS_FILTERED(filters);
+              console.log("🌐 Target API URL:", _apiUrl);
+              console.log("📊 Final Filters:", filters);
+              _context3.prev = 16;
+              _context3.next = 19;
+              return fetch(_apiUrl);
+            case 19:
+              _response = _context3.sent;
+              if (_response.ok) {
+                _context3.next = 22;
+                break;
+              }
+              throw new Error("HTTP ".concat(_response.status, ": ").concat(_response.statusText));
+            case 22:
+              _context3.next = 24;
+              return _response.json();
+            case 24:
+              _result = _context3.sent;
+              console.log("✅ KPI Targets API Response:", _result);
+
+              // Extract current KPI names from graph data
+              currentKpis = new Set();
+              if (apiData && Array.isArray(apiData)) {
+                apiData.forEach(function (item) {
+                  var kpiName = normalizeKpiName(item.kpi_name || item.cost_head || "");
+                  if (kpiName) {
+                    currentKpis.add(kpiName);
+                  }
+                });
+              }
+              console.log("📊 KPIs in current graph:", Array.from(currentKpis));
+
+              // Process response
+              targetsData = null;
+              if (!(_result.status === "success" && Array.isArray(_result.data))) {
+                _context3.next = 35;
+                break;
+              }
+              targetsData = _result.data;
+              console.log("\uD83D\uDCE6 Response Format: Array with ".concat(targetsData.length, " entries"));
+              _context3.next = 47;
+              break;
+            case 35:
+              if (!(_result.status === "success" && _result.targets)) {
+                _context3.next = 46;
+                break;
+              }
+              console.log("📦 Response Format: Object with targets");
+              normalizedTargets = {};
+              Object.entries(_result.targets).forEach(function (_ref3) {
+                var _ref4 = _slicedToArray(_ref3, 2),
+                  key = _ref4[0],
+                  value = _ref4[1];
+                var normalizedKey = normalizeKpiName(key);
+                normalizedTargets[normalizedKey] = parseFloat(value);
+                console.log("  \u2713 ".concat(key, " \u2192 ").concat(normalizedKey, " = \u20B9").concat(value));
+              });
+
+              // Check matching
+              console.log("🔍 Matching with graph data:");
+              Object.keys(normalizedTargets).forEach(function (kpi) {
+                var hasData = currentKpis.has(kpi);
+                console.log("  ".concat(hasData ? '✅' : '⚠️', " ").concat(kpi, ": \u20B9").concat(normalizedTargets[kpi], " ").concat(hasData ? '(HAS DATA)' : '(NO DATA)'));
+              });
               set({
+                kpiTargets: normalizedTargets,
                 targetLoading: false
               });
+              console.log("✅ KPI Targets loaded (object format):", normalizedTargets);
+              return _context3.abrupt("return", normalizedTargets);
+            case 46:
+              if (Array.isArray(_result)) {
+                targetsData = _result;
+                console.log("\uD83D\uDCE6 Response Format: Direct array with ".concat(targetsData.length, " entries"));
+              }
+            case 47:
+              if (!(targetsData && Array.isArray(targetsData))) {
+                _context3.next = 65;
+                break;
+              }
+              console.log("\uD83D\uDD04 Processing ".concat(targetsData.length, " target entries..."));
+              targets = {};
+              latestTargets = {};
+              matchedTargets = {};
+              unmatchedTargets = {};
+              targetsData.forEach(function (item, index) {
+                var kpiName = item.kpi_name || item.cost_head || "Other";
+                var normalizedName = normalizeKpiName(kpiName.trim());
+                var targetValue = parseFloat(item.target_per_ton || item.target_value || 0);
+                var entryDate = new Date(item.entry_date || item.date || 0);
+                if (index < 5) {
+                  console.log("  [".concat(index, "] ").concat(kpiName, " \u2192 ").concat(normalizedName, " = \u20B9").concat(targetValue));
+                }
+                if (targetValue > 0) {
+                  if (!latestTargets[normalizedName] || entryDate > latestTargets[normalizedName].date) {
+                    latestTargets[normalizedName] = {
+                      value: targetValue,
+                      date: entryDate
+                    };
+                  }
+                }
+              });
+
+              // Extract values and check matching
+              Object.entries(latestTargets).forEach(function (_ref5) {
+                var _ref6 = _slicedToArray(_ref5, 2),
+                  kpi = _ref6[0],
+                  data = _ref6[1];
+                targets[kpi] = data.value;
+                if (currentKpis.has(kpi)) {
+                  matchedTargets[kpi] = data.value;
+                } else {
+                  unmatchedTargets[kpi] = data.value;
+                }
+              });
+              console.log("\n🔍 ========== MATCHING RESULTS ==========");
+              Object.keys(matchedTargets).forEach(function (kpi) {
+                console.log("\u2705 MATCHED: ".concat(kpi, " = \u20B9").concat(matchedTargets[kpi], " (Will show on graph)"));
+              });
+              Object.keys(unmatchedTargets).forEach(function (kpi) {
+                console.log("\u26A0\uFE0F UNMATCHED: ".concat(kpi, " = \u20B9").concat(unmatchedTargets[kpi], " (No graph data)"));
+              });
+              console.log("\n📊 ========== SUMMARY ==========");
+              console.log("Total Targets: ".concat(Object.keys(targets).length));
+              console.log("Matched (will show): ".concat(Object.keys(matchedTargets).length));
+              console.log("Unmatched: ".concat(Object.keys(unmatchedTargets).length));
+              set({
+                kpiTargets: targets,
+                targetLoading: false
+              });
+              console.log("✅ Final Processed Targets:", targets);
+              return _context3.abrupt("return", targets);
+            case 65:
+              console.warn("⚠️ No valid target data in new API response");
+              _context3.next = 72;
+              break;
+            case 68:
+              _context3.prev = 68;
+              _context3.t0 = _context3["catch"](16);
+              console.warn("⚠️ New API failed:", _context3.t0.message);
+              console.log("⚠️ Falling back to old endpoint...");
+            case 72:
+              // ⭐ FALLBACK TO OLD ENDPOINT
+              console.log("⚠️ Using OLD endpoint as fallback");
+              if (_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS) {
+                _context3.next = 77;
+                break;
+              }
+              console.warn("❌ No KPI_TARGETS endpoint configured");
+              set({
+                targetLoading: false,
+                kpiTargets: {}
+              });
               return _context3.abrupt("return", null);
-            case 8:
+            case 77:
               apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS + "?latest_only=true";
               if (selectedPlantCode) {
                 apiUrl += "&plant_code=".concat(selectedPlantCode);
               } else {
                 apiUrl += "&plant_code=0";
               }
-              if (selectedType && selectedType !== "ALL") {
+              if (apiType) {
+                apiUrl += "&type=".concat(apiType);
+              } else if (selectedType && selectedType !== "ALL") {
                 apiUrl += "&type=".concat(selectedType);
               } else {
                 apiUrl += "&type=ALL";
               }
               apiUrl += "&prod_or_sale=".concat(prodOrSale);
-              console.log("🎯 Fetching targets from dedicated API:", apiUrl);
-              _context3.next = 15;
+              console.log("🎯 Old API URL:", apiUrl);
+              _context3.next = 84;
               return fetch(apiUrl);
-            case 15:
+            case 84:
               response = _context3.sent;
-              _context3.next = 18;
+              _context3.next = 87;
               return response.json();
-            case 18:
+            case 87:
               result = _context3.sent;
               if (!(result.status === "success" && result.targets)) {
-                _context3.next = 27;
+                _context3.next = 96;
                 break;
               }
-              // ⭐⭐⭐ NORMALIZE KPI NAMES ⭐⭐⭐
-              normalizedTargets = {};
-              Object.entries(result.targets).forEach(function (_ref3) {
-                var _ref4 = _slicedToArray(_ref3, 2),
-                  key = _ref4[0],
-                  value = _ref4[1];
+              _normalizedTargets = {};
+              Object.entries(result.targets).forEach(function (_ref7) {
+                var _ref8 = _slicedToArray(_ref7, 2),
+                  key = _ref8[0],
+                  value = _ref8[1];
                 var normalizedKey = normalizeKpiName(key);
-                normalizedTargets[normalizedKey] = value;
-                console.log("\uD83D\uDD04 Mapped: \"".concat(key, "\" \u2192 \"").concat(normalizedKey, "\" = ").concat(value));
+                _normalizedTargets[normalizedKey] = parseFloat(value);
+                console.log("  \u2713 ".concat(key, " \u2192 ").concat(normalizedKey, " = \u20B9").concat(value));
               });
-              console.log("✅ Final normalized targets:", normalizedTargets);
+              console.log("✅ Targets from old API:", _normalizedTargets);
               set({
-                kpiTargets: normalizedTargets,
+                kpiTargets: _normalizedTargets,
                 targetLoading: false
               });
-              return _context3.abrupt("return", normalizedTargets);
-            case 27:
-              console.warn("⚠️ No targets from API, using fallback");
+              return _context3.abrupt("return", _normalizedTargets);
+            case 96:
+              console.warn("⚠️ No targets from old API");
               set({
+                kpiTargets: {},
                 targetLoading: false
               });
               return _context3.abrupt("return", null);
-            case 30:
-              _context3.next = 38;
+            case 99:
+              _context3.next = 106;
               break;
-            case 32:
-              _context3.prev = 32;
-              _context3.t0 = _context3["catch"](0);
-              console.error("❌ Error fetching targets from API:", _context3.t0);
-              console.log("⚠️ Will use fallback targets from main API");
+            case 101:
+              _context3.prev = 101;
+              _context3.t1 = _context3["catch"](0);
+              console.error("❌ Error fetching KPI targets:", _context3.t1);
               set({
-                targetLoading: false
+                targetLoading: false,
+                kpiTargets: {}
               });
               return _context3.abrupt("return", null);
-            case 38:
+            case 106:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 32]]);
+        }, _callee3, null, [[0, 101], [16, 68]]);
       }));
       function fetchKpiTargets() {
         return _fetchKpiTargets.apply(this, arguments);
@@ -37671,8 +37850,6 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 break;
               }
               console.log("✅ Using cached data");
-
-              // ⭐ EXTRACT & NORMALIZE TARGETS FROM CACHE (FALLBACK)
               targets = {};
               cachedData.forEach(function (item) {
                 var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
@@ -37754,7 +37931,7 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 _context4.next = 45;
                 break;
               }
-              data = result.data; // ⭐ EXTRACT & NORMALIZE TARGETS (FALLBACK)
+              data = result.data;
               _targets = {};
               data.forEach(function (item) {
                 var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
@@ -37786,7 +37963,6 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 _context4.next = 55;
                 break;
               }
-              // ⭐ EXTRACT & NORMALIZE TARGETS (FALLBACK)
               _targets2 = {};
               result.forEach(function (item) {
                 var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
@@ -37853,7 +38029,6 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     // ====================================================================
     // TARGET MANAGEMENT
     // ====================================================================
-
     updateKpiTarget: function updateKpiTarget(kpiName, targetValue) {
       console.log("\uD83C\uDFAF Manually updating target for ".concat(kpiName, ":"), targetValue);
       set(function (state) {
@@ -38947,11 +39122,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getMonthNameForApi": () => (/* binding */ getMonthNameForApi)
 /* harmony export */ });
 /**
- * ✅ COMPLETE API CONFIG - FINAL VERSION
- * Location: src/utils/apiConfig.js
- */
+
+* ✅ COMPLETE API CONFIG - WITH KPI TARGETS
+
+* Location: src/utils/apiConfig.js
+
+*/
 
 // Helper function to get the appropriate base URL
+
 var getApiBaseUrl = function getApiBaseUrl() {
   if (typeof window === "undefined") {
     return "https://ktflceprd.kalyanicorp.com";
@@ -38967,38 +39146,100 @@ var getApiBaseUrl = function getApiBaseUrl() {
 var API_BASE_URL = getApiBaseUrl();
 
 /**
- * Helper function - Convert month number to API format
- */
+
+* Helper function - Convert month number to API format
+
+*/
+
 var getMonthNameForApi = function getMonthNameForApi(monthNum) {
   var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return months[monthNum - 1] || "Jan";
 };
 
 /**
- * ✅ ALL API ENDPOINTS
- */
+
+* ✅ ALL API ENDPOINTS
+
+*/
+
 var API_ENDPOINTS = {
   // ============================================================================
+
   // ⭐ MAIN ENDPOINTS (Used by costStore.js)
+
   // ============================================================================
+
   PROD_COST: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt"),
   SALE_COST: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt"),
-  // ⭐ NEW: KPI TARGETS API
-  KPI_TARGETS: "".concat(API_BASE_URL, "/internal/kpi_targets"),
   // ============================================================================
+
+  // ⭐⭐⭐ NEW: KPI TARGETS API ⭐⭐⭐
+
+  // ============================================================================
+
+  // Default KPI Targets endpoint (all targets)
+
+  KPI_TARGETS: "".concat(API_BASE_URL, "/internal/cost_kpi_entry?view=month"),
+  // KPI Targets with filters
+
+  KPI_TARGETS_FILTERED: function KPI_TARGETS_FILTERED() {
+    var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var url = "".concat(API_BASE_URL, "/internal/cost_kpi_entry?view=month");
+
+    // Add year and month range if provided
+
+    if (filters.year) {
+      url += "&year=".concat(filters.year);
+    }
+    if (filters.fromMonth) {
+      url += "&from_month=".concat(getMonthNameForApi(filters.fromMonth));
+    }
+    if (filters.toMonth) {
+      url += "&to_month=".concat(getMonthNameForApi(filters.toMonth));
+    }
+
+    // Add prod_or_sale filter (Production/Sale)
+
+    if (filters.prodOrSale) {
+      url += "&prod_or_sale=".concat(filters.prodOrSale);
+    }
+
+    // Add specific KPI name filter
+
+    if (filters.kpiName) {
+      url += "&kpi_name=".concat(encodeURIComponent(filters.kpiName));
+    }
+
+    // Add plant code filter
+
+    if (filters.plantCode) {
+      url += "&plant_code=".concat(filters.plantCode);
+    }
+    return url;
+  },
+  // ============================================================================
+
   // COST CENTER & PLANT CODE
+
   // ============================================================================
+
   COST_CENTER_MASTER: "".concat(API_BASE_URL, "/api/v1/collection/cost_center_master"),
   PLANT_CODE: "".concat(API_BASE_URL, "/internal/plant_code"),
   // ============================================================================
+
   // MACHINE ENTRIES
+
   // ============================================================================
+
   MACHINE_ENTRY: function MACHINE_ENTRY(type, plantCode) {
     return "".concat(API_BASE_URL, "/internal/machine_entry?type=").concat(type, "&plant_code=").concat(plantCode, "&view=month");
   },
   // ============================================================================
+
   // PRODUCTION COST - GROUP LEVEL
+
   // ============================================================================
+
   PROD_COST_DEFAULT: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month"),
   PROD_COST_CUSTOM: function PROD_COST_CUSTOM(year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
@@ -39006,8 +39247,11 @@ var API_ENDPOINTS = {
     return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
   // ============================================================================
+
   // PRODUCTION COST - PLANT WISE
+
   // ============================================================================
+
   PROD_PLANTWISE_DEFAULT: function PROD_PLANTWISE_DEFAULT(plantcode) {
     return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(plantcode);
   },
@@ -39022,8 +39266,11 @@ var API_ENDPOINTS = {
     return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
   // ============================================================================
+
   // SALE COST - GROUP LEVEL
+
   // ============================================================================
+
   SALE_COST_DEFAULT: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month"),
   COST_PER_TON_SALE: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month"),
   SALE_COST_CUSTOM: function SALE_COST_CUSTOM(year, fromMonth, toMonth) {
@@ -39032,8 +39279,11 @@ var API_ENDPOINTS = {
     return "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
   // ============================================================================
+
   // SALE COST - PLANT WISE
+
   // ============================================================================
+
   SALE_PLANTWISE_DEFAULT: function SALE_PLANTWISE_DEFAULT(plantcode) {
     return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=month&plantcode=").concat(plantcode);
   },
@@ -39048,22 +39298,16 @@ var API_ENDPOINTS = {
     return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
   // ============================================================================
-  // ⭐ KPI TARGETS WITH FILTERS
-  // ============================================================================
-  KPI_TARGETS_FILTERED: function KPI_TARGETS_FILTERED(plantCode, type, prodOrSale) {
-    var url = "".concat(API_BASE_URL, "/internal/kpi_targets?latest_only=true");
-    if (plantCode !== null && plantCode !== undefined) url += "&plant_code=".concat(plantCode);
-    if (type) url += "&type=".concat(type);
-    if (prodOrSale) url += "&prod_or_sale=".concat(prodOrSale);
-    return url;
-  },
-  // ============================================================================
+
   // DETAILS & OTHER
+
   // ============================================================================
+
   DETAILS: "".concat(API_BASE_URL, "/kalyani.iot/costing")
 };
 
 // Debug logs
+
 if (typeof window !== "undefined") {
   console.log("🌐 API Base URL:", API_BASE_URL);
   console.log("🖥️ Environment:", window.location.hostname === "localhost" ? "LOCAL DEV" : "PRODUCTION");
@@ -57135,4 +57379,4 @@ cs_web_components_base__WEBPACK_IMPORTED_MODULE_0__.Registry.registerReducer((0,
 /******/ })()
 ;
 });
-//# sourceMappingURL=kalyani-iot-costing.dev.f992a13956790567d9cd.js.map
+//# sourceMappingURL=kalyani-iot-costing.dev.d0d404269e5cb5fa7a75.js.map

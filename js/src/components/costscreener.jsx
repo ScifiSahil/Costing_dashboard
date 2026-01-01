@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef } from "react";
 import MachinePowerForm from "./MachinePowerForm";
 import {
@@ -16,7 +14,6 @@ import {
   Area,
   ReferenceArea,
 } from "recharts";
-// Apne CostScreener.jsx mein simply import karein
 import ActionInsightsModal from "./ActionInsightsModal";
 
 import {
@@ -414,7 +411,7 @@ const iconMap = {
   "Machine Hire Charges": Settings,
   "Repair & Maintenance": Wrench,
   "Employee Cost": Users,
-  "Establishment Expenses": Building,  // ⭐ Change from "Establishment Exp"
+  "Establishment Expenses": Building,
   Packing: Box,
   Freight: Truck,
   "Raw Material": Factory,
@@ -558,7 +555,6 @@ const CostScreener = () => {
   const setViewType = useCostStore((state) => state.setViewType);
   const apiData = useCostStore((state) => state.apiData);
   const apiLoading = useCostStore((state) => state.apiLoading);
-  const kpiTargets = useCostStore((state) => state.kpiTargets); // ⭐ ADD THIS
   const apiError = useCostStore((state) => state.apiError);
   const selectedTheme = useCostStore((state) => state.selectedTheme);
   const setSelectedTheme = useCostStore((state) => state.setSelectedTheme);
@@ -574,6 +570,11 @@ const CostScreener = () => {
     (state) => state.setCurrentPeriodMonth
   );
 
+  // ⭐⭐⭐ ADD THESE THREE NEW LINES ⭐⭐⭐
+  const kpiTargets = useCostStore((state) => state.kpiTargets);
+  const targetLoading = useCostStore((state) => state.targetLoading);
+  const fetchKpiTargets = useCostStore((state) => state.fetchKpiTargets);
+
   // Local States
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -586,6 +587,19 @@ const CostScreener = () => {
   const cardRefs = useRef({});
   const themeSelectorRef = useRef(null);
   const currentTheme = themes[selectedTheme];
+
+  // ⭐⭐⭐ NEW: Fetch targets when filters change ⭐⭐⭐
+  useEffect(() => {
+    console.log("🔄 Filters changed, fetching KPI targets...");
+    fetchKpiTargets();
+  }, [
+    viewType,
+    selectedLocation,
+    currentYear,
+    monthRange.from,
+    monthRange.to,
+    fetchKpiTargets,
+  ]);
 
   const handleLocationSelect = async (locationName) => {
     setSelectedLocation(locationName);
@@ -634,25 +648,6 @@ const CostScreener = () => {
       { name: "Line C", code: "LC", status: "active", capacity: "82%" },
     ],
   };
-
-  // useEffect(() => {
-  //   console.log("🚀 Component Mounted - Initializing");
-
-  //   const today = new Date();
-  //   const currentMonth = today.getMonth() + 1;
-
-  //   setCurrentPeriodMonth(currentMonth);
-
-  //   let to = currentMonth;
-  //   let from = currentMonth - 5;
-
-  //   if (from < 1) {
-  //     from = 1;
-  //     to = 6;
-  //   }
-
-  //   fetchCostData(from, to, currentYear, viewType);
-  // }, []);
 
   useEffect(() => {
     console.log("🚀 Component Mounted - Initializing");
@@ -862,53 +857,55 @@ const CostScreener = () => {
     return [];
   };
 
-  // Build Chart Data for Individual KPI Card with specific current month
-  const buildChartData = (kpi, cardCurrentMonth) => {
-    if (!kpi || !kpi.trend) return [];
+  // ⭐⭐⭐ UPDATED: Build Chart Data with Target Support ⭐⭐⭐
+  const buildChartData = (kpi, currentMonthToUse) => {
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-    const avgTrendValue =
-      kpi.trend.reduce((a, b) => a + b, 0) / kpi.trend.length;
+    // ⭐ Get target for this specific KPI
+    const normalizedKpiName = kpi.kpiName;
+    const targetValue = kpiTargets[normalizedKpiName] || null;
 
-    // ⭐ USE TARGET FROM STORE IF AVAILABLE
-    const targetFromStore = kpiTargets[kpi.kpiName];
-    const targetValue =
-      targetFromStore && targetFromStore > 0
-        ? targetFromStore // Use stored target
-        : kpi.budget_per_tonne && kpi.actual_per_tonne
-        ? avgTrendValue * (kpi.budget_per_tonne / kpi.actual_per_tonne)
-        : (avgTrendValue || 0) * 1.05; // Fallback
-
-    console.log(`🎯 Target for ${kpi.kpiName}:`, {
-      fromStore: targetFromStore,
-      used: targetValue,
-    });
+    console.log(`🎯 Building chart for: ${normalizedKpiName}`);
+    console.log(
+      `📊 Target value: ${targetValue ? `₹${targetValue}` : "NOT FOUND"}`
+    );
 
     const avgTargetPercent =
-      kpi.target_percentage?.length > 0
-        ? kpi.target_percentage.reduce((a, b) => a + b, 0) /
-          kpi.target_percentage.length
+      kpi.production_percentage && kpi.production_percentage.length > 0
+        ? kpi.production_percentage.reduce((a, b) => a + b, 0) /
+          kpi.production_percentage.length
         : null;
 
     const historicalData = kpi.trend.map((value, index) => {
-      const actualMonthNo = kpi.months
-        ? kpi.months[index]
-        : monthRange.from + index;
+      const actualMonthNo = (monthRange.from + index - 1) % 12 || 12;
       const monthIndex = (actualMonthNo - 1) % 12;
-
-      const isCurrentMonth = actualMonthNo === cardCurrentMonth;
+      const isCurrentMonth = actualMonthNo === currentMonthToUse;
 
       return {
         month: monthNames[monthIndex] || `M${index + 1}`,
         monthNo: actualMonthNo,
         actual: parseFloat(value.toFixed(2)),
         prediction: null,
-        target: targetValue,
+        target: targetValue, // ⭐ ADD TARGET
         productionPercentPredicted: null,
         productionPercent: kpi.production_percentage?.[index] || null,
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: value - targetValue,
+        variance: targetValue ? value - targetValue : 0, // ⭐ VARIANCE
       };
     });
 
@@ -933,7 +930,7 @@ const CostScreener = () => {
         monthNo: nextMonthNo,
         actual: null,
         prediction: parseFloat(predictedValue.toFixed(2)),
-        target: targetValue,
+        target: targetValue, // ⭐ ADD TARGET
         targetForCheck: null,
         productionPercent: null,
         productionPercentPredicted: lastPercent,
@@ -941,10 +938,15 @@ const CostScreener = () => {
         productionTargetForCheck: avgTargetPercent,
         isHistorical: false,
         isHighlighted: false,
-        variance: predictedValue - targetValue,
+        variance: targetValue ? predictedValue - targetValue : 0, // ⭐ VARIANCE
       },
     ];
 
+    console.log(
+      `✅ Chart data built: ${
+        historicalData.length + 1
+      } points with target: ${targetValue}`
+    );
     return [...historicalData, ...predictionData];
   };
 
@@ -1075,13 +1077,12 @@ const CostScreener = () => {
         {/* Theme Selector */}
         <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
           <button
-            onClick={openPowerForm} // 👈 Yahan click pe navigate hoga
+            onClick={openPowerForm}
             className={`p-3 rounded-full ${currentTheme.cardBg} ${currentTheme.border} border ${currentTheme.shadow} transition-all duration-300 hover:scale-110 group relative overflow-hidden`}
             title="Machine Power Unit Entry"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            <Zap className="w-6 h-6 relative z-10 text-blue-600" />{" "}
-            {/* ⚡ POWER ICON */}
+            <Zap className="w-6 h-6 relative z-10 text-blue-600" />
           </button>
 
           <div className="relative" ref={themeSelectorRef}>
@@ -1439,26 +1440,44 @@ const CostScreener = () => {
                         <Tooltip
                           content={<CustomTooltip theme={currentTheme} />}
                         />
-                        {/* ⭐⭐⭐ ADD THIS TARGET LINE ⭐⭐⭐ */}
+
+                        {/* ⭐⭐⭐ TARGET LINE - ORANGE COLOR ⭐⭐⭐ */}
                         {(() => {
                           const targetForKpi = kpiTargets[kpi.kpiName];
-                          return targetForKpi && targetForKpi > 0 ? (
+
+                          console.log(
+                            `🎨 Rendering chart: ${kpi.kpiName}, Target: ${targetForKpi}`
+                          );
+
+                          if (!targetForKpi || targetForKpi <= 0) {
+                            console.warn(
+                              `⚠️ No target line for ${kpi.kpiName} (value: ${targetForKpi})`
+                            );
+                            return null;
+                          }
+
+                          console.log(
+                            `✅ Drawing ORANGE target line for ${kpi.kpiName} at ₹${targetForKpi}`
+                          );
+
+                          return (
                             <ReferenceLine
                               y={targetForKpi}
-                              stroke="#ef4444"
-                              strokeWidth={2}
+                              stroke="#ff8c00" // ⭐ ORANGE COLOR
+                              strokeWidth={2.5}
                               strokeDasharray="5 5"
                               label={{
                                 value: `Target: ₹${Math.round(
                                   targetForKpi
                                 ).toLocaleString()}`,
                                 position: "right",
-                                fill: "#ef4444",
-                                fontSize: 11,
+                                fill: "#ff8c00", // ⭐ ORANGE COLOR
+                                fontSize: 12,
                                 fontWeight: "bold",
+                                offset: 10,
                               }}
                             />
-                          ) : null;
+                          );
                         })()}
 
                         {highlightIndex >= 0 && (
@@ -1686,23 +1705,19 @@ const CostScreener = () => {
                 onClick={async () => {
                   setSelectedCategory(category);
 
-                  // ⭐ FIX: Reset location - don't set first location
-                  // When category changes, we want ALL PLANTS, not specific plant
                   if (category === "All") {
-                    setSelectedLocation(null); // or "All"
+                    setSelectedLocation(null);
                   } else {
-                    // Forging या Machining selected - still show all plants initially
-                    setSelectedLocation(null); // ⭐ KEY CHANGE
+                    setSelectedLocation(null);
                   }
 
-                  // ⭐ IMPORTANT: Set viewType to production (not sale)
                   const { monthRange, currentYear } = useCostStore.getState();
 
                   await fetchCostData(
                     monthRange.from,
                     monthRange.to,
                     currentYear,
-                    "production" // ⭐ Hardcode to production for category selection
+                    "production"
                   );
                 }}
                 className={`px-4 py-2 text-sm rounded-xl font-bold transition-all ${

@@ -40,8 +40,8 @@ const KPI_NAME_MAPPING = {
   "machine hire charges": "Machine Hire Charges",
   "Machine Hire Charges": "Machine Hire Charges",
 
-  "Establishment Exp": "Establishment Expenses", // Frontend → API
-  "Establishment Expenses": "Establishment Expenses", // API → API (identity)
+  "Establishment Exp": "Establishment Expenses",
+  "Establishment Expenses": "Establishment Expenses",
   "establishment expenses": "Establishment Expenses",
   "eastablishment expenses": "Establishment Expenses",
 
@@ -57,7 +57,7 @@ const KPI_NAME_MAPPING = {
   "raw material": "Raw Material",
   "Raw Material Cost": "Raw Material",
 
-  // ⭐ Employee Cost - Add this!
+  // Employee Cost
   "employee cost": "Employee Cost",
   "Employee Cost": "Employee Cost",
 };
@@ -81,6 +81,16 @@ const normalizeKpiName = (name) => {
 
   // Return original if no mapping found
   return trimmed;
+};
+
+// ============================================================================
+// ⭐⭐⭐ TYPE MAPPING - CRITICAL FOR TARGET API ⭐⭐⭐
+// ============================================================================
+const TYPE_MAPPING = {
+  "Forging": "ALL_FRG",
+  "Machining": "ALL_MCH",
+  "Heat Treatment": "ALL_HT",
+  "ALL": null
 };
 
 // ============================================================================
@@ -399,9 +409,7 @@ const useCostStore = create(
       // ====================================================================
       // DATE RANGE
       // ====================================================================
-      // currentYear: new Date().getFullYear(),
       currentYear: 2025,
-
       monthRange: { from: 1, to: 6 },
       currentPeriodMonth: new Date().getMonth() + 1,
       loadingProgress: 0,
@@ -437,19 +445,195 @@ const useCostStore = create(
       targetLoading: false,
 
       // ====================================================================
-      // ⭐ FETCH KPI TARGETS WITH NAME NORMALIZATION
+      // ⭐⭐⭐ UPDATED: FETCH KPI TARGETS WITH TYPE MAPPING ⭐⭐⭐
       // ====================================================================
       fetchKpiTargets: async () => {
         try {
-          const { selectedPlantCode, selectedType, viewType } = get();
+          const { 
+            selectedPlantCode, 
+            selectedType, 
+            viewType,
+            currentYear,
+            monthRange,
+            apiData
+          } = get();
 
           set({ targetLoading: true });
 
+          console.log("🎯 ========== FETCHING KPI TARGETS ==========");
+          console.log("📊 Current Filters:", {
+            viewType,
+            selectedType,
+            selectedPlantCode,
+            year: currentYear,
+            months: monthRange
+          });
+
           const prodOrSale = viewType === "production" ? "Production" : "Sale";
 
+          // ⭐⭐⭐ TYPE MAPPING - CRITICAL! ⭐⭐⭐
+          let apiType = null;
+          if (selectedType && selectedType !== "ALL") {
+            apiType = TYPE_MAPPING[selectedType] || selectedType;
+            console.log(`🔄 Type Mapping: "${selectedType}" → "${apiType}"`);
+          }
+
+          // ⭐ TRY NEW ENDPOINT FIRST (WITH FILTERS)
+          if (API_ENDPOINTS.KPI_TARGETS_FILTERED) {
+            console.log("✅ Using NEW filtered endpoint");
+            
+            const filters = {
+              year: currentYear,
+              fromMonth: monthRange.from,
+              toMonth: monthRange.to,
+              prodOrSale: prodOrSale,
+            };
+
+            if (selectedPlantCode) {
+              filters.plantCode = selectedPlantCode;
+              console.log(`📍 Plant Filter: ${selectedPlantCode}`);
+            }
+
+            if (apiType) {
+              filters.type = apiType;
+              console.log(`🏭 Type Filter: ${apiType}`);
+            }
+
+            const apiUrl = API_ENDPOINTS.KPI_TARGETS_FILTERED(filters);
+            console.log("🌐 Target API URL:", apiUrl);
+            console.log("📊 Final Filters:", filters);
+
+            try {
+              const response = await fetch(apiUrl);
+              
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+              }
+
+              const result = await response.json();
+              console.log("✅ KPI Targets API Response:", result);
+
+              // Extract current KPI names from graph data
+              const currentKpis = new Set();
+              if (apiData && Array.isArray(apiData)) {
+                apiData.forEach(item => {
+                  const kpiName = normalizeKpiName(item.kpi_name || item.cost_head || "");
+                  if (kpiName) {
+                    currentKpis.add(kpiName);
+                  }
+                });
+              }
+              console.log("📊 KPIs in current graph:", Array.from(currentKpis));
+
+              // Process response
+              let targetsData = null;
+
+              if (result.status === "success" && Array.isArray(result.data)) {
+                targetsData = result.data;
+                console.log(`📦 Response Format: Array with ${targetsData.length} entries`);
+              } else if (result.status === "success" && result.targets) {
+                console.log("📦 Response Format: Object with targets");
+                const normalizedTargets = {};
+                Object.entries(result.targets).forEach(([key, value]) => {
+                  const normalizedKey = normalizeKpiName(key);
+                  normalizedTargets[normalizedKey] = parseFloat(value);
+                  console.log(`  ✓ ${key} → ${normalizedKey} = ₹${value}`);
+                });
+                
+                // Check matching
+                console.log("🔍 Matching with graph data:");
+                Object.keys(normalizedTargets).forEach(kpi => {
+                  const hasData = currentKpis.has(kpi);
+                  console.log(`  ${hasData ? '✅' : '⚠️'} ${kpi}: ₹${normalizedTargets[kpi]} ${hasData ? '(HAS DATA)' : '(NO DATA)'}`);
+                });
+
+                set({
+                  kpiTargets: normalizedTargets,
+                  targetLoading: false,
+                });
+                
+                console.log("✅ KPI Targets loaded (object format):", normalizedTargets);
+                return normalizedTargets;
+              } else if (Array.isArray(result)) {
+                targetsData = result;
+                console.log(`📦 Response Format: Direct array with ${targetsData.length} entries`);
+              }
+
+              // Process array format
+              if (targetsData && Array.isArray(targetsData)) {
+                console.log(`🔄 Processing ${targetsData.length} target entries...`);
+                
+                const targets = {};
+                const latestTargets = {};
+                const matchedTargets = {};
+                const unmatchedTargets = {};
+                
+                targetsData.forEach((item, index) => {
+                  const kpiName = item.kpi_name || item.cost_head || "Other";
+                  const normalizedName = normalizeKpiName(kpiName.trim());
+                  const targetValue = parseFloat(item.target_per_ton || item.target_value || 0);
+                  const entryDate = new Date(item.entry_date || item.date || 0);
+
+                  if (index < 5) {
+                    console.log(`  [${index}] ${kpiName} → ${normalizedName} = ₹${targetValue}`);
+                  }
+
+                  if (targetValue > 0) {
+                    if (!latestTargets[normalizedName] || entryDate > latestTargets[normalizedName].date) {
+                      latestTargets[normalizedName] = {
+                        value: targetValue,
+                        date: entryDate
+                      };
+                    }
+                  }
+                });
+
+                // Extract values and check matching
+                Object.entries(latestTargets).forEach(([kpi, data]) => {
+                  targets[kpi] = data.value;
+                  
+                  if (currentKpis.has(kpi)) {
+                    matchedTargets[kpi] = data.value;
+                  } else {
+                    unmatchedTargets[kpi] = data.value;
+                  }
+                });
+
+                console.log("\n🔍 ========== MATCHING RESULTS ==========");
+                Object.keys(matchedTargets).forEach(kpi => {
+                  console.log(`✅ MATCHED: ${kpi} = ₹${matchedTargets[kpi]} (Will show on graph)`);
+                });
+                Object.keys(unmatchedTargets).forEach(kpi => {
+                  console.log(`⚠️ UNMATCHED: ${kpi} = ₹${unmatchedTargets[kpi]} (No graph data)`);
+                });
+
+                console.log("\n📊 ========== SUMMARY ==========");
+                console.log(`Total Targets: ${Object.keys(targets).length}`);
+                console.log(`Matched (will show): ${Object.keys(matchedTargets).length}`);
+                console.log(`Unmatched: ${Object.keys(unmatchedTargets).length}`);
+
+                set({
+                  kpiTargets: targets,
+                  targetLoading: false,
+                });
+
+                console.log("✅ Final Processed Targets:", targets);
+                return targets;
+              }
+
+              console.warn("⚠️ No valid target data in new API response");
+            } catch (newApiError) {
+              console.warn("⚠️ New API failed:", newApiError.message);
+              console.log("⚠️ Falling back to old endpoint...");
+            }
+          }
+
+          // ⭐ FALLBACK TO OLD ENDPOINT
+          console.log("⚠️ Using OLD endpoint as fallback");
+          
           if (!API_ENDPOINTS.KPI_TARGETS) {
-            console.warn("⚠️ KPI_TARGETS endpoint not configured");
-            set({ targetLoading: false });
+            console.warn("❌ No KPI_TARGETS endpoint configured");
+            set({ targetLoading: false, kpiTargets: {} });
             return null;
           }
 
@@ -461,7 +645,9 @@ const useCostStore = create(
             apiUrl += `&plant_code=0`;
           }
 
-          if (selectedType && selectedType !== "ALL") {
+          if (apiType) {
+            apiUrl += `&type=${apiType}`;
+          } else if (selectedType && selectedType !== "ALL") {
             apiUrl += `&type=${selectedType}`;
           } else {
             apiUrl += `&type=ALL`;
@@ -469,24 +655,21 @@ const useCostStore = create(
 
           apiUrl += `&prod_or_sale=${prodOrSale}`;
 
-          console.log("🎯 Fetching targets from dedicated API:", apiUrl);
+          console.log("🎯 Old API URL:", apiUrl);
 
           const response = await fetch(apiUrl);
           const result = await response.json();
 
           if (result.status === "success" && result.targets) {
-            // ⭐⭐⭐ NORMALIZE KPI NAMES ⭐⭐⭐
             const normalizedTargets = {};
 
             Object.entries(result.targets).forEach(([key, value]) => {
               const normalizedKey = normalizeKpiName(key);
-              normalizedTargets[normalizedKey] = value;
-              console.log(
-                `🔄 Mapped: "${key}" → "${normalizedKey}" = ${value}`
-              );
+              normalizedTargets[normalizedKey] = parseFloat(value);
+              console.log(`  ✓ ${key} → ${normalizedKey} = ₹${value}`);
             });
 
-            console.log("✅ Final normalized targets:", normalizedTargets);
+            console.log("✅ Targets from old API:", normalizedTargets);
 
             set({
               kpiTargets: normalizedTargets,
@@ -495,14 +678,20 @@ const useCostStore = create(
 
             return normalizedTargets;
           } else {
-            console.warn("⚠️ No targets from API, using fallback");
-            set({ targetLoading: false });
+            console.warn("⚠️ No targets from old API");
+            set({ 
+              kpiTargets: {},
+              targetLoading: false 
+            });
             return null;
           }
+
         } catch (error) {
-          console.error("❌ Error fetching targets from API:", error);
-          console.log("⚠️ Will use fallback targets from main API");
-          set({ targetLoading: false });
+          console.error("❌ Error fetching KPI targets:", error);
+          set({
+            targetLoading: false,
+            kpiTargets: {},
+          });
           return null;
         }
       },
@@ -533,7 +722,6 @@ const useCostStore = create(
           if (cachedData) {
             console.log("✅ Using cached data");
 
-            // ⭐ EXTRACT & NORMALIZE TARGETS FROM CACHE (FALLBACK)
             const targets = {};
             cachedData.forEach((item) => {
               const kpiName = (
@@ -622,7 +810,6 @@ const useCostStore = create(
           if (result.status === "success") {
             const data = result.data;
 
-            // ⭐ EXTRACT & NORMALIZE TARGETS (FALLBACK)
             const targets = {};
             data.forEach((item) => {
               const kpiName = (
@@ -660,7 +847,6 @@ const useCostStore = create(
 
             get().fetchKpiTargets();
           } else if (Array.isArray(result)) {
-            // ⭐ EXTRACT & NORMALIZE TARGETS (FALLBACK)
             const targets = {};
             result.forEach((item) => {
               const kpiName = (
@@ -721,7 +907,6 @@ const useCostStore = create(
       // ====================================================================
       // TARGET MANAGEMENT
       // ====================================================================
-
       updateKpiTarget: (kpiName, targetValue) => {
         console.log(`🎯 Manually updating target for ${kpiName}:`, targetValue);
         set((state) => ({
@@ -779,15 +964,16 @@ const useCostStore = create(
     }),
     {
       name: "cost-store-cache",
-     partialize: (state) => ({
-  selectedTheme: state.selectedTheme,
-  viewType: state.viewType,
-}),
+      partialize: (state) => ({
+        selectedTheme: state.selectedTheme,
+        viewType: state.viewType,
+      }),
     }
   )
 );
 
 export { useCostStore, cacheManager };
+
 
 // import { create } from "zustand";
 // import { persist } from "zustand/middleware";
