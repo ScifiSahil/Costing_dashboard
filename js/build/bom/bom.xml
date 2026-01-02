@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bom xmlns="http://cyclonedx.org/schema/bom/1.4" version="1" serialNumber="urn:uuid:0250e256-5a9b-4326-baae-a0400d34e5d7">
+<bom xmlns="http://cyclonedx.org/schema/bom/1.4" version="1" serialNumber="urn:uuid:39865565-f8e2-41e1-95b9-a7ce658a195f">
   <metadata>
-    <timestamp>2026-01-01T11:52:45.467Z</timestamp>
+    <timestamp>2026-01-02T11:38:41.574Z</timestamp>
     <tools>
       <tool>
         <vendor>@cyclonedx</vendor>
@@ -390,31 +390,6 @@
         </reference>
       </externalReferences>
     </component>
-    <component type="library" bom-ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is">
-      <name>react-is</name>
-      <version>16.13.1</version>
-      <description>Brand checking of React Elements.</description>
-      <licenses>
-        <license>
-          <id>MIT</id>
-        </license>
-      </licenses>
-      <purl>pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is</purl>
-      <externalReferences>
-        <reference type="vcs">
-          <url>git+https://github.com/facebook/react.git#packages/react-is</url>
-          <comment>as detected from PackageJson property "repository.url" and "repository.directory"</comment>
-        </reference>
-        <reference type="website">
-          <url>https://reactjs.org/</url>
-          <comment>as detected from PackageJson property "homepage"</comment>
-        </reference>
-        <reference type="issue-tracker">
-          <url>https://github.com/facebook/react/issues</url>
-          <comment>as detected from PackageJson property "bugs.url"</comment>
-        </reference>
-      </externalReferences>
-    </component>
     <component type="library" bom-ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git">
       <author>Dan Abramov</author>
       <name>react-redux</name>
@@ -437,6 +412,31 @@
         </reference>
         <reference type="issue-tracker">
           <url>https://github.com/reduxjs/react-redux/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is">
+      <name>react-is</name>
+      <version>16.13.1</version>
+      <description>Brand checking of React Elements.</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/facebook/react.git#packages/react-is</url>
+          <comment>as detected from PackageJson property "repository.url" and "repository.directory"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://reactjs.org/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/facebook/react/issues</url>
           <comment>as detected from PackageJson property "bugs.url"</comment>
         </reference>
       </externalReferences>
@@ -545,32 +545,6 @@
         </reference>
       </externalReferences>
     </component>
-    <component type="library" bom-ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git">
-      <author>Dan Abramov</author>
-      <name>redux-thunk</name>
-      <version>3.1.0</version>
-      <description>Thunk middleware for Redux.</description>
-      <licenses>
-        <license>
-          <id>MIT</id>
-        </license>
-      </licenses>
-      <purl>pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git</purl>
-      <externalReferences>
-        <reference type="vcs">
-          <url>git+https://github.com/reduxjs/redux-thunk.git</url>
-          <comment>as detected from PackageJson property "repository.url"</comment>
-        </reference>
-        <reference type="website">
-          <url>https://github.com/reduxjs/redux-thunk</url>
-          <comment>as detected from PackageJson property "homepage"</comment>
-        </reference>
-        <reference type="issue-tracker">
-          <url>https://github.com/reduxjs/redux-thunk/issues</url>
-          <comment>as detected from PackageJson property "bugs.url"</comment>
-        </reference>
-      </externalReferences>
-    </component>
     <component type="library" bom-ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git">
       <name>redux</name>
       <version>5.0.1</version>
@@ -596,80 +570,28 @@
         </reference>
       </externalReferences>
     </component>
-    <component type="library" bom-ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
-      <author>Feross Aboukhadijeh</author>
-      <name>buffer</name>
-      <version>5.7.1</version>
-      <description>Node.js Buffer API, for the browser</description>
+    <component type="library" bom-ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git">
+      <author>Dan Abramov</author>
+      <name>redux-thunk</name>
+      <version>3.1.0</version>
+      <description>Thunk middleware for Redux.</description>
       <licenses>
         <license>
           <id>MIT</id>
         </license>
       </licenses>
-      <purl>pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git</purl>
+      <purl>pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git</purl>
       <externalReferences>
         <reference type="vcs">
-          <url>git://github.com/feross/buffer.git</url>
+          <url>git+https://github.com/reduxjs/redux-thunk.git</url>
           <comment>as detected from PackageJson property "repository.url"</comment>
         </reference>
         <reference type="website">
-          <url>https://github.com/feross/buffer</url>
+          <url>https://github.com/reduxjs/redux-thunk</url>
           <comment>as detected from PackageJson property "homepage"</comment>
         </reference>
         <reference type="issue-tracker">
-          <url>https://github.com/feross/buffer/issues</url>
-          <comment>as detected from PackageJson property "bugs.url"</comment>
-        </reference>
-      </externalReferences>
-    </component>
-    <component type="library" bom-ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git">
-      <author>Mike Bostock</author>
-      <name>d3-format</name>
-      <version>3.1.0</version>
-      <description>Format numbers for human consumption.</description>
-      <licenses>
-        <license>
-          <id>ISC</id>
-        </license>
-      </licenses>
-      <purl>pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git</purl>
-      <externalReferences>
-        <reference type="vcs">
-          <url>git+https://github.com/d3/d3-format.git</url>
-          <comment>as detected from PackageJson property "repository.url"</comment>
-        </reference>
-        <reference type="website">
-          <url>https://d3js.org/d3-format/</url>
-          <comment>as detected from PackageJson property "homepage"</comment>
-        </reference>
-        <reference type="issue-tracker">
-          <url>https://github.com/d3/d3-format/issues</url>
-          <comment>as detected from PackageJson property "bugs.url"</comment>
-        </reference>
-      </externalReferences>
-    </component>
-    <component type="library" bom-ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
-      <author>Mike Bostock</author>
-      <name>d3-time-format</name>
-      <version>4.1.0</version>
-      <description>A JavaScript time formatter and parser inspired by strftime and strptime.</description>
-      <licenses>
-        <license>
-          <id>ISC</id>
-        </license>
-      </licenses>
-      <purl>pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git</purl>
-      <externalReferences>
-        <reference type="vcs">
-          <url>git+https://github.com/d3/d3-time-format.git</url>
-          <comment>as detected from PackageJson property "repository.url"</comment>
-        </reference>
-        <reference type="website">
-          <url>https://d3js.org/d3-time-format/</url>
-          <comment>as detected from PackageJson property "homepage"</comment>
-        </reference>
-        <reference type="issue-tracker">
-          <url>https://github.com/d3/d3-time-format/issues</url>
+          <url>https://github.com/reduxjs/redux-thunk/issues</url>
           <comment>as detected from PackageJson property "bugs.url"</comment>
         </reference>
       </externalReferences>
@@ -726,6 +648,58 @@
         </reference>
       </externalReferences>
     </component>
+    <component type="library" bom-ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
+      <author>Feross Aboukhadijeh</author>
+      <name>buffer</name>
+      <version>5.7.1</version>
+      <description>Node.js Buffer API, for the browser</description>
+      <licenses>
+        <license>
+          <id>MIT</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git://github.com/feross/buffer.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://github.com/feross/buffer</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/feross/buffer/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git">
+      <author>Mike Bostock</author>
+      <name>d3-format</name>
+      <version>3.1.0</version>
+      <description>Format numbers for human consumption.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-format.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-format/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-format/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
     <component type="library" bom-ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git">
       <author>Mike Bostock</author>
       <name>d3-interpolate</name>
@@ -748,6 +722,32 @@
         </reference>
         <reference type="issue-tracker">
           <url>https://github.com/d3/d3-interpolate/issues</url>
+          <comment>as detected from PackageJson property "bugs.url"</comment>
+        </reference>
+      </externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
+      <author>Mike Bostock</author>
+      <name>d3-time-format</name>
+      <version>4.1.0</version>
+      <description>A JavaScript time formatter and parser inspired by strftime and strptime.</description>
+      <licenses>
+        <license>
+          <id>ISC</id>
+        </license>
+      </licenses>
+      <purl>pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git</purl>
+      <externalReferences>
+        <reference type="vcs">
+          <url>git+https://github.com/d3/d3-time-format.git</url>
+          <comment>as detected from PackageJson property "repository.url"</comment>
+        </reference>
+        <reference type="website">
+          <url>https://d3js.org/d3-time-format/</url>
+          <comment>as detected from PackageJson property "homepage"</comment>
+        </reference>
+        <reference type="issue-tracker">
+          <url>https://github.com/d3/d3-time-format/issues</url>
           <comment>as detected from PackageJson property "bugs.url"</comment>
         </reference>
       </externalReferences>
@@ -900,10 +900,10 @@
       <dependency ref="pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git"/>
       <dependency ref="pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git"/>
       <dependency ref="pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git"/>
+      <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
       <dependency ref="pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git"/>
       <dependency ref="pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
       <dependency ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
-      <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
       <dependency ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"/>
       <dependency ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"/>
       <dependency ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git"/>
@@ -928,15 +928,15 @@
       <dependency ref="pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"/>
       <dependency ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"/>
     </dependency>
-    <dependency ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"/>
     <dependency ref="pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git">
       <dependency ref="pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"/>
     </dependency>
+    <dependency ref="pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"/>
     <dependency ref="pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"/>
     <dependency ref="pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git">
       <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git"/>
-      <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
       <dependency ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"/>
+      <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
       <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"/>
       <dependency ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git"/>
       <dependency ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git"/>
@@ -945,24 +945,24 @@
       <dependency ref="pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git"/>
     </dependency>
     <dependency ref="pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"/>
-    <dependency ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"/>
     <dependency ref="pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"/>
-    <dependency ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
-      <dependency ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"/>
-      <dependency ref="pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"/>
-    </dependency>
-    <dependency ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"/>
-    <dependency ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
-      <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"/>
-    </dependency>
+    <dependency ref="pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"/>
     <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git">
       <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git"/>
     </dependency>
     <dependency ref="pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git">
       <dependency ref="pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"/>
     </dependency>
+    <dependency ref="pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git">
+      <dependency ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"/>
+      <dependency ref="pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"/>
     <dependency ref="pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git">
       <dependency ref="pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"/>
+    </dependency>
+    <dependency ref="pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git">
+      <dependency ref="pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"/>
     </dependency>
     <dependency ref="pkg:npm/d3-path@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-path.git"/>
     <dependency ref="pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"/>

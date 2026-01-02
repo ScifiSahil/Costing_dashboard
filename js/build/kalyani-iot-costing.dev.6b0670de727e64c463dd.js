@@ -11545,197 +11545,6 @@ Line.displayName = 'Line';
 
 /***/ }),
 
-/***/ "./node_modules/recharts/es6/cartesian/ReferenceArea.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/recharts/es6/cartesian/ReferenceArea.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ReferenceArea": () => (/* binding */ ReferenceArea),
-/* harmony export */   "referenceAreaDefaultProps": () => (/* binding */ referenceAreaDefaultProps)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _container_Layer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../container/Layer */ "./node_modules/recharts/es6/container/Layer.js");
-/* harmony import */ var _component_Label__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../component/Label */ "./node_modules/recharts/es6/component/Label.js");
-/* harmony import */ var _util_CartesianUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/CartesianUtils */ "./node_modules/recharts/es6/util/CartesianUtils.js");
-/* harmony import */ var _util_DataUtils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/DataUtils */ "./node_modules/recharts/es6/util/DataUtils.js");
-/* harmony import */ var _shape_Rectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shape/Rectangle */ "./node_modules/recharts/es6/shape/Rectangle.js");
-/* harmony import */ var _state_referenceElementsSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../state/referenceElementsSlice */ "./node_modules/recharts/es6/state/referenceElementsSlice.js");
-/* harmony import */ var _state_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../state/hooks */ "./node_modules/recharts/es6/state/hooks.js");
-/* harmony import */ var _state_selectors_axisSelectors__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../state/selectors/axisSelectors */ "./node_modules/recharts/es6/state/selectors/axisSelectors.js");
-/* harmony import */ var _context_PanoramaContext__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../context/PanoramaContext */ "./node_modules/recharts/es6/context/PanoramaContext.js");
-/* harmony import */ var _container_ClipPathProvider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../container/ClipPathProvider */ "./node_modules/recharts/es6/container/ClipPathProvider.js");
-/* harmony import */ var _util_svgPropertiesAndEvents__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../util/svgPropertiesAndEvents */ "./node_modules/recharts/es6/util/svgPropertiesAndEvents.js");
-/* harmony import */ var _util_resolveDefaultProps__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../util/resolveDefaultProps */ "./node_modules/recharts/es6/util/resolveDefaultProps.js");
-/* harmony import */ var _zIndex_ZIndexLayer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../zIndex/ZIndexLayer */ "./node_modules/recharts/es6/zIndex/ZIndexLayer.js");
-/* harmony import */ var _zIndex_DefaultZIndexes__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../zIndex/DefaultZIndexes */ "./node_modules/recharts/es6/zIndex/DefaultZIndexes.js");
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * Omit width, height, x, y from SVGPropsAndEvents because ReferenceArea receives x1, x2, y1, y2 instead.
- * The position is calculated internally instead.
- */
-
-var getRect = (hasX1, hasX2, hasY1, hasY2, xAxisScale, yAxisScale, props) => {
-  var {
-    x1: xValue1,
-    x2: xValue2,
-    y1: yValue1,
-    y2: yValue2
-  } = props;
-  if (xAxisScale == null || yAxisScale == null) {
-    return null;
-  }
-  var scales = (0,_util_CartesianUtils__WEBPACK_IMPORTED_MODULE_2__.createLabeledScales)({
-    x: xAxisScale,
-    y: yAxisScale
-  });
-  var p1 = {
-    x: hasX1 ? scales.x.apply(xValue1, {
-      position: 'start'
-    }) : scales.x.rangeMin,
-    y: hasY1 ? scales.y.apply(yValue1, {
-      position: 'start'
-    }) : scales.y.rangeMin
-  };
-  var p2 = {
-    x: hasX2 ? scales.x.apply(xValue2, {
-      position: 'end'
-    }) : scales.x.rangeMax,
-    y: hasY2 ? scales.y.apply(yValue2, {
-      position: 'end'
-    }) : scales.y.rangeMax
-  };
-  if (props.ifOverflow === 'discard' && (!scales.isInRange(p1) || !scales.isInRange(p2))) {
-    return null;
-  }
-  return (0,_util_CartesianUtils__WEBPACK_IMPORTED_MODULE_2__.rectWithPoints)(p1, p2);
-};
-var renderRect = (option, props) => {
-  var rect;
-  if (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.isValidElement(option)) {
-    // @ts-expect-error element cloning is not typed
-    rect = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(option, props);
-  } else if (typeof option === 'function') {
-    rect = option(props);
-  } else {
-    rect = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_shape_Rectangle__WEBPACK_IMPORTED_MODULE_3__.Rectangle, _extends({}, props, {
-      className: "recharts-reference-area-rect"
-    }));
-  }
-  return rect;
-};
-function ReportReferenceArea(props) {
-  var dispatch = (0,_state_hooks__WEBPACK_IMPORTED_MODULE_4__.useAppDispatch)();
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    dispatch((0,_state_referenceElementsSlice__WEBPACK_IMPORTED_MODULE_5__.addArea)(props));
-    return () => {
-      dispatch((0,_state_referenceElementsSlice__WEBPACK_IMPORTED_MODULE_5__.removeArea)(props));
-    };
-  });
-  return null;
-}
-function ReferenceAreaImpl(props) {
-  var {
-    x1,
-    x2,
-    y1,
-    y2,
-    className,
-    shape,
-    xAxisId,
-    yAxisId
-  } = props;
-  var clipPathId = (0,_container_ClipPathProvider__WEBPACK_IMPORTED_MODULE_6__.useClipPathId)();
-  var isPanorama = (0,_context_PanoramaContext__WEBPACK_IMPORTED_MODULE_7__.useIsPanorama)();
-  var xAxisScale = (0,_state_hooks__WEBPACK_IMPORTED_MODULE_4__.useAppSelector)(state => (0,_state_selectors_axisSelectors__WEBPACK_IMPORTED_MODULE_8__.selectAxisScale)(state, 'xAxis', xAxisId, isPanorama));
-  var yAxisScale = (0,_state_hooks__WEBPACK_IMPORTED_MODULE_4__.useAppSelector)(state => (0,_state_selectors_axisSelectors__WEBPACK_IMPORTED_MODULE_8__.selectAxisScale)(state, 'yAxis', yAxisId, isPanorama));
-  if (xAxisScale == null || yAxisScale == null) {
-    return null;
-  }
-  var hasX1 = (0,_util_DataUtils__WEBPACK_IMPORTED_MODULE_9__.isNumOrStr)(x1);
-  var hasX2 = (0,_util_DataUtils__WEBPACK_IMPORTED_MODULE_9__.isNumOrStr)(x2);
-  var hasY1 = (0,_util_DataUtils__WEBPACK_IMPORTED_MODULE_9__.isNumOrStr)(y1);
-  var hasY2 = (0,_util_DataUtils__WEBPACK_IMPORTED_MODULE_9__.isNumOrStr)(y2);
-  if (!hasX1 && !hasX2 && !hasY1 && !hasY2 && !shape) {
-    return null;
-  }
-  var rect = getRect(hasX1, hasX2, hasY1, hasY2, xAxisScale, yAxisScale, props);
-  if (!rect && !shape) {
-    return null;
-  }
-  var isOverflowHidden = props.ifOverflow === 'hidden';
-  var clipPath = isOverflowHidden ? "url(#".concat(clipPathId, ")") : undefined;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_zIndex_ZIndexLayer__WEBPACK_IMPORTED_MODULE_10__.ZIndexLayer, {
-    zIndex: props.zIndex
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_container_Layer__WEBPACK_IMPORTED_MODULE_11__.Layer, {
-    className: (0,clsx__WEBPACK_IMPORTED_MODULE_1__.clsx)('recharts-reference-area', className)
-  }, renderRect(shape, _objectSpread(_objectSpread({
-    clipPath
-  }, (0,_util_svgPropertiesAndEvents__WEBPACK_IMPORTED_MODULE_12__.svgPropertiesAndEvents)(props)), rect)), rect != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_component_Label__WEBPACK_IMPORTED_MODULE_13__.CartesianLabelContextProvider, _extends({}, rect, {
-    lowerWidth: rect.width,
-    upperWidth: rect.width
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_component_Label__WEBPACK_IMPORTED_MODULE_13__.CartesianLabelFromLabelProp, {
-    label: props.label
-  }), props.children)));
-}
-var referenceAreaDefaultProps = {
-  ifOverflow: 'discard',
-  xAxisId: 0,
-  yAxisId: 0,
-  radius: 0,
-  fill: '#ccc',
-  fillOpacity: 0.5,
-  stroke: 'none',
-  strokeWidth: 1,
-  zIndex: _zIndex_DefaultZIndexes__WEBPACK_IMPORTED_MODULE_14__.DefaultZIndexes.area
-};
-/**
- * @provides CartesianLabelContext
- */
-function ReferenceArea(outsideProps) {
-  var props = (0,_util_resolveDefaultProps__WEBPACK_IMPORTED_MODULE_15__.resolveDefaultProps)(outsideProps, referenceAreaDefaultProps);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ReportReferenceArea, {
-    yAxisId: props.yAxisId,
-    xAxisId: props.xAxisId,
-    ifOverflow: props.ifOverflow,
-    x1: props.x1,
-    x2: props.x2,
-    y1: props.y1,
-    y2: props.y2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ReferenceAreaImpl, props));
-}
-ReferenceArea.displayName = 'ReferenceArea';
-
-/***/ }),
-
 /***/ "./node_modules/recharts/es6/cartesian/ReferenceLine.js":
 /*!**************************************************************!*\
   !*** ./node_modules/recharts/es6/cartesian/ReferenceLine.js ***!
@@ -35193,8 +35002,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/Line.js");
 /* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/CartesianGrid.js");
 /* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/chart/ComposedChart.js");
-/* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/ReferenceArea.js");
-/* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/Area.js");
+/* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/Area.js");
 /* harmony import */ var _ActionInsightsModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ActionInsightsModal */ "./src/components/ActionInsightsModal.jsx");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/package.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/zap.js");
@@ -35211,9 +35019,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/arrow-up.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/arrow-down.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trending-up.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trending-up.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
 /* harmony import */ var _MonthRangeSlider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MonthRangeSlider */ "./src/components/MonthRangeSlider.jsx");
 /* harmony import */ var _store_costStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/costStore */ "./src/store/costStore.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -35222,10 +35030,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -35611,42 +35415,37 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 var getMonthName = function getMonthName(monthNo) {
   return monthNames[monthNo - 1] || "";
 };
-
-// Custom Tooltip Component
 var CustomTooltip = function CustomTooltip(_ref) {
+  var _payload$find;
   var active = _ref.active,
     payload = _ref.payload,
     label = _ref.label,
-    theme = _ref.theme;
-  if (active && payload && payload.length) {
-    var uniqueEntries = payload.filter(function (entry, index, self) {
-      if (entry.value === null || entry.value === undefined) return false;
-      return self.findIndex(function (e) {
-        return e.dataKey === entry.dataKey && e.value === entry.value;
-      }) === index;
-    });
-    if (uniqueEntries.length === 0) return null;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "".concat(theme.cardBg, " p-4 rounded-xl ").concat(theme.shadow, " ").concat(theme.border, " border")
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      className: "text-sm font-bold ".concat(theme.primaryText, " mb-3")
-    }, label), uniqueEntries.map(function (entry, index) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        key: "item-".concat(entry.dataKey, "-").concat(index),
-        className: "text-sm mb-1"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-        className: "inline-block w-3 h-3 rounded-full mr-2",
-        style: {
-          backgroundColor: entry.color
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-        className: "font-semibold ".concat(theme.primaryText)
-      }, entry.name, ":", " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-        className: "font-bold ".concat(theme.primaryText)
-      }, entry.dataKey.includes("Percent") || entry.dataKey.includes("Target") || entry.dataKey.includes("EBITDA") ? "".concat(entry.value, "%") : "\u20B9".concat(entry.value.toLocaleString())));
-    }));
-  }
-  return null;
+    theme = _ref.theme,
+    kpiName = _ref.kpiName;
+  if (!active || !payload || !payload.length) return null;
+  var actual = Number((_payload$find = payload.find(function (p) {
+    return p.dataKey === "actual";
+  })) === null || _payload$find === void 0 ? void 0 : _payload$find.value);
+  if (isNaN(actual)) return null;
+  var kpiTargets = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState().kpiTargets;
+  var target = Number(kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[kpiName]);
+  var hasTarget = !isNaN(target);
+  var diff = hasTarget ? actual - target : null;
+  var diffPercent = hasTarget && target !== 0 ? diff / target * 100 : null;
+  var isOverTarget = diff > 0;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "".concat(theme.cardBg, " p-4 rounded-xl ").concat(theme.shadow, " ").concat(theme.border, " border min-w-[220px]")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "text-sm font-bold ".concat(theme.primaryText, " mb-2")
+  }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-between text-sm font-semibold mb-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Actual"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", actual.toFixed(2))), target != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-between text-sm font-semibold mb-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", target.toFixed(2))), target != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "my-2 border-t border-gray-300"
+  }), diff != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex justify-between text-sm font-bold ".concat(isOverTarget ? "text-red-600" : "text-green-600")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, isOverTarget ? "Above Target" : "Below Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", Math.abs(diff).toFixed(2), diffPercent != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, " (", Math.abs(diffPercent).toFixed(1), "%)"))));
 };
 
 // Tab Toggle Component
@@ -35760,8 +35559,6 @@ var CostScreener = function CostScreener() {
   var setCurrentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
     return state.setCurrentPeriodMonth;
   });
-
-  // ⭐⭐⭐ ADD THESE THREE NEW LINES ⭐⭐⭐
   var kpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
     return state.kpiTargets;
   });
@@ -35808,8 +35605,6 @@ var CostScreener = function CostScreener() {
   var cardRefs = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({});
   var themeSelectorRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var currentTheme = themes[selectedTheme];
-
-  // ⭐⭐⭐ NEW: Fetch targets when filters change ⭐⭐⭐
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     console.log("🔄 Filters changed, fetching KPI targets...");
     fetchKpiTargets();
@@ -35967,11 +35762,10 @@ var CostScreener = function CostScreener() {
       from = 1;
       to = 6;
     }
-
-    // Reset location to "All" on initial load when category is "All"
     if (selectedCategory === "All") {
       setSelectedLocation("All");
     }
+    _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState().setMonthRange(from, to);
     fetchCostData(from, to, currentYear, viewType);
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -36089,11 +35883,17 @@ var CostScreener = function CostScreener() {
       var budgetAmount = avgAmount * 1.05;
       return {
         kpiName: costHead.kpiName,
-        actual_per_tonne: parseFloat(lastMonthAmount.toFixed(2)),
+        actual_per_tonne: Number(lastMonthAmount !== null && lastMonthAmount !== void 0 ? lastMonthAmount : 0).toFixed(2),
         budget_per_tonne: parseFloat(budgetAmount.toFixed(2)),
-        trend: trend.map(function (val) {
-          return parseFloat(val.toFixed(2));
+        trend: trend.map(function (val, idx) {
+          var _kpiTargets$costHead$;
+          return {
+            month: months[idx],
+            actual: Number(val !== null && val !== void 0 ? val : 0).toFixed(2),
+            target: (_kpiTargets$costHead$ = kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[costHead.kpiName]) !== null && _kpiTargets$costHead$ !== void 0 ? _kpiTargets$costHead$ : null
+          };
         }),
+        months: months,
         monthly_costs: trend.map(function (val) {
           return parseFloat(val.toFixed(2));
         }),
@@ -36101,8 +35901,7 @@ var CostScreener = function CostScreener() {
           return parseFloat(budgetAmount.toFixed(2));
         }),
         production_percentage: null,
-        target_percentage: null,
-        months: months
+        target_percentage: null
       };
     });
     return kpiCards;
@@ -36145,12 +35944,10 @@ var CostScreener = function CostScreener() {
     return [];
   };
 
-  // ⭐⭐⭐ UPDATED: Build Chart Data with Target Support ⭐⭐⭐
+  // ⭐ FIXED buildChartData function
   var buildChartData = function buildChartData(kpi, currentMonthToUse) {
-    var _historicalData, _kpi$production_perce2;
+    var _kpi$production_perce2;
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    // ⭐ Get target for this specific KPI
     var normalizedKpiName = kpi.kpiName;
     var targetValue = kpiTargets[normalizedKpiName] || null;
     console.log("\uD83C\uDFAF Building chart for: ".concat(normalizedKpiName));
@@ -36158,56 +35955,34 @@ var CostScreener = function CostScreener() {
     var avgTargetPercent = kpi.production_percentage && kpi.production_percentage.length > 0 ? kpi.production_percentage.reduce(function (a, b) {
       return a + b;
     }, 0) / kpi.production_percentage.length : null;
-    var historicalData = kpi.trend.map(function (value, index) {
+
+    // ⭐ CRITICAL FIX: Safely handle undefined values
+    var historicalData = (kpi.trend || []).map(function (value, index) {
       var _kpi$production_perce;
-      var actualMonthNo = (monthRange.from + index - 1) % 12 || 12;
+      var actualMonthNo = monthRange.from + index;
       var monthIndex = (actualMonthNo - 1) % 12;
       var isCurrentMonth = actualMonthNo === currentMonthToUse;
+
+      // ⭐ Safely extract actual value
+      var actualValue = (value === null || value === void 0 ? void 0 : value.actual) != null ? value.actual : 0;
       return {
         month: monthNames[monthIndex] || "M".concat(index + 1),
         monthNo: actualMonthNo,
-        actual: parseFloat(value.toFixed(2)),
+        actual: Number(actualValue).toFixed(3),
         prediction: null,
         target: targetValue,
-        // ⭐ ADD TARGET
         productionPercentPredicted: null,
         productionPercent: ((_kpi$production_perce = kpi.production_percentage) === null || _kpi$production_perce === void 0 ? void 0 : _kpi$production_perce[index]) || null,
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue ? value - targetValue : 0 // ⭐ VARIANCE
+        variance: targetValue ? actualValue - targetValue : 0
       };
     });
-
-    var lastValue = kpi.trend[kpi.trend.length - 1];
-    var prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
-    var costDirection = lastValue >= prevValue ? 1 : -1;
-    var lastMonthNo = ((_historicalData = historicalData[historicalData.length - 1]) === null || _historicalData === void 0 ? void 0 : _historicalData.monthNo) || 12;
-    var nextMonthNo = lastMonthNo % 12 + 1;
-    var monthIndex = (nextMonthNo - 1) % 12;
-    var stepChange = Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
-    var predictedValue = lastValue + costDirection * stepChange;
     var percentLength = ((_kpi$production_perce2 = kpi.production_percentage) === null || _kpi$production_perce2 === void 0 ? void 0 : _kpi$production_perce2.length) || 0;
     var lastPercent = percentLength > 0 ? kpi.production_percentage[percentLength - 1] : null;
-    var predictionData = [{
-      month: monthNames[monthIndex] || "M".concat(monthIndex + 1),
-      monthNo: nextMonthNo,
-      actual: null,
-      prediction: parseFloat(predictedValue.toFixed(2)),
-      target: targetValue,
-      // ⭐ ADD TARGET
-      targetForCheck: null,
-      productionPercent: null,
-      productionPercentPredicted: lastPercent,
-      productionTarget: avgTargetPercent,
-      productionTargetForCheck: avgTargetPercent,
-      isHistorical: false,
-      isHighlighted: false,
-      variance: targetValue ? predictedValue - targetValue : 0 // ⭐ VARIANCE
-    }];
-
-    console.log("\u2705 Chart data built: ".concat(historicalData.length + 1, " points with target: ").concat(targetValue));
-    return [].concat(_toConsumableArray(historicalData), predictionData);
+    console.log("\u2705 Chart data built: ".concat(historicalData.length, " points with target: ").concat(targetValue));
+    return historicalData;
   };
 
   // Custom Label Component
@@ -36511,7 +36286,6 @@ var CostScreener = function CostScreener() {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
     }, data.map(function (kpi, idx) {
-      var _chartData$Math$max, _chartData$Math$min;
       var IconComponent = iconMap[kpi.kpiName] || lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"];
       var cardCurrentMonth = cardCurrentMonths[kpi.kpiName] || currentPeriodMonth;
       var chartData = buildChartData(kpi, cardCurrentMonth);
@@ -36540,10 +36314,12 @@ var CostScreener = function CostScreener() {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
         className: "text-xxl font-extrabold text-slate-800"
       }, kpi.kpiName)), function () {
-        var actual = kpi.actual_per_tonne;
-        var budget = kpi.budget_per_tonne;
-        var variance = (actual - budget) / budget * 100;
-        var isOverBudget = actual > budget;
+        var trend = kpi.monthly_costs || [];
+        var curr = trend[trend.length - 1];
+        var prev = trend[trend.length - 2];
+        var variance = prev && prev !== 0 ? (curr - prev) / prev * 100 : 0;
+        var isIncrease = variance > 0;
+        var isOverBudget = isIncrease && variance > 0;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           className: "flex items-center gap-1 px-3 py-1 rounded-full ".concat(isOverBudget ? "bg-red-100" : "bg-green-100")
         }, isOverBudget ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], {
@@ -36554,8 +36330,10 @@ var CostScreener = function CostScreener() {
           className: "text-3xl font-extrabold ".concat(isOverBudget ? "text-red-700" : "text-green-700")
         }, Math.abs(variance).toFixed(1), "%"));
       }()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "relative h-56 mb-3",
+        className: "relative mb-3",
         style: {
+          height: "224px",
+          minHeight: "224px",
           cursor: isModalOpen ? "default" : "pointer",
           zIndex: isModalOpen ? 1 : 1,
           pointerEvents: isModalOpen ? "none" : "all"
@@ -36563,30 +36341,10 @@ var CostScreener = function CostScreener() {
         onClick: function onClick(e) {
           if (isModalOpen) return;
           e.stopPropagation();
-          var rect = e.currentTarget.getBoundingClientRect();
-          var clickX = e.clientX - rect.left;
-          var clickY = e.clientY - rect.top;
-          var chartWidth = rect.width - 10;
-          var historicalPoints = chartData.filter(function (d) {
-            return d.isHistorical;
-          });
-          var pointSpacing = chartWidth / (historicalPoints.length + 1);
-          var clickedIndex = Math.round(clickX / pointSpacing) - 1;
-          if (clickedIndex >= 0 && clickedIndex < historicalPoints.length) {
-            var point = historicalPoints[clickedIndex];
-            if (point) {
-              setActionModal({
-                kpiName: kpi.kpiName,
-                month: point.month,
-                x: clickX,
-                y: clickY
-              });
-            }
-          }
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_18__.ResponsiveContainer, {
         width: "100%",
-        height: "100%"
+        height: 224
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_29__.ComposedChart, {
         data: chartData,
         margin: {
@@ -36606,42 +36364,37 @@ var CostScreener = function CostScreener() {
           fontSize: 15,
           fontWeight: 600
         },
-        domain: ["dataMin", "dataMax"]
+        domain: [function (dataMin) {
+          var min = Math.min(dataMin, Number(kpiTargets[kpi.kpiName]) || dataMin);
+          return min < 0 ? min : 0;
+        }, function (dataMax) {
+          return Math.max(dataMax, kpiTargets[kpi.kpiName]);
+        }]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_22__.Tooltip, {
         content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CustomTooltip, {
-          theme: currentTheme
+          theme: currentTheme,
+          kpiName: kpi.kpiName
         })
       }), function () {
         var targetForKpi = kpiTargets[kpi.kpiName];
-        console.log("\uD83C\uDFA8 Rendering chart: ".concat(kpi.kpiName, ", Target: ").concat(targetForKpi));
         if (!targetForKpi || targetForKpi <= 0) {
-          console.warn("\u26A0\uFE0F No target line for ".concat(kpi.kpiName, " (value: ").concat(targetForKpi, ")"));
           return null;
         }
-        console.log("\u2705 Drawing ORANGE target line for ".concat(kpi.kpiName, " at \u20B9").concat(targetForKpi));
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_24__.ReferenceLine, {
           y: targetForKpi,
-          stroke: "#ff8c00" // ⭐ ORANGE COLOR
-          ,
+          stroke: "#ff8c00",
           strokeWidth: 2.5,
           strokeDasharray: "5 5",
           label: {
             value: "Target: \u20B9".concat(Math.round(targetForKpi).toLocaleString()),
             position: "right",
             fill: "#ff8c00",
-            // ⭐ ORANGE COLOR
             fontSize: 12,
             fontWeight: "bold",
             offset: 10
           }
         });
-      }(), highlightIndex >= 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_30__.ReferenceArea, {
-        x1: (_chartData$Math$max = chartData[Math.max(0, highlightIndex - 0.4)]) === null || _chartData$Math$max === void 0 ? void 0 : _chartData$Math$max.month,
-        x2: (_chartData$Math$min = chartData[Math.min(chartData.length - 1, highlightIndex + 0.4)]) === null || _chartData$Math$min === void 0 ? void 0 : _chartData$Math$min.month,
-        fill: currentTheme.chartColors.highlightColor,
-        fillOpacity: 0.1,
-        strokeOpacity: 0.3
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_31__.Area, {
+      }(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_30__.Area, {
         type: "monotone",
         dataKey: "actual",
         fill: currentTheme.chartColors.actualLine,
@@ -36660,15 +36413,21 @@ var CostScreener = function CostScreener() {
           var isHighlight = index === highlightIndex;
           var isHistorical = payload.isHistorical;
           if (!isHistorical) return null;
+          var target = Number(kpiTargets[kpi.kpiName]);
+          var value = payload.actual;
+          var fillColor = currentTheme.chartColors.actualLine;
+          if (isHighlight && target) {
+            fillColor = value > target ? "#ef4444" : "#10b981";
+          }
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("circle", {
             cx: cx,
             cy: cy,
             r: isHighlight ? 7 : 3,
-            fill: isHighlight ? currentTheme.chartColors.highlightColor : currentTheme.chartColors.actualLine,
+            fill: fillColor,
             stroke: isHighlight ? "white" : "none",
             strokeWidth: isHighlight ? 2 : 0,
             style: {
-              filter: isHighlight ? "drop-shadow(0px 0px 6px ".concat(currentTheme.chartColors.highlightColor, ")") : "none"
+              filter: isHighlight ? "drop-shadow(0px 0px 6px ".concat(fillColor, ")") : "none"
             }
           });
         },
@@ -36687,7 +36446,7 @@ var CostScreener = function CostScreener() {
         className: "flex items-center justify-between mb-4"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
         className: "text-base font-bold text-gray-800 flex items-center gap-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_32__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_31__["default"], {
         className: "w-5 h-5 text-orange-600"
       }), "Top 10 Cost Contributors - ", kpi.kpiName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         onClick: function onClick(e) {
@@ -36697,7 +36456,7 @@ var CostScreener = function CostScreener() {
           });
         },
         className: "p-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-all shadow-md hover:shadow-lg"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_33__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_32__["default"], {
         className: "w-4 h-4"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "space-y-2"
@@ -36733,7 +36492,7 @@ var CostScreener = function CostScreener() {
         })));
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "text-center py-8 text-gray-500"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_34__["default"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_33__["default"], {
         className: "w-12 h-12 mx-auto mb-2 text-gray-400"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
         className: "font-bold"
@@ -37070,7 +36829,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 // ============================================================================
-// ⭐⭐⭐ KPI NAME MAPPING (Backend → Frontend) ⭐⭐⭐
+// ⭐⭐⭐ ENHANCED KPI NAME MAPPING (Backend → Frontend) ⭐⭐⭐
 // ============================================================================
 var KPI_NAME_MAPPING = {
   // Power
@@ -37092,27 +36851,33 @@ var KPI_NAME_MAPPING = {
   subcon: "Sub Contract",
   "sub contract": "Sub Contract",
   "Sub Contract": "Sub Contract",
+  subcontract: "Sub Contract",
   // Repair & Maintenance
   "repair and Maintanance": "Repair & Maintenance",
   "repair and maintenance": "Repair & Maintenance",
   "repair & maintenance": "Repair & Maintenance",
   "Repair & Maintenance": "Repair & Maintenance",
+  "repair and maintanance": "Repair & Maintenance",
   // Machine Hire Charges
   "machine hire charges": "Machine Hire Charges",
   "Machine Hire Charges": "Machine Hire Charges",
-  "Establishment Exp": "Establishment Expenses",
-  "Establishment Expenses": "Establishment Expenses",
-  "establishment expenses": "Establishment Expenses",
-  "eastablishment expenses": "Establishment Expenses",
+  // Establishment Expenses
+  "Establishment Exp": "Establishment Exp",
+  "Establishment Expenses": "Establishment Exp",
+  "establishment expenses": "Establishment Exp",
+  "eastablishment expenses": "Establishment Exp",
+  "eastablishment Expenses": "Establishment Exp",
   // Packing
-  packing: "Packing",
-  Packing: "Packing",
+  "packing": "Packing",
+  "Packing": "Packing",
   // Freight
-  freight: "Freight",
-  Freight: "Freight",
+  "freight": "Freight",
+  "Freight": "Freight",
+  // Raw Material
   "Raw Material": "Raw Material",
   "raw material": "Raw Material",
   "Raw Material Cost": "Raw Material",
+  "raw material cost": "Raw Material",
   // Employee Cost
   "employee cost": "Employee Cost",
   "Employee Cost": "Employee Cost"
@@ -37139,50 +36904,35 @@ var normalizeKpiName = function normalizeKpiName(name) {
 };
 
 // ============================================================================
-// ⭐⭐⭐ TYPE MAPPING - CRITICAL FOR TARGET API ⭐⭐⭐
+// TYPE MAPPING
 // ============================================================================
 var TYPE_MAPPING = {
-  "Forging": "ALL_FRG",
-  "Machining": "ALL_MCH",
+  Forging: "ALL_FRG",
+  Machining: "ALL_MCH",
   "Heat Treatment": "ALL_HT",
-  "ALL": null
+  ALL: null
 };
 
 // ============================================================================
 // PLANT CODE MAPPING
 // ============================================================================
 var PLANT_CODE_MAPPING = {
-  Mundhwa: "2001",
+  "Mundhwa": "2001",
   "Ranjangaon E-84": "2002",
-  "Ranjangaon-2": "2101",
   "Transmission Ranjangaon": "2101",
   "Transmission Baramati": "2102",
-  Chakan: "2020",
+  "Chakan": "2020",
   "Khed-1": "2021",
   "Khed-2": "2027",
   "Ambethan-1": "2022",
   "Ambethan-2": "2023",
   "Ambethan-3": "2028",
   "Baramati KTFL": "2024",
-  Bhiwadi: "2025",
-  Gujarat: "2026",
+  "Bhiwadi": "2025",
+  "Gujarat": "2026",
   "Heat Treatment": "2081",
   "Inmet Jejuri": "2201",
-  "Yokoha Jejuri": "2301",
-  Ranjangaon: "2002",
-  Khed: "2021",
-  Baramati: "2024",
-  RGN: "2002",
-  "RGN-2": "2101",
-  MUN: "2001",
-  CHK: "2020",
-  KHD: "2021",
-  BRM: "2024",
-  BWD: "2025",
-  GUT: "2026",
-  "Ambhethan-1": "2022",
-  "Ambhethan-2": "2023",
-  "Ambhethan-3": "2028"
+  "Yokoha Jejuri": "2301"
 };
 
 // ============================================================================
@@ -37502,9 +37252,14 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
       });
     },
     setSelectedType: function setSelectedType(type) {
-      console.log("🏭 Setting type to:", type);
+      var _TYPE_MAPPING$type;
+      var TYPE_MAPPING = {
+        Forging: "ALL_FRG",
+        Machining: "ALL_MCH",
+        ALL: null
+      };
       set({
-        selectedType: type
+        selectedType: (_TYPE_MAPPING$type = TYPE_MAPPING[type]) !== null && _TYPE_MAPPING$type !== void 0 ? _TYPE_MAPPING$type : null
       });
     },
     // ====================================================================
@@ -37552,7 +37307,7 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     kpiTargets: {},
     targetLoading: false,
     // ====================================================================
-    // ⭐⭐⭐ UPDATED: FETCH KPI TARGETS WITH TYPE MAPPING ⭐⭐⭐
+    // ⭐⭐⭐ FIXED: FETCH KPI TARGETS WITH PROPER FIELD READING ⭐⭐⭐
     // ====================================================================
     fetchKpiTargets: function () {
       var _fetchKpiTargets = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
@@ -37573,7 +37328,7 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 year: currentYear,
                 months: monthRange
               });
-              prodOrSale = viewType === "production" ? "Production" : "Sale"; // ⭐⭐⭐ TYPE MAPPING - CRITICAL! ⭐⭐⭐
+              prodOrSale = viewType === "production" ? "Production" : "Sale"; // ⭐ TYPE MAPPING
               apiType = null;
               if (selectedType && selectedType !== "ALL") {
                 apiType = TYPE_MAPPING[selectedType] || selectedType;
@@ -37662,7 +37417,7 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
               console.log("🔍 Matching with graph data:");
               Object.keys(normalizedTargets).forEach(function (kpi) {
                 var hasData = currentKpis.has(kpi);
-                console.log("  ".concat(hasData ? '✅' : '⚠️', " ").concat(kpi, ": \u20B9").concat(normalizedTargets[kpi], " ").concat(hasData ? '(HAS DATA)' : '(NO DATA)'));
+                console.log("  ".concat(hasData ? "✅" : "⚠️", " ").concat(kpi, ": \u20B9").concat(normalizedTargets[kpi], " ").concat(hasData ? "(HAS DATA)" : "(NO DATA)"));
               });
               set({
                 kpiTargets: normalizedTargets,
@@ -37688,8 +37443,10 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
               targetsData.forEach(function (item, index) {
                 var kpiName = item.kpi_name || item.cost_head || "Other";
                 var normalizedName = normalizeKpiName(kpiName.trim());
-                var targetValue = parseFloat(item.target_per_ton || item.target_value || 0);
-                var entryDate = new Date(item.entry_date || item.date || 0);
+
+                // ⭐⭐⭐ FIXED: Read cost_value FIRST, then fallback to other fields ⭐⭐⭐
+                var targetValue = parseFloat(item.cost_value || item.target_per_ton || item.target_value || 0);
+                var entryDate = new Date(item.cost_date || item.entry_date || item.date || 0);
                 if (index < 5) {
                   console.log("  [".concat(index, "] ").concat(kpiName, " \u2192 ").concat(normalizedName, " = \u20B9").concat(targetValue));
                 }
@@ -37828,11 +37585,11 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
       return fetchKpiTargets;
     }(),
     // ====================================================================
-    // FETCH COST DATA (WITH FALLBACK TARGET EXTRACTION)
+    // FETCH COST DATA (UPDATED WITH NEW API LOGIC)
     // ====================================================================
     fetchCostData: function () {
       var _fetchCostData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(fromMonth, toMonth, year, viewType) {
-        var _get4, selectedLocation, selectedPlantCode, selectedType, cacheKey, cachedData, targets, fromMonthName, toMonthName, apiUrl, timeoutId, progressInterval, response, result, data, _targets, _targets2;
+        var _get4, selectedLocation, selectedPlantCode, selectedType, cacheKey, cachedData, fromMonthName, toMonthName, apiUrl, timeoutId, progressInterval, response, result, data;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
@@ -37843,31 +37600,27 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
               currentAbortController = new AbortController();
               _context4.prev = 2;
               _get4 = get(), selectedLocation = _get4.selectedLocation, selectedPlantCode = _get4.selectedPlantCode, selectedType = _get4.selectedType;
-              cacheKey = cacheManager.generateKey(viewType, selectedLocation || "All Plants", fromMonth, toMonth, year);
+              cacheKey = cacheManager.generateKey(viewType, selectedLocation || "All Plants", fromMonth, toMonth, year); // ⭐⭐⭐ CACHE HIT SECTION - FIXED ⭐⭐⭐
               cachedData = cacheManager.get(cacheKey);
               if (!cachedData) {
-                _context4.next = 14;
+                _context4.next = 13;
                 break;
               }
               console.log("✅ Using cached data");
-              targets = {};
-              cachedData.forEach(function (item) {
-                var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
-                var normalizedName = normalizeKpiName(kpiName);
-                var targetValue = parseFloat(item.target_value);
-                if (targetValue && !isNaN(targetValue) && targetValue > 0) {
-                  targets[normalizedName] = targetValue;
-                }
-              });
-              console.log("✅ Extracted & normalized targets from cache:", targets);
+
+              // ⭐ Don't try to extract targets from cost data cache
               set({
                 apiData: cachedData,
-                apiLoading: false,
-                kpiTargets: targets
+                apiLoading: false
               });
-              get().fetchKpiTargets();
+
+              // ⭐ Fetch targets separately with await
+              _context4.next = 11;
+              return get().fetchKpiTargets();
+            case 11:
+              console.log("✅ Cached data loaded, targets fetched separately");
               return _context4.abrupt("return");
-            case 14:
+            case 13:
               set({
                 apiLoading: true,
                 apiError: null,
@@ -37875,14 +37628,25 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
               });
               fromMonthName = (0,_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.getMonthNameForApi)(fromMonth);
               toMonthName = (0,_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.getMonthNameForApi)(toMonth);
+              // ⭐⭐⭐ NEW API LOGIC WITH 3 CASES ⭐⭐⭐
               if (viewType === "production") {
-                apiUrl = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_COST, "?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+                // ✅ CASE 1: Plant selected → PLANT API
                 if (selectedPlantCode) {
-                  apiUrl += "&plant_code=".concat(selectedPlantCode);
-                } else if (selectedType && selectedType !== "ALL") {
-                  apiUrl += "&type=".concat(selectedType);
+                  apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_PLANTWISE_CUSTOM(selectedPlantCode, year, fromMonth, toMonth);
+                  console.log("🏭 Using PLANT API for:", selectedPlantCode);
+                }
+                // ✅ CASE 2: Type selected (Forging / Machining)
+                else if (selectedType) {
+                  apiUrl = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_COST, "?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName, "&type=").concat(selectedType);
+                  console.log("🏭 Using TYPE API for:", selectedType);
+                }
+                // ✅ CASE 3: ALL
+                else {
+                  apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_COST_CUSTOM(year, fromMonth, toMonth);
+                  console.log("🏭 Using ALL API");
                 }
               } else {
+                // Sale view logic (unchanged)
                 apiUrl = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.SALE_COST, "?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
                 if (selectedPlantCode) {
                   apiUrl += "&plant_code=".concat(selectedPlantCode);
@@ -37905,11 +37669,11 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                   };
                 });
               }, 500);
-              _context4.next = 24;
+              _context4.next = 23;
               return fetch(apiUrl, {
                 signal: currentAbortController.signal
               });
-            case 24:
+            case 23:
               response = _context4.sent;
               clearTimeout(timeoutId);
               clearInterval(progressInterval);
@@ -37917,33 +37681,27 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 loadingProgress: 95
               });
               if (response.ok) {
-                _context4.next = 30;
+                _context4.next = 29;
                 break;
               }
               throw new Error("HTTP ".concat(response.status, ": ").concat(response.statusText));
-            case 30:
-              _context4.next = 32;
+            case 29:
+              _context4.next = 31;
               return response.json();
-            case 32:
+            case 31:
               result = _context4.sent;
               console.log("✅ API Response received:", result);
+
+              // ⭐⭐⭐ FRESH API SUCCESS SECTION - FIXED ⭐⭐⭐
               if (!(result.status === "success")) {
-                _context4.next = 45;
+                _context4.next = 43;
                 break;
               }
               data = result.data;
-              _targets = {};
-              data.forEach(function (item) {
-                var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
-                var normalizedName = normalizeKpiName(kpiName);
-                var targetValue = parseFloat(item.target_value);
-                if (targetValue && !isNaN(targetValue) && targetValue > 0) {
-                  _targets[normalizedName] = targetValue;
-                }
-              });
-              console.log("✅ Extracted & normalized targets (fallback):", _targets);
               cacheManager.set(cacheKey, data);
               console.log("\u2705 [".concat(viewType.toUpperCase(), "] Loaded ").concat(data.length, " records"));
+
+              // ⭐ Don't try to extract targets from cost data
               set({
                 apiData: data,
                 apiLoading: false,
@@ -37952,29 +37710,25 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                   from: fromMonth,
                   to: toMonth
                 },
-                apiError: null,
-                kpiTargets: _targets
+                apiError: null
               });
-              get().fetchKpiTargets();
-              _context4.next = 56;
+
+              // ⭐ Fetch targets separately with await
+              _context4.next = 40;
+              return get().fetchKpiTargets();
+            case 40:
+              console.log("✅ Fresh data loaded, targets fetched");
+              _context4.next = 53;
               break;
-            case 45:
+            case 43:
               if (!Array.isArray(result)) {
-                _context4.next = 55;
+                _context4.next = 52;
                 break;
               }
-              _targets2 = {};
-              result.forEach(function (item) {
-                var kpiName = (item.kpi_name || item.cost_head || "Other").trim();
-                var normalizedName = normalizeKpiName(kpiName);
-                var targetValue = parseFloat(item.target_value);
-                if (targetValue && !isNaN(targetValue) && targetValue > 0) {
-                  _targets2[normalizedName] = targetValue;
-                }
-              });
-              console.log("✅ Extracted & normalized targets (fallback):", _targets2);
               cacheManager.set(cacheKey, result);
               console.log("\u2705 [".concat(viewType.toUpperCase(), "] Loaded ").concat(result.length, " records"));
+
+              // ⭐ Don't try to extract targets from cost data
               set({
                 apiData: result,
                 apiLoading: false,
@@ -37983,27 +37737,31 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                   from: fromMonth,
                   to: toMonth
                 },
-                apiError: null,
-                kpiTargets: _targets2
+                apiError: null
               });
-              get().fetchKpiTargets();
-              _context4.next = 56;
+
+              // ⭐ Fetch targets separately with await
+              _context4.next = 49;
+              return get().fetchKpiTargets();
+            case 49:
+              console.log("✅ Array data loaded, targets fetched");
+              _context4.next = 53;
+              break;
+            case 52:
+              throw new Error(result.message || "Invalid API response format");
+            case 53:
+              _context4.next = 62;
               break;
             case 55:
-              throw new Error(result.message || "Invalid API response format");
-            case 56:
-              _context4.next = 65;
-              break;
-            case 58:
-              _context4.prev = 58;
+              _context4.prev = 55;
               _context4.t0 = _context4["catch"](2);
               if (!(_context4.t0.name === "AbortError")) {
-                _context4.next = 63;
+                _context4.next = 60;
                 break;
               }
               console.log("⚠️ Request was cancelled");
               return _context4.abrupt("return");
-            case 63:
+            case 60:
               console.error("❌ API Error:", _context4.t0.message, _context4.t0);
               set({
                 apiError: _context4.t0.message || "Network error occurred",
@@ -38011,15 +37769,15 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                 loadingProgress: 0,
                 kpiTargets: {}
               });
-            case 65:
-              _context4.prev = 65;
+            case 62:
+              _context4.prev = 62;
               currentAbortController = null;
-              return _context4.finish(65);
-            case 68:
+              return _context4.finish(62);
+            case 65:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[2, 58, 65, 68]]);
+        }, _callee4, null, [[2, 55, 62, 65]]);
       }));
       function fetchCostData(_x2, _x3, _x4, _x5) {
         return _fetchCostData.apply(this, arguments);
@@ -38109,1002 +37867,6 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
 }));
 
 
-// import { create } from "zustand";
-// import { persist } from "zustand/middleware";
-// // ✅ CORRECT IMPORT PATH for src/store/costStore.js with utils structure
-// import { API_ENDPOINTS, getMonthNameForApi } from "../utils/apiConfig";
-
-// // ✅ COMPLETE PLANT CODE MAPPING (Updated with missing entries)
-// const PLANT_CODE_MAPPING = {
-//   // Primary Names
-//   Mundhwa: "2001",
-//   "Ranjangaon E-84": "2002",
-//   "Ranjangaon-2": "2101", // ✅ FIXED: Maps to Transmission Ranjangaon
-//   "Transmission Ranjangaon": "2101",
-//   "Transmission Baramati": "2102",
-//   Chakan: "2020",
-//   "Khed-1": "2021",
-//   "Khed-2": "2027",
-//   "Ambethan-1": "2022",
-//   "Ambethan-2": "2023",
-//   "Ambethan-3": "2028",
-//   "Baramati KTFL": "2024",
-//   Bhiwadi: "2025",
-//   Gujarat: "2026",
-//   "Heat Treatment": "2081",
-//   "Inmet Jejuri": "2201",
-//   "Yokoha Jejuri": "2301",
-
-//   // ✅ ADDED: Alias mappings (Common names)
-//   Ranjangaon: "2002", // Alias for Ranjangaon E-84
-//   Khed: "2021", // Alias for Khed-1
-//   Baramati: "2024", // Alias for Baramati KTFL
-
-//   // ✅ ADDED: Code mappings (For location selection)
-//   RGN: "2002", // Ranjangaon
-//   "RGN-2": "2101", // Ranjangaon-2
-//   MUN: "2001", // Mundhwa
-//   CHK: "2020", // Chakan
-//   KHD: "2021", // Khed-1
-//   BRM: "2024", // Baramati
-//   BWD: "2025", // Bhiwadi
-//   GUT: "2026", // Gujarat
-
-//   // ✅ ADDED: Alternate spellings
-//   "Ambhethan-1": "2022",
-//   "Ambhethan-2": "2023",
-//   "Ambhethan-3": "2028",
-// };
-
-// // ============================================================================
-// // SUB-PARAMETER CODE MAPPING (for backward compatibility)
-// // ============================================================================
-// export const SUB_PARAM_CODE_MAP = {
-//   Fuel_Diesel: "FD",
-//   Fuel_LPG: "FL",
-//   Fuel_CNG: "FC",
-//   Fuel_Biodiesel: "FB",
-//   Fuel_CO2: "F2",
-//   Fuel_PNG: "FP",
-//   Fuel_Ht: "FH",
-//   Power_Solar: "PS",
-//   Power_OpenAccess: "PO",
-//   Power_RooftopSolar: "PR",
-//   Power_MCEDCL: "PM",
-//   Subcontract_MPI: "SM",
-//   Subcontract_POST_PROCESS: "SP",
-//   Subcontract_OUTSOURCE: "SO",
-// };
-
-// export const REVERSE_CODE_MAP = Object.fromEntries(
-//   Object.entries(SUB_PARAM_CODE_MAP).map(([k, v]) => [v, k])
-// );
-
-// // ============================================================================
-// // HELPER FUNCTIONS - Sub-Parameter Mapping
-// // ============================================================================
-
-// export const generateSubParamType = (selectedSubParams) => {
-//   if (!selectedSubParams || selectedSubParams.length === 0) {
-//     return null;
-//   }
-
-//   const codes = selectedSubParams
-//     .map((param) => SUB_PARAM_CODE_MAP[param])
-//     .filter(Boolean)
-//     .join(",");
-
-//   if (codes.length > 20) {
-//     console.warn("⚠️ WARNING: sub_param_type exceeded 20 chars, truncating");
-//     return codes.substring(0, 20);
-//   }
-
-//   return codes || null;
-// };
-
-// export const parseSubParamCodes = (codeString) => {
-//   if (!codeString) return { fuel: [], power: [], subcontract: [] };
-
-//   const codes = codeString.split(",").map((c) => c.trim());
-
-//   const result = {
-//     fuel: [],
-//     power: [],
-//     subcontract: [],
-//   };
-
-//   codes.forEach((code) => {
-//     const fullName = REVERSE_CODE_MAP[code];
-//     if (!fullName) return;
-
-//     if (fullName.startsWith("Fuel_")) {
-//       result.fuel.push(fullName);
-//     } else if (fullName.startsWith("Power_")) {
-//       result.power.push(fullName);
-//     } else if (fullName.startsWith("Subcontract_")) {
-//       result.subcontract.push(fullName);
-//     }
-//   });
-
-//   return result;
-// };
-
-// // ============================================================================
-// // CACHE MANAGER
-// // ============================================================================
-
-// class CacheManager {
-//   constructor() {
-//     this.cache = new Map();
-//     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
-//   }
-
-//   generateKey(viewType, location, fromMonth, toMonth, year) {
-//     return `${viewType}-${location}-${fromMonth}-${toMonth}-${year}`;
-//   }
-
-//   get(key) {
-//     const cached = this.cache.get(key);
-//     if (!cached) return null;
-
-//     const now = Date.now();
-//     if (now - cached.timestamp > this.cacheTimeout) {
-//       this.cache.delete(key);
-//       return null;
-//     }
-
-//     console.log("✅ Cache HIT:", key);
-//     return cached.data;
-//   }
-
-//   set(key, data) {
-//     this.cache.set(key, {
-//       data,
-//       timestamp: Date.now(),
-//     });
-//     console.log("💾 Cache SET:", key);
-//   }
-
-//   clear() {
-//     this.cache.clear();
-//     console.log("🗑️ Cache cleared");
-//   }
-// }
-
-// const cacheManager = new CacheManager();
-
-// let currentAbortController = null;
-
-// // ============================================================================
-// // ZUSTAND STORE - Production Ready
-// // ============================================================================
-
-// const useCostStore = create(
-//   persist(
-//     (set, get) => ({
-//       // ====================================================================
-//       // USER PLANT CODE
-//       // ====================================================================
-//       userPlantCode: null,
-//       userPlantCodeLoaded: false,
-//       userPlantCodeError: null,
-
-//       fetchUserPlantCode: async () => {
-//         const { userPlantCodeLoaded } = get();
-//         if (userPlantCodeLoaded) {
-//           const code = get().userPlantCode;
-//           console.log("✅ Plant code already loaded:", code);
-//           return code;
-//         }
-
-//         try {
-//           // ✅ USE API_ENDPOINTS instead of hardcoded URL
-//           const apiUrl = API_ENDPOINTS.PLANT_CODE;
-//           console.log("🔄 Fetching user plant code from:", apiUrl);
-
-//           const response = await fetch(apiUrl);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-//           console.log("📥 Raw Response:", data);
-
-//           if (data.plant_code) {
-//             const plantCode = String(data.plant_code).trim();
-//             console.log("✅✅✅ User plant code fetched:", plantCode);
-
-//             set({
-//               userPlantCode: plantCode,
-//               userPlantCodeLoaded: true,
-//               userPlantCodeError: null,
-//             });
-//             return plantCode;
-//           } else {
-//             throw new Error("No plant_code in API response");
-//           }
-//         } catch (error) {
-//           console.error("❌ CRITICAL ERROR fetching plant code:", error);
-//           set({
-//             userPlantCodeError: error.message,
-//             userPlantCodeLoaded: true,
-//           });
-//           throw error;
-//         }
-//       },
-
-//       // ====================================================================
-//       // COST CENTERS
-//       // ====================================================================
-//       costCenters: [],
-//       costCenterLoaded: false,
-//       costCenterError: null,
-
-//       fetchCostCentersOnce: async () => {
-//         const { costCenterLoaded, userPlantCode } = get();
-//         if (costCenterLoaded) {
-//           console.log(
-//             "✅ Cost centers already loaded for plant:",
-//             userPlantCode
-//           );
-//           return;
-//         }
-
-//         try {
-//           let plantCode = userPlantCode;
-//           if (!plantCode) {
-//             console.log("⚠️ Plant code not loaded, fetching now...");
-//             plantCode = await get().fetchUserPlantCode();
-//           }
-
-//           if (!plantCode) {
-//             throw new Error("❌ FAILED: Unable to determine plant code");
-//           }
-
-//           console.log("🎯 Using Plant Code:", plantCode);
-
-//           // ✅ USE API_ENDPOINTS
-//           const url = `${API_ENDPOINTS.COST_CENTER_MASTER}?$filter=plant_code%20eq%20%27${plantCode}%27`;
-
-//           console.log("📡 API CALL URL:", url);
-
-//           const response = await fetch(url);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-
-//           if (!data.objects) {
-//             throw new Error("API did not return objects array");
-//           }
-
-//           const costCenters = data.objects || [];
-
-//           console.group("🏷️ COST CENTER MASTER LOADED");
-//           console.table(
-//             costCenters.map((cc) => ({
-//               cost_center: cc.cost_center,
-//               plant: cc.plant_code,
-//               line: cc.line_name,
-//               machine: cc.machine,
-//               requires_die: cc.requires_die,
-//               requires_vendor: cc.requires_vendor,
-//               requires_line: cc.requires_line,
-//             }))
-//           );
-//           console.groupEnd();
-
-//           set({
-//             costCenters,
-//             costCenterLoaded: true,
-//             costCenterError: null,
-//           });
-//         } catch (error) {
-//           console.error("❌ Error fetching cost centers:", error);
-//           set({
-//             costCenterError: error.message,
-//             costCenterLoaded: true,
-//           });
-//         }
-//       },
-
-//       // ====================================================================
-//       // POWER ENTRIES
-//       // ====================================================================
-//       powerEntries: [],
-//       powerEntryLoaded: false,
-//       powerEntryError: null,
-
-//       fetchPowerEntriesOnce: async () => {
-//         const { powerEntryLoaded, userPlantCode } = get();
-//         if (powerEntryLoaded) {
-//           console.log(
-//             "✅ Power entries already loaded for plant:",
-//             userPlantCode
-//           );
-//           return;
-//         }
-
-//         try {
-//           let plantCode = userPlantCode;
-//           if (!plantCode) {
-//             console.log("⚠️ Plant code not available, fetching...");
-//             plantCode = await get().fetchUserPlantCode();
-//           }
-
-//           // ✅ USE API_ENDPOINTS function
-//           const url = API_ENDPOINTS.MACHINE_ENTRY("POWER", plantCode);
-//           console.log("📡 POWER API CALL:", url);
-
-//           const response = await fetch(url);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-//           const entries = data.data || [];
-
-//           console.log(
-//             `✅ Loaded ${entries.length} POWER entries for plant ${plantCode}`
-//           );
-
-//           set({
-//             powerEntries: entries,
-//             powerEntryLoaded: true,
-//             powerEntryError: null,
-//           });
-//         } catch (error) {
-//           console.error("❌ Error fetching power entries:", error);
-//           set({
-//             powerEntryError: error.message,
-//             powerEntryLoaded: true,
-//           });
-//         }
-//       },
-
-//       // ====================================================================
-//       // HT FUEL ENTRIES
-//       // ====================================================================
-//       htFuelEntries: [],
-//       htFuelEntryLoaded: false,
-//       htFuelEntryError: null,
-
-//       fetchHTFuelEntriesOnce: async () => {
-//         const { htFuelEntryLoaded, userPlantCode } = get();
-//         if (htFuelEntryLoaded) {
-//           console.log(
-//             "✅ HT Fuel entries already loaded for plant:",
-//             userPlantCode
-//           );
-//           return;
-//         }
-
-//         try {
-//           let plantCode = userPlantCode;
-//           if (!plantCode) {
-//             plantCode = await get().fetchUserPlantCode();
-//           }
-
-//           // ✅ USE API_ENDPOINTS
-//           const url = API_ENDPOINTS.MACHINE_ENTRY("HT_FUEL", plantCode);
-//           console.log("📡 HT_FUEL API CALL:", url);
-
-//           const response = await fetch(url);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-//           const entries = data.data || [];
-
-//           console.log(
-//             `✅ Loaded ${entries.length} HT_FUEL entries for plant ${plantCode}`
-//           );
-
-//           set({
-//             htFuelEntries: entries,
-//             htFuelEntryLoaded: true,
-//             htFuelEntryError: null,
-//           });
-//         } catch (error) {
-//           console.error("❌ Error fetching HT Fuel entries:", error);
-//           set({
-//             htFuelEntryError: error.message,
-//             htFuelEntryLoaded: true,
-//           });
-//         }
-//       },
-
-//       // ====================================================================
-//       // PNG FUEL ENTRIES
-//       // ====================================================================
-//       pngFuelEntries: [],
-//       pngFuelEntryLoaded: false,
-//       pngFuelEntryError: null,
-
-//       fetchPNGFuelEntriesOnce: async () => {
-//         const { pngFuelEntryLoaded, userPlantCode } = get();
-//         if (pngFuelEntryLoaded) {
-//           console.log(
-//             "✅ PNG Fuel entries already loaded for plant:",
-//             userPlantCode
-//           );
-//           return;
-//         }
-
-//         try {
-//           let plantCode = userPlantCode;
-//           if (!plantCode) {
-//             plantCode = await get().fetchUserPlantCode();
-//           }
-
-//           // ✅ USE API_ENDPOINTS
-//           const url = API_ENDPOINTS.MACHINE_ENTRY("PNG_FUEL", plantCode);
-//           console.log("📡 PNG_FUEL API CALL:", url);
-
-//           const response = await fetch(url);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-//           const entries = data.data || [];
-
-//           console.log(
-//             `✅ Loaded ${entries.length} PNG_FUEL entries for plant ${plantCode}`
-//           );
-
-//           set({
-//             pngFuelEntries: entries,
-//             pngFuelEntryLoaded: true,
-//             pngFuelEntryError: null,
-//           });
-//         } catch (error) {
-//           console.error("❌ Error fetching PNG Fuel entries:", error);
-//           set({
-//             pngFuelEntryError: error.message,
-//             pngFuelEntryLoaded: true,
-//           });
-//         }
-//       },
-
-//       // ====================================================================
-//       // SUBCONTRACT ENTRIES
-//       // ====================================================================
-//       subcontractEntries: [],
-//       subcontractEntryLoaded: false,
-//       subcontractEntryError: null,
-
-//       fetchSubcontractEntriesOnce: async () => {
-//         const { subcontractEntryLoaded, userPlantCode } = get();
-//         if (subcontractEntryLoaded) {
-//           console.log(
-//             "✅ Subcontract entries already loaded for plant:",
-//             userPlantCode
-//           );
-//           return;
-//         }
-
-//         try {
-//           let plantCode = userPlantCode;
-//           if (!plantCode) {
-//             plantCode = await get().fetchUserPlantCode();
-//           }
-
-//           // ✅ USE API_ENDPOINTS
-//           const url = API_ENDPOINTS.MACHINE_ENTRY("SUBCONTRACT", plantCode);
-//           console.log("📡 SUBCONTRACT API CALL:", url);
-
-//           const response = await fetch(url);
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const data = await response.json();
-//           const entries = data.data || [];
-
-//           console.log(
-//             `✅ Loaded ${entries.length} SUBCONTRACT entries for plant ${plantCode}`
-//           );
-
-//           set({
-//             subcontractEntries: entries,
-//             subcontractEntryLoaded: true,
-//             subcontractEntryError: null,
-//           });
-//         } catch (error) {
-//           console.error("❌ Error fetching Subcontract entries:", error);
-//           set({
-//             subcontractEntryError: error.message,
-//             subcontractEntryLoaded: true,
-//           });
-//         }
-//       },
-
-//       // ====================================================================
-//       // COSTING VIEW STATE
-//       // ====================================================================
-//       viewType: "production",
-//       setViewType: (type) => {
-//         console.log("🔄 Changing view type to:", type);
-//         set({ viewType: type });
-//       },
-
-//       apiData: [],
-//       apiLoading: false,
-//       apiError: null,
-//       loadingProgress: 0,
-
-//       currentYear: 2025,
-//       monthRange: { from: 8, to: 8 },
-//       currentPeriodMonth: 8,
-
-//       setMonthRange: (from, to) => {
-//         console.log("📅 Setting month range:", from, "to", to);
-//         set({ monthRange: { from, to } });
-//       },
-
-//       setCurrentPeriodMonth: (month) => {
-//         console.log("📍 Setting current period month to:", month);
-//         set({ currentPeriodMonth: month });
-//       },
-
-//       selectedTheme: "ocean",
-//       setSelectedTheme: (theme) => {
-//         console.log("🎨 Changing theme to:", theme);
-//         set({ selectedTheme: theme });
-//       },
-
-//       selectedLocation: "All",
-//       setSelectedLocation: (location) => {
-//         console.log("📍 Setting location to:", location);
-//         set({ selectedLocation: location });
-//       },
-
-//       // ====================================================================
-//       // MAIN COST DATA FETCH
-//       // ====================================================================
-//       fetchCostData: async (fromMonth, toMonth, year, viewType) => {
-//         try {
-//           // Abort previous request if any
-//           if (currentAbortController) {
-//             currentAbortController.abort();
-//           }
-//           currentAbortController = new AbortController();
-
-//           set({ apiLoading: true, apiError: null, loadingProgress: 0 });
-
-//           // Get current state
-//           const { selectedLocation, userPlantCode } = get();
-
-//           console.log("📊 fetchCostData called with:", {
-//             fromMonth,
-//             toMonth,
-//             year,
-//             viewType,
-//             selectedLocation,
-//             userPlantCode,
-//           });
-
-//           let url;
-
-//           // ====================================================================
-//           // DECISION LOGIC: ALL PLANTS vs SPECIFIC PLANT
-//           // ====================================================================
-
-//           if (
-//             !selectedLocation ||
-//             selectedLocation === "All Plants" ||
-//             selectedLocation === "All"
-//           ) {
-//             // ================================================================
-//             // SCENARIO A: Fetching data for ALL PLANTS (Combined)
-//             // ================================================================
-//             console.log("📊 [ALL PLANTS MODE] Fetching combined data...");
-
-//             // Check if this is a "default" request (last 6 months) or custom range
-//             const currentDate = new Date();
-//             const currentMonth = currentDate.getMonth() + 1;
-//             const currentYear_actual = currentDate.getFullYear();
-
-//             // Default range is last 6 months for current year
-//             const lastSixMonthsFrom = Math.max(1, currentMonth - 5);
-//             const isDefaultRange =
-//               (fromMonth === lastSixMonthsFrom &&
-//                 toMonth === currentMonth &&
-//                 year === currentYear_actual) ||
-//               (fromMonth === 1 &&
-//                 toMonth === 12 &&
-//                 year === currentYear_actual);
-
-//             if (isDefaultRange) {
-//               // Use DEFAULT API - returns last 6 months automatically
-//               console.log(
-//                 `🔄 Using DEFAULT API for ${viewType} (Last 6 months)`
-//               );
-//               url =
-//                 viewType === "production"
-//                   ? API_ENDPOINTS.PROD_COST_DEFAULT
-//                   : API_ENDPOINTS.SALE_COST_DEFAULT;
-//             } else {
-//               // Use CUSTOM API - with specific year and month range
-//               console.log(
-//                 `🔄 Using CUSTOM API for ${viewType} (Year: ${year}, Months: ${fromMonth}-${toMonth})`
-//               );
-//               url =
-//                 viewType === "production"
-//                   ? API_ENDPOINTS.PROD_COST_CUSTOM(year, fromMonth, toMonth)
-//                   : API_ENDPOINTS.SALE_COST_CUSTOM(year, fromMonth, toMonth);
-//             }
-//           } else {
-//             // ================================================================
-//             // SCENARIO B: Fetching data for SPECIFIC PLANT (Plant-wise)
-//             // ================================================================
-//             console.log(
-//               `🏭 [SPECIFIC PLANT MODE] Fetching for: ${selectedLocation}`
-//             );
-
-//             // ✅ USE CENTRALIZED PLANT CODE MAPPING
-//             let plantcode = PLANT_CODE_MAPPING[selectedLocation] || userPlantCode;
-
-//             if (!plantcode) {
-//               throw new Error(
-//                 `❌ Plant code not found for location: ${selectedLocation}. ` +
-//                 `Available plants: ${Object.keys(PLANT_CODE_MAPPING)
-//                   .filter((key) => key.match(/^[A-Z]/)) // Only show primary names
-//                   .join(", ")}`
-//               );
-//             }
-
-//             console.log(
-//               `🔑 Plant Code resolved: ${selectedLocation} → ${plantcode}`
-//             );
-
-//             // Check if this is a "default" request or custom range
-//             const currentDate = new Date();
-//             const currentMonth = currentDate.getMonth() + 1;
-//             const currentYear_actual = currentDate.getFullYear();
-
-//             const lastSixMonthsFrom = Math.max(1, currentMonth - 5);
-//             const isDefaultRange =
-//               (fromMonth === lastSixMonthsFrom &&
-//                 toMonth === currentMonth &&
-//                 year === currentYear_actual) ||
-//               (fromMonth === 1 &&
-//                 toMonth === 12 &&
-//                 year === currentYear_actual);
-
-//             if (isDefaultRange) {
-//               // Use DEFAULT PLANT-WISE API - returns last 6 months for this plant
-//               console.log(
-//                 `🔄 Using DEFAULT API for ${viewType} (Plant: ${plantcode}, Last 6 months)`
-//               );
-//               url =
-//                 viewType === "production"
-//                   ? API_ENDPOINTS.PROD_PLANTWISE_DEFAULT(plantcode)
-//                   : API_ENDPOINTS.SALE_PLANTWISE_DEFAULT(plantcode);
-//             } else {
-//               // Use CUSTOM PLANT-WISE API - with year and month range
-//               console.log(
-//                 `🔄 Using CUSTOM API for ${viewType} (` +
-//                   `Plant: ${plantcode}, Year: ${year}, Months: ${fromMonth}-${toMonth})`
-//               );
-//               url =
-//                 viewType === "production"
-//                   ? API_ENDPOINTS.PROD_PLANTWISE_CUSTOM(
-//                       plantcode,
-//                       year,
-//                       fromMonth,
-//                       toMonth
-//                     )
-//                   : API_ENDPOINTS.SALE_PLANTWISE_CUSTOM(
-//                       plantcode,
-//                       year,
-//                       fromMonth,
-//                       toMonth
-//                     );
-//             }
-//           }
-
-//           // ====================================================================
-//           // MAKE THE API CALL
-//           // ====================================================================
-
-//           console.log("📡 FINAL API URL:", url);
-
-//           // Progress tracking
-//           const progressInterval = setInterval(() => {
-//             const current = get().loadingProgress;
-//             if (current < 90) {
-//               set({ loadingProgress: current + 10 });
-//             }
-//           }, 30000);
-
-//           // Timeout handling (5 minutes)
-//           const timeoutId = setTimeout(() => {
-//             clearInterval(progressInterval);
-//             currentAbortController.abort();
-//             set({
-//               apiError:
-//                 "Request timeout after 5 minutes. Try selecting a smaller date range.",
-//               apiLoading: false,
-//               loadingProgress: 0,
-//             });
-//           }, 300000);
-
-//           // Fetch data
-//           const response = await fetch(url, {
-//             signal: currentAbortController.signal,
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             keepalive: true,
-//           });
-
-//           clearTimeout(timeoutId);
-//           clearInterval(progressInterval);
-//           set({ loadingProgress: 95 });
-
-//           if (!response.ok) {
-//             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-//           }
-
-//           const result = await response.json();
-//           console.log("✅ API Response received:", result);
-
-//           // ====================================================================
-//           // HANDLE RESPONSE
-//           // ====================================================================
-
-//           if (result.status === "success") {
-//             // API returned { status: "success", data: [...] }
-//             const data = result.data;
-
-//             // Generate cache key
-//             const cacheKey = cacheManager.generateKey(
-//               viewType,
-//               selectedLocation || "All Plants",
-//               fromMonth,
-//               toMonth,
-//               year
-//             );
-
-//             // Cache the result
-//             cacheManager.set(cacheKey, data);
-
-//             console.log(
-//               `✅ [${viewType.toUpperCase()}] Loaded ${data.length} records`
-//             );
-
-//             set({
-//               apiData: data,
-//               apiLoading: false,
-//               loadingProgress: 100,
-//               monthRange: { from: fromMonth, to: toMonth },
-//               apiError: null,
-//             });
-//           } else if (Array.isArray(result)) {
-//             // API returned data directly as array
-//             // Cache the result
-//             const cacheKey = cacheManager.generateKey(
-//               viewType,
-//               selectedLocation || "All Plants",
-//               fromMonth,
-//               toMonth,
-//               year
-//             );
-//             cacheManager.set(cacheKey, result);
-
-//             console.log(
-//               `✅ [${viewType.toUpperCase()}] Loaded ${result.length} records`
-//             );
-
-//             set({
-//               apiData: result,
-//               apiLoading: false,
-//               loadingProgress: 100,
-//               monthRange: { from: fromMonth, to: toMonth },
-//               apiError: null,
-//             });
-//           } else {
-//             throw new Error(result.message || "Invalid API response format");
-//           }
-//         } catch (err) {
-//           if (err.name === "AbortError") {
-//             console.log("⚠️ Request was cancelled");
-//             return;
-//           }
-
-//           console.error("❌ API Error:", err.message, err);
-//           set({
-//             apiError: err.message || "Network error occurred",
-//             apiLoading: false,
-//             loadingProgress: 0,
-//           });
-//         } finally {
-//           currentAbortController = null;
-//         }
-//       },
-
-//       // ====================================================================
-//       // CACHE & UTILITY METHODS
-//       // ====================================================================
-//       clearCache: () => {
-//         cacheManager.clear();
-//       },
-
-//       setCurrentMonth: () => {
-//         const month = new Date().getMonth() + 1;
-//         set({
-//           monthRange: { from: month, to: month },
-//           currentPeriodMonth: month,
-//         });
-//         return month;
-//       },
-
-//       setLast12Months: () => {
-//         const currentMonth = new Date().getMonth() + 1;
-//         const from = Math.max(1, currentMonth - 11);
-//         set({
-//           monthRange: { from, to: currentMonth },
-//           currentPeriodMonth: currentMonth,
-//         });
-//         return { from, to: currentMonth };
-//       },
-
-//       setFullYear: () => {
-//         set({
-//           monthRange: { from: 1, to: 12 },
-//           currentPeriodMonth: 12,
-//         });
-//         return { from: 1, to: 12 };
-//       },
-
-//       // ====================================================================
-//       // MODALS & UI STATE
-//       // ====================================================================
-//       showPowerUnitModal: false,
-//       setShowPowerUnitModal: (show) => set({ showPowerUnitModal: show }),
-//     }),
-//     {
-//       name: "cost-store-cache",
-//       partialize: (state) => ({
-//         selectedTheme: state.selectedTheme,
-//         currentYear: state.currentYear,
-//         viewType: state.viewType,
-//       }),
-//     }
-//   )
-// );
-
-// export { useCostStore, cacheManager };
-
-// import { create } from 'zustand';
-
-// const useCostStore = create((set, get) => ({
-//   // View Type
-//   viewType: 'production',
-//   setViewType: (type) => {
-//     console.log('🔄 Changing view type to:', type);
-//     set({ viewType: type });
-//   },
-
-//   // API Data
-//   apiData: [],
-//   apiLoading: false,
-//   apiError: null,
-
-//   // Date Range
-//   currentYear: 2025,
-//   monthRange: { from: 8, to: 8 }, // Default: Current month (August)
-//   currentPeriodMonth: 8, // Current highlighted/selected month
-
-//   // ✅ Month Range Setter
-//   setMonthRange: (from, to) => {
-//     console.log('📅 Setting month range:', from, 'to', to);
-//     set({ monthRange: { from, to } });
-//   },
-
-//   // ✅ Current Period Month Setter
-//   setCurrentPeriodMonth: (month) => {
-//     console.log('📍 Setting current period month to:', month);
-//     set({ currentPeriodMonth: month });
-//   },
-
-//   // Theme
-//   selectedTheme: 'ocean',
-//   setSelectedTheme: (theme) => {
-//     console.log('🎨 Changing theme to:', theme);
-//     set({ selectedTheme: theme });
-//   },
-
-//   // Location
-//   selectedLocation: 'Ranjangaon',
-//   setSelectedLocation: (location) => {
-//     console.log('📍 Setting location to:', location);
-//     set({ selectedLocation: location });
-//   },
-
-//   // ✅ Fetch Cost Data
-//   fetchCostData: async (fromMonth, toMonth, year, viewType) => {
-//     try {
-//       set({ apiLoading: true, apiError: null });
-
-//       const fromMonthName = getMonthNameForApi(fromMonth);
-//       const toMonthName = getMonthNameForApi(toMonth);
-
-//       const url = viewType === 'production'
-//         ? `https://ktflceprd.kalyanicorp.com/internal/prod_cost?view=month&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}`
-//         : `https://ktflceprd.kalyanicorp.com/internal/cost_per_ton_sale?view=month&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}`;
-
-//       console.log(`📡 [${viewType.toUpperCase()}] Fetching API:`, url);
-//       console.log(`📅 Range: ${fromMonthName} (${fromMonth}) to ${toMonthName} (${toMonth})`);
-
-//       const response = await fetch(url);
-//       const result = await response.json();
-
-//       if (result.status === 'success' && result.data) {
-//         console.log(`✅ [${viewType.toUpperCase()}] Loaded ${result.data.length} records`);
-//         set({
-//           apiData: result.data,
-//           apiLoading: false,
-//           monthRange: { from: fromMonth, to: toMonth }
-//         });
-//       } else {
-//         console.error(`❌ Failed to fetch ${viewType} data:`, result);
-//         set({ apiError: `Failed to fetch ${viewType} data`, apiLoading: false });
-//       }
-//     } catch (error) {
-//       console.error(`❌ [${viewType.toUpperCase()}] Error:`, error);
-//       set({ apiError: error.message, apiLoading: false });
-//     }
-//   },
-
-//   // ✅ Quick helpers for common date ranges
-//   setCurrentMonth: () => {
-//     const month = new Date().getMonth() + 1;
-//     set({
-//       monthRange: { from: month, to: month },
-//       currentPeriodMonth: month
-//     });
-//     return month;
-//   },
-
-//   setLast12Months: () => {
-//     const currentMonth = new Date().getMonth() + 1;
-//     const from = Math.max(1, currentMonth - 11);
-//     set({
-//       monthRange: { from, to: currentMonth },
-//       currentPeriodMonth: currentMonth
-//     });
-//     return { from, to: currentMonth };
-//   },
-
-//   setFullYear: () => {
-//     set({
-//       monthRange: { from: 1, to: 12 },
-//       currentPeriodMonth: 12
-//     });
-//     return { from: 1, to: 12 };
-//   },
-// }));
-
-// // Helper function to convert month number to API format
-// function getMonthNameForApi(monthNum) {
-//   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-//                   'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-//   return months[monthNum - 1] || 'jan';
-// }
-
-// export { useCostStore };
-
 /***/ }),
 
 /***/ "./src/utils/apiConfig.js":
@@ -39118,19 +37880,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "API_BASE_URL": () => (/* binding */ API_BASE_URL),
 /* harmony export */   "API_ENDPOINTS": () => (/* binding */ API_ENDPOINTS),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "getApiBaseUrl": () => (/* binding */ getApiBaseUrl),
 /* harmony export */   "getMonthNameForApi": () => (/* binding */ getMonthNameForApi)
 /* harmony export */ });
 /**
+ * ✅ COMPLETE API CONFIG - PRODUCTION READY
+ * Location: src/utils/apiConfig.js
+ * 
+ * Includes:
+ * - Group-wise APIs (Production & Sale)
+ * - Plant-wise APIs (Production & Sale) 
+ * - KPI Targets APIs
+ * - All view types (month, day, year)
+ */
 
-* ✅ COMPLETE API CONFIG - WITH KPI TARGETS
-
-* Location: src/utils/apiConfig.js
-
-*/
-
-// Helper function to get the appropriate base URL
-
+// ============================================================================
+// BASE URL CONFIGURATION
+// ============================================================================
 var getApiBaseUrl = function getApiBaseUrl() {
   if (typeof window === "undefined") {
     return "https://ktflceprd.kalyanicorp.com";
@@ -39145,49 +37912,43 @@ var getApiBaseUrl = function getApiBaseUrl() {
 };
 var API_BASE_URL = getApiBaseUrl();
 
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
 /**
-
-* Helper function - Convert month number to API format
-
-*/
-
+ * Convert month number (1-12) to API format (Jan, Feb, etc.)
+ */
 var getMonthNameForApi = function getMonthNameForApi(monthNum) {
   var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return months[monthNum - 1] || "Jan";
 };
 
-/**
-
-* ✅ ALL API ENDPOINTS
-
-*/
-
+// ============================================================================
+// ⭐⭐⭐ COMPLETE API ENDPOINTS ⭐⭐⭐
+// ============================================================================
 var API_ENDPOINTS = {
-  // ============================================================================
+  // ==========================================================================
+  // AUTHENTICATION & USER INFO
+  // ==========================================================================
+  PLANT_CODE: "".concat(API_BASE_URL, "/internal/plant_code"),
+  COST_CENTER_MASTER: "".concat(API_BASE_URL, "/api/v1/collection/cost_center_master"),
+  // ==========================================================================
+  // MACHINE ENTRIES (Power, Fuel, Subcontract)
+  // ==========================================================================
+  MACHINE_ENTRY: function MACHINE_ENTRY(type, plantCode) {
+    return "".concat(API_BASE_URL, "/internal/machine_entry?type=").concat(type, "&plant_code=").concat(plantCode, "&view=month");
+  },
+  // ==========================================================================
+  // ⭐ KPI TARGETS API
+  // ==========================================================================
 
-  // ⭐ MAIN ENDPOINTS (Used by costStore.js)
-
-  // ============================================================================
-
-  PROD_COST: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt"),
-  SALE_COST: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt"),
-  // ============================================================================
-
-  // ⭐⭐⭐ NEW: KPI TARGETS API ⭐⭐⭐
-
-  // ============================================================================
-
-  // Default KPI Targets endpoint (all targets)
-
+  // Default KPI Targets (month view)
   KPI_TARGETS: "".concat(API_BASE_URL, "/internal/cost_kpi_entry?view=month"),
-  // KPI Targets with filters
-
+  // Filtered KPI Targets with parameters
   KPI_TARGETS_FILTERED: function KPI_TARGETS_FILTERED() {
     var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var url = "".concat(API_BASE_URL, "/internal/cost_kpi_entry?view=month");
-
-    // Add year and month range if provided
-
     if (filters.year) {
       url += "&year=".concat(filters.year);
     }
@@ -39197,122 +37958,191 @@ var API_ENDPOINTS = {
     if (filters.toMonth) {
       url += "&to_month=".concat(getMonthNameForApi(filters.toMonth));
     }
-
-    // Add prod_or_sale filter (Production/Sale)
-
     if (filters.prodOrSale) {
       url += "&prod_or_sale=".concat(filters.prodOrSale);
     }
-
-    // Add specific KPI name filter
-
     if (filters.kpiName) {
       url += "&kpi_name=".concat(encodeURIComponent(filters.kpiName));
     }
-
-    // Add plant code filter
-
     if (filters.plantCode) {
       url += "&plant_code=".concat(filters.plantCode);
     }
+    if (filters.type) {
+      url += "&type=".concat(filters.type);
+    }
     return url;
   },
-  // ============================================================================
+  // ==========================================================================
+  // ⭐⭐⭐ PRODUCTION COST - GROUP LEVEL (ALL PLANTS COMBINED) ⭐⭐⭐
+  // ==========================================================================
 
-  // COST CENTER & PLANT CODE
+  PROD_COST: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt"),
+  // Main endpoint
 
-  // ============================================================================
-
-  COST_CENTER_MASTER: "".concat(API_BASE_URL, "/api/v1/collection/cost_center_master"),
-  PLANT_CODE: "".concat(API_BASE_URL, "/internal/plant_code"),
-  // ============================================================================
-
-  // MACHINE ENTRIES
-
-  // ============================================================================
-
-  MACHINE_ENTRY: function MACHINE_ENTRY(type, plantCode) {
-    return "".concat(API_BASE_URL, "/internal/machine_entry?type=").concat(type, "&plant_code=").concat(plantCode, "&view=month");
-  },
-  // ============================================================================
-
-  // PRODUCTION COST - GROUP LEVEL
-
-  // ============================================================================
-
+  // Month View - Default (Last 6 months)
   PROD_COST_DEFAULT: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month"),
+  // Month View - Custom Range
   PROD_COST_CUSTOM: function PROD_COST_CUSTOM(year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
-  // ============================================================================
+  // Day View - Default
+  PROD_COST_DAY: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day"),
+  // Day View - Custom Range
+  PROD_COST_DAY_CUSTOM: function PROD_COST_DAY_CUSTOM(year, fromMonth, toMonth) {
+    var fromMonthName = getMonthNameForApi(fromMonth);
+    var toMonthName = getMonthNameForApi(toMonth);
+    return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+  },
+  // Year View - Default (Current year)
+  PROD_COST_YEAR: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=year"),
+  // Year View - Specific Year
+  PROD_COST_YEAR_CUSTOM: function PROD_COST_YEAR_CUSTOM(year) {
+    return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=year&year=").concat(year);
+  },
+  // ==========================================================================
+  // ⭐⭐⭐ PRODUCTION COST - PLANT WISE (SPECIFIC PLANT) ⭐⭐⭐
+  // ==========================================================================
 
-  // PRODUCTION COST - PLANT WISE
-
-  // ============================================================================
-
+  // Month View - Default (Last 6 months)
   PROD_PLANTWISE_DEFAULT: function PROD_PLANTWISE_DEFAULT(plantcode) {
     return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(plantcode);
   },
+  // Month View - Custom Range
   PROD_PLANTWISE_CUSTOM: function PROD_PLANTWISE_CUSTOM(plantcode, year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
+  // Day View - Default
+  PROD_PLANTWISE_DAY: function PROD_PLANTWISE_DAY(plantcode) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=day&plantcode=").concat(plantcode);
+  },
+  // Day View - Custom Range
+  PROD_PLANTWISE_DAY_CUSTOM: function PROD_PLANTWISE_DAY_CUSTOM(plantcode, year, fromMonth, toMonth) {
+    var fromMonthName = getMonthNameForApi(fromMonth);
+    var toMonthName = getMonthNameForApi(toMonth);
+    return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=day&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+  },
+  // Day View - Detail Mode with Pagination
+  PROD_PLANTWISE_DAY_DETAIL: function PROD_PLANTWISE_DAY_DETAIL(plantcode) {
+    var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var pageSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 300;
+    return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=day&plantcode=").concat(plantcode, "&mode=detail&page=").concat(page, "&page_size=").concat(pageSize);
+  },
+  // Year View - Default (Current year)
+  PROD_PLANTWISE_YEAR: function PROD_PLANTWISE_YEAR(plantcode) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=year&plantcode=").concat(plantcode);
+  },
+  // Year View - Specific Year
+  PROD_PLANTWISE_YEAR_CUSTOM: function PROD_PLANTWISE_YEAR_CUSTOM(plantcode, year) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=year&plantcode=").concat(plantcode, "&year=").concat(year);
+  },
+  // Generic (for backward compatibility)
   PROD_PLANTWISE: function PROD_PLANTWISE(plantcode, year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
-  // ============================================================================
+  // ==========================================================================
+  // ⭐⭐⭐ SALE COST - GROUP LEVEL (ALL PLANTS COMBINED) ⭐⭐⭐
+  // ==========================================================================
 
-  // SALE COST - GROUP LEVEL
-
-  // ============================================================================
-
-  SALE_COST_DEFAULT: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month"),
+  SALE_COST: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt"),
+  // Main endpoint
   COST_PER_TON_SALE: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month"),
+  // Alias
+
+  // Month View - Default (Last 6 months)
+  SALE_COST_DEFAULT: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month"),
+  // Month View - Custom Range
   SALE_COST_CUSTOM: function SALE_COST_CUSTOM(year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
-  // ============================================================================
+  // Day View - Default
+  SALE_COST_DAY: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=day"),
+  // Day View - Custom Range
+  SALE_COST_DAY_CUSTOM: function SALE_COST_DAY_CUSTOM(year, fromMonth, toMonth) {
+    var fromMonthName = getMonthNameForApi(fromMonth);
+    var toMonthName = getMonthNameForApi(toMonth);
+    return "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=day&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+  },
+  // Year View - Default (Current year)
+  SALE_COST_YEAR: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=year"),
+  // Year View - Specific Year
+  SALE_COST_YEAR_CUSTOM: function SALE_COST_YEAR_CUSTOM(year) {
+    return "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=year&year=").concat(year);
+  },
+  // ==========================================================================
+  // ⭐⭐⭐ SALE COST - PLANT WISE (SPECIFIC PLANT) ⭐⭐⭐
+  // ==========================================================================
 
-  // SALE COST - PLANT WISE
-
-  // ============================================================================
-
+  // Month View - Default (Last 6 months)
   SALE_PLANTWISE_DEFAULT: function SALE_PLANTWISE_DEFAULT(plantcode) {
     return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=month&plantcode=").concat(plantcode);
   },
+  // Month View - Custom Range
   SALE_PLANTWISE_CUSTOM: function SALE_PLANTWISE_CUSTOM(plantcode, year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
+  // Day View - Default
+  SALE_PLANTWISE_DAY: function SALE_PLANTWISE_DAY(plantcode) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=day&plantcode=").concat(plantcode);
+  },
+  // Day View - Custom Range
+  SALE_PLANTWISE_DAY_CUSTOM: function SALE_PLANTWISE_DAY_CUSTOM(plantcode, year, fromMonth, toMonth) {
+    var fromMonthName = getMonthNameForApi(fromMonth);
+    var toMonthName = getMonthNameForApi(toMonth);
+    return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=day&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+  },
+  // Day View - Detail Mode with Pagination
+  SALE_PLANTWISE_DAY_DETAIL: function SALE_PLANTWISE_DAY_DETAIL(plantcode) {
+    var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var pageSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 300;
+    return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=day&plantcode=").concat(plantcode, "&mode=detail&page=").concat(page, "&page_size=").concat(pageSize);
+  },
+  // Year View - Default (Current year)
+  SALE_PLANTWISE_YEAR: function SALE_PLANTWISE_YEAR(plantcode) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=year&plantcode=").concat(plantcode);
+  },
+  // Year View - Specific Year
+  SALE_PLANTWISE_YEAR_CUSTOM: function SALE_PLANTWISE_YEAR_CUSTOM(plantcode, year) {
+    return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=year&plantcode=").concat(plantcode, "&year=").concat(year);
+  },
+  // Generic (for backward compatibility)
   SALE_PLANTWISE: function SALE_PLANTWISE(plantcode, year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_plt_sale_cpt?view=month&plantcode=").concat(plantcode, "&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
   },
-  // ============================================================================
-
-  // DETAILS & OTHER
-
-  // ============================================================================
-
+  // ==========================================================================
+  // LEGACY / OTHER ENDPOINTS
+  // ==========================================================================
   DETAILS: "".concat(API_BASE_URL, "/kalyani.iot/costing")
 };
 
-// Debug logs
-
+// ============================================================================
+// DEBUG LOGS (Development Only)
+// ============================================================================
 if (typeof window !== "undefined") {
   console.log("🌐 API Base URL:", API_BASE_URL);
   console.log("🖥️ Environment:", window.location.hostname === "localhost" ? "LOCAL DEV" : "PRODUCTION");
-  console.log("📋 KPI Targets API:", API_ENDPOINTS.KPI_TARGETS);
+  console.log("✅ Production Group APIs: Configured");
+  console.log("✅ Production Plant-wise APIs: Configured");
+  console.log("✅ Sale Group APIs: Configured");
+  console.log("✅ Sale Plant-wise APIs: Configured");
+  console.log("✅ KPI Targets API: Configured");
 }
+
+// ============================================================================
+// EXPORT ALL
+// ============================================================================
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (API_ENDPOINTS);
 
 /***/ }),
 
@@ -57379,4 +56209,4 @@ cs_web_components_base__WEBPACK_IMPORTED_MODULE_0__.Registry.registerReducer((0,
 /******/ })()
 ;
 });
-//# sourceMappingURL=kalyani-iot-costing.dev.d0d404269e5cb5fa7a75.js.map
+//# sourceMappingURL=kalyani-iot-costing.dev.6b0670de727e64c463dd.js.map

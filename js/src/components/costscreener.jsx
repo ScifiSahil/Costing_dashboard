@@ -438,47 +438,63 @@ const getMonthName = (monthNo) => {
   return monthNames[monthNo - 1] || "";
 };
 
-// Custom Tooltip Component
-const CustomTooltip = ({ active, payload, label, theme }) => {
-  if (active && payload && payload.length) {
-    const uniqueEntries = payload.filter((entry, index, self) => {
-      if (entry.value === null || entry.value === undefined) return false;
-      return (
-        self.findIndex(
-          (e) => e.dataKey === entry.dataKey && e.value === entry.value
-        ) === index
-      );
-    });
+const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
+  if (!active || !payload || !payload.length) return null;
 
-    if (uniqueEntries.length === 0) return null;
+  const actual = Number(payload.find((p) => p.dataKey === "actual")?.value);
 
-    return (
-      <div
-        className={`${theme.cardBg} p-4 rounded-xl ${theme.shadow} ${theme.border} border`}
-      >
-        <p className={`text-sm font-bold ${theme.primaryText} mb-3`}>{label}</p>
-        {uniqueEntries.map((entry, index) => (
-          <div key={`item-${entry.dataKey}-${index}`} className="text-sm mb-1">
-            <span
-              className="inline-block w-3 h-3 rounded-full mr-2"
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className={`font-semibold ${theme.primaryText}`}>
-              {entry.name}:{" "}
-            </span>
-            <span className={`font-bold ${theme.primaryText}`}>
-              {entry.dataKey.includes("Percent") ||
-              entry.dataKey.includes("Target") ||
-              entry.dataKey.includes("EBITDA")
-                ? `${entry.value}%`
-                : `₹${entry.value.toLocaleString()}`}
-            </span>
-          </div>
-        ))}
+  if (isNaN(actual)) return null;
+
+  const kpiTargets = useCostStore.getState().kpiTargets;
+  const target = Number(kpiTargets?.[kpiName]);
+
+  const hasTarget = !isNaN(target);
+
+  const diff = hasTarget ? actual - target : null;
+  const diffPercent = hasTarget && target !== 0 ? (diff / target) * 100 : null;
+
+  const isOverTarget = diff > 0;
+
+  return (
+    <div
+      className={`${theme.cardBg} p-4 rounded-xl ${theme.shadow} ${theme.border} border min-w-[220px]`}
+    >
+      {/* Month */}
+      <p className={`text-sm font-bold ${theme.primaryText} mb-2`}>{label}</p>
+
+      {/* Actual */}
+      <div className="flex justify-between text-sm font-semibold mb-1">
+        <span>Actual</span>
+        <span>₹{actual.toFixed(2)}</span>
       </div>
-    );
-  }
-  return null;
+
+      {/* Target */}
+      {target != null && (
+        <div className="flex justify-between text-sm font-semibold mb-1">
+          <span>Target</span>
+          <span>₹{target.toFixed(2)}</span>
+        </div>
+      )}
+
+      {/* Divider */}
+      {target != null && <div className="my-2 border-t border-gray-300" />}
+
+      {/* Difference */}
+      {diff != null && (
+        <div
+          className={`flex justify-between text-sm font-bold ${
+            isOverTarget ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          <span>{isOverTarget ? "Above Target" : "Below Target"}</span>
+          <span>
+            ₹{Math.abs(diff).toFixed(2)}
+            {diffPercent != null && <> ({Math.abs(diffPercent).toFixed(1)}%)</>}
+          </span>
+        </div>
+      )}
+    </div>
+  );
 };
 
 // Tab Toggle Component
@@ -670,6 +686,8 @@ const CostScreener = () => {
       setSelectedLocation("All");
     }
 
+    useCostStore.getState().setMonthRange(from, to);
+
     fetchCostData(from, to, currentYear, viewType);
   }, []);
 
@@ -803,9 +821,16 @@ const CostScreener = () => {
 
       return {
         kpiName: costHead.kpiName,
-        actual_per_tonne: parseFloat(lastMonthAmount.toFixed(2)),
+        actual_per_tonne: Number(lastMonthAmount ?? 0).toFixed(2),
         budget_per_tonne: parseFloat(budgetAmount.toFixed(2)),
-        trend: trend.map((val) => parseFloat(val.toFixed(2))),
+        // 👇 IMPORTANT CHANGE
+        trend: trend.map((val, idx) => ({
+          month: months[idx],
+          actual: Number(val ?? 0).toFixed(2),
+          target: kpiTargets?.[costHead.kpiName] ?? null,
+        })),
+
+        months: months,
         monthly_costs: trend.map((val) => parseFloat(val.toFixed(2))),
         monthly_budget: trend.map(() => parseFloat(budgetAmount.toFixed(2))),
         production_percentage: null,
@@ -890,14 +915,17 @@ const CostScreener = () => {
         : null;
 
     const historicalData = kpi.trend.map((value, index) => {
-      const actualMonthNo = (monthRange.from + index - 1) % 12 || 12;
+      const actualMonthNo = monthRange.from + index;
       const monthIndex = (actualMonthNo - 1) % 12;
       const isCurrentMonth = actualMonthNo === currentMonthToUse;
 
       return {
         month: monthNames[monthIndex] || `M${index + 1}`,
         monthNo: actualMonthNo,
-        actual: parseFloat(value.toFixed(2)),
+        actual: Number(value.actual ?? 0).toFixed
+  ? Number(value.actual).toFixed(3)
+  : 0,
+
         prediction: null,
         target: targetValue, // ⭐ ADD TARGET
         productionPercentPredicted: null,
@@ -905,49 +933,49 @@ const CostScreener = () => {
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue ? value - targetValue : 0, // ⭐ VARIANCE
+        variance: targetValue ? value.actual - targetValue : 0, // ⭐ VARIANCE
       };
     });
 
-    const lastValue = kpi.trend[kpi.trend.length - 1];
-    const prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
-    const costDirection = lastValue >= prevValue ? 1 : -1;
-    const lastMonthNo =
-      historicalData[historicalData.length - 1]?.monthNo || 12;
-    const nextMonthNo = (lastMonthNo % 12) + 1;
-    const monthIndex = (nextMonthNo - 1) % 12;
-    const stepChange =
-      Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
-    const predictedValue = lastValue + costDirection * stepChange;
+    // const lastValue = kpi.trend[kpi.trend.length - 1];
+    // const prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
+    // const costDirection = lastValue >= prevValue ? 1 : -1;
+    // const lastMonthNo =
+    //   historicalData[historicalData.length - 1]?.monthNo || 12;
+    // const nextMonthNo = (lastMonthNo % 12) + 1;
+    // const monthIndex = (nextMonthNo - 1) % 12;
+    // const stepChange =
+    //   Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
+    // const predictedValue = lastValue + costDirection * stepChange;
 
     const percentLength = kpi.production_percentage?.length || 0;
     const lastPercent =
       percentLength > 0 ? kpi.production_percentage[percentLength - 1] : null;
 
-    const predictionData = [
-      {
-        month: monthNames[monthIndex] || `M${monthIndex + 1}`,
-        monthNo: nextMonthNo,
-        actual: null,
-        prediction: parseFloat(predictedValue.toFixed(2)),
-        target: targetValue, // ⭐ ADD TARGET
-        targetForCheck: null,
-        productionPercent: null,
-        productionPercentPredicted: lastPercent,
-        productionTarget: avgTargetPercent,
-        productionTargetForCheck: avgTargetPercent,
-        isHistorical: false,
-        isHighlighted: false,
-        variance: targetValue ? predictedValue - targetValue : 0, // ⭐ VARIANCE
-      },
-    ];
+    // const predictionData = [
+    //   {
+    //     month: monthNames[monthIndex] || `M${monthIndex + 1}`,
+    //     monthNo: nextMonthNo,
+    //     actual: null,
+    //     prediction: parseFloat(predictedValue.toFixed(2)),
+    //     target: targetValue, // ⭐ ADD TARGET
+    //     targetForCheck: null,
+    //     productionPercent: null,
+    //     productionPercentPredicted: lastPercent,
+    //     productionTarget: avgTargetPercent,
+    //     productionTargetForCheck: avgTargetPercent,
+    //     isHistorical: false,
+    //     isHighlighted: false,
+    //     variance: targetValue ? predictedValue - targetValue : 0, // ⭐ VARIANCE
+    //   },
+    // ];
 
     console.log(
       `✅ Chart data built: ${
         historicalData.length + 1
       } points with target: ${targetValue}`
     );
-    return [...historicalData, ...predictionData];
+    return historicalData;
   };
 
   // Custom Label Component
@@ -1355,10 +1383,17 @@ const CostScreener = () => {
                     </div>
 
                     {(() => {
-                      const actual = kpi.actual_per_tonne;
-                      const budget = kpi.budget_per_tonne;
-                      const variance = ((actual - budget) / budget) * 100;
-                      const isOverBudget = actual > budget;
+                      const trend = kpi.monthly_costs || [];
+
+                      const curr = trend[trend.length - 1];
+                      const prev = trend[trend.length - 2];
+
+                      const variance =
+                        prev && prev !== 0 ? ((curr - prev) / prev) * 100 : 0;
+
+                      const isIncrease = variance > 0;
+
+                      const isOverBudget = isIncrease && variance > 0;
 
                       return (
                         <div
@@ -1384,47 +1419,25 @@ const CostScreener = () => {
                   </div>
 
                   {/* Chart Area */}
+                  {/* Chart Area */}
                   <div
-                    className="relative h-56 mb-3"
+                    className="relative mb-3"
                     style={{
+                      height: "224px", // ⭐ ADDED
+                      minHeight: "224px", // ⭐ ADDED
                       cursor: isModalOpen ? "default" : "pointer",
                       zIndex: isModalOpen ? 1 : 1,
                       pointerEvents: isModalOpen ? "none" : "all",
                     }}
                     onClick={(e) => {
                       if (isModalOpen) return;
-
                       e.stopPropagation();
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const clickX = e.clientX - rect.left;
-                      const clickY = e.clientY - rect.top;
-
-                      const chartWidth = rect.width - 10;
-                      const historicalPoints = chartData.filter(
-                        (d) => d.isHistorical
-                      );
-                      const pointSpacing =
-                        chartWidth / (historicalPoints.length + 1);
-                      const clickedIndex =
-                        Math.round(clickX / pointSpacing) - 1;
-
-                      if (
-                        clickedIndex >= 0 &&
-                        clickedIndex < historicalPoints.length
-                      ) {
-                        const point = historicalPoints[clickedIndex];
-                        if (point) {
-                          setActionModal({
-                            kpiName: kpi.kpiName,
-                            month: point.month,
-                            x: clickX,
-                            y: clickY,
-                          });
-                        }
-                      }
+                      // ... rest of onClick code ...
                     }}
                   >
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={224}>
+                      {" "}
+                      {/* ⭐ CHANGED */}
                       <ComposedChart
                         data={chartData}
                         margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
@@ -1433,37 +1446,44 @@ const CostScreener = () => {
                           dataKey="month"
                           tick={{ fontSize: 15, fontWeight: 600 }}
                         />
+
                         <YAxis
                           tick={{ fontSize: 15, fontWeight: 600 }}
-                          domain={["dataMin", "dataMax"]}
+                          domain={[
+                            (dataMin) => {
+                              const min = Math.min(
+                                dataMin,
+                                Number(kpiTargets[kpi.kpiName]) || dataMin
+                              );
+
+                              return min < 0 ? min : 0;
+                            },
+
+                            (dataMax) =>
+                              Math.max(dataMax, kpiTargets[kpi.kpiName]),
+                          ]}
                         />
                         <Tooltip
-                          content={<CustomTooltip theme={currentTheme} />}
+                          content={
+                            <CustomTooltip
+                              theme={currentTheme}
+                              kpiName={kpi.kpiName}
+                            />
+                          }
                         />
 
-                        {/* ⭐⭐⭐ TARGET LINE - ORANGE COLOR ⭐⭐⭐ */}
+                        {/* Target Line Code */}
                         {(() => {
                           const targetForKpi = kpiTargets[kpi.kpiName];
 
-                          console.log(
-                            `🎨 Rendering chart: ${kpi.kpiName}, Target: ${targetForKpi}`
-                          );
-
                           if (!targetForKpi || targetForKpi <= 0) {
-                            console.warn(
-                              `⚠️ No target line for ${kpi.kpiName} (value: ${targetForKpi})`
-                            );
                             return null;
                           }
-
-                          console.log(
-                            `✅ Drawing ORANGE target line for ${kpi.kpiName} at ₹${targetForKpi}`
-                          );
 
                           return (
                             <ReferenceLine
                               y={targetForKpi}
-                              stroke="#ff8c00" // ⭐ ORANGE COLOR
+                              stroke="#ff8c00"
                               strokeWidth={2.5}
                               strokeDasharray="5 5"
                               label={{
@@ -1471,7 +1491,7 @@ const CostScreener = () => {
                                   targetForKpi
                                 ).toLocaleString()}`,
                                 position: "right",
-                                fill: "#ff8c00", // ⭐ ORANGE COLOR
+                                fill: "#ff8c00",
                                 fontSize: 12,
                                 fontWeight: "bold",
                                 offset: 10,
@@ -1479,26 +1499,6 @@ const CostScreener = () => {
                             />
                           );
                         })()}
-
-                        {highlightIndex >= 0 && (
-                          <ReferenceArea
-                            x1={
-                              chartData[Math.max(0, highlightIndex - 0.4)]
-                                ?.month
-                            }
-                            x2={
-                              chartData[
-                                Math.min(
-                                  chartData.length - 1,
-                                  highlightIndex + 0.4
-                                )
-                              ]?.month
-                            }
-                            fill={currentTheme.chartColors.highlightColor}
-                            fillOpacity={0.1}
-                            strokeOpacity={0.3}
-                          />
-                        )}
 
                         <Area
                           type="monotone"
@@ -1515,26 +1515,34 @@ const CostScreener = () => {
                           strokeWidth={2}
                           dot={(props) => {
                             const { cx, cy, index, payload } = props;
+
                             const isHighlight = index === highlightIndex;
                             const isHistorical = payload.isHistorical;
 
                             if (!isHistorical) return null;
+
+                            // 🔥 TARGET LOGIC
+                            const target = Number(kpiTargets[kpi.kpiName]);
+                            const value = payload.actual;
+
+                            let fillColor = currentTheme.chartColors.actualLine;
+
+                            if (isHighlight && target) {
+                              fillColor =
+                                value > target ? "#ef4444" : "#10b981"; // 🔴 / 🟢
+                            }
 
                             return (
                               <circle
                                 cx={cx}
                                 cy={cy}
                                 r={isHighlight ? 7 : 3}
-                                fill={
-                                  isHighlight
-                                    ? currentTheme.chartColors.highlightColor
-                                    : currentTheme.chartColors.actualLine
-                                }
+                                fill={fillColor}
                                 stroke={isHighlight ? "white" : "none"}
                                 strokeWidth={isHighlight ? 2 : 0}
                                 style={{
                                   filter: isHighlight
-                                    ? `drop-shadow(0px 0px 6px ${currentTheme.chartColors.highlightColor})`
+                                    ? `drop-shadow(0px 0px 6px ${fillColor})`
                                     : "none",
                                 }}
                               />

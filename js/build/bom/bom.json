@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.4",
   "version": 1,
-  "serialNumber": "urn:uuid:0250e256-5a9b-4326-baae-a0400d34e5d7",
+  "serialNumber": "urn:uuid:39865565-f8e2-41e1-95b9-a7ce658a195f",
   "metadata": {
-    "timestamp": "2026-01-01T11:52:45.467Z",
+    "timestamp": "2026-01-02T11:38:41.574Z",
     "tools": [
       {
         "vendor": "@cyclonedx",
@@ -497,38 +497,6 @@
     },
     {
       "type": "library",
-      "name": "react-is",
-      "version": "16.13.1",
-      "bom-ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
-      "description": "Brand checking of React Elements.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "purl": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/facebook/react.git#packages/react-is",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
-        },
-        {
-          "url": "https://reactjs.org/",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/facebook/react/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "react-redux",
       "version": "9.2.0",
       "bom-ref": "pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git",
@@ -555,6 +523,38 @@
         },
         {
           "url": "https://github.com/reduxjs/react-redux/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-is",
+      "version": "16.13.1",
+      "bom-ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
+      "description": "Brand checking of React Elements.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/facebook/react.git#packages/react-is",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://reactjs.org/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/facebook/react/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -694,39 +694,6 @@
     },
     {
       "type": "library",
-      "name": "redux-thunk",
-      "version": "3.1.0",
-      "bom-ref": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git",
-      "author": "Dan Abramov",
-      "description": "Thunk middleware for Redux.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "purl": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/reduxjs/redux-thunk.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/reduxjs/redux-thunk",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/reduxjs/redux-thunk/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "redux",
       "version": "5.0.1",
       "bom-ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
@@ -759,11 +726,11 @@
     },
     {
       "type": "library",
-      "name": "buffer",
-      "version": "5.7.1",
-      "bom-ref": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
-      "author": "Feross Aboukhadijeh",
-      "description": "Node.js Buffer API, for the browser",
+      "name": "redux-thunk",
+      "version": "3.1.0",
+      "bom-ref": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git",
+      "author": "Dan Abramov",
+      "description": "Thunk middleware for Redux.",
       "licenses": [
         {
           "license": {
@@ -771,86 +738,20 @@
           }
         }
       ],
-      "purl": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
+      "purl": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git",
       "externalReferences": [
         {
-          "url": "git://github.com/feross/buffer.git",
+          "url": "git+https://github.com/reduxjs/redux-thunk.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "https://github.com/feross/buffer",
+          "url": "https://github.com/reduxjs/redux-thunk",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/feross/buffer/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "d3-format",
-      "version": "3.1.0",
-      "bom-ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
-      "author": "Mike Bostock",
-      "description": "Format numbers for human consumption.",
-      "licenses": [
-        {
-          "license": {
-            "id": "ISC"
-          }
-        }
-      ],
-      "purl": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/d3/d3-format.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://d3js.org/d3-format/",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/d3/d3-format/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "d3-time-format",
-      "version": "4.1.0",
-      "bom-ref": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
-      "author": "Mike Bostock",
-      "description": "A JavaScript time formatter and parser inspired by strftime and strptime.",
-      "licenses": [
-        {
-          "license": {
-            "id": "ISC"
-          }
-        }
-      ],
-      "purl": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/d3/d3-time-format.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://d3js.org/d3-time-format/",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/d3/d3-time-format/issues",
+          "url": "https://github.com/reduxjs/redux-thunk/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -924,6 +825,72 @@
     },
     {
       "type": "library",
+      "name": "buffer",
+      "version": "5.7.1",
+      "bom-ref": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
+      "author": "Feross Aboukhadijeh",
+      "description": "Node.js Buffer API, for the browser",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
+      "externalReferences": [
+        {
+          "url": "git://github.com/feross/buffer.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/feross/buffer",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/feross/buffer/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "d3-format",
+      "version": "3.1.0",
+      "bom-ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+      "author": "Mike Bostock",
+      "description": "Format numbers for human consumption.",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/d3/d3-format.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://d3js.org/d3-format/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/d3/d3-format/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "d3-interpolate",
       "version": "3.0.1",
       "bom-ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
@@ -950,6 +917,39 @@
         },
         {
           "url": "https://github.com/d3/d3-interpolate/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "d3-time-format",
+      "version": "4.1.0",
+      "bom-ref": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
+      "author": "Mike Bostock",
+      "description": "A JavaScript time formatter and parser inspired by strftime and strptime.",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/d3/d3-time-format.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://d3js.org/d3-time-format/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/d3/d3-time-format/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -1151,10 +1151,10 @@
         "pkg:npm/es-toolkit@1.43.0?vcs_url=git%2Bhttps%3A//github.com/toss/es-toolkit.git",
         "pkg:npm/victory-vendor@37.3.6?vcs_url=git%2Bhttps%3A//github.com/FormidableLabs/victory.git",
         "pkg:npm/decimal.js-light@2.5.1?vcs_url=git%2Bhttps%3A//github.com/MikeMcl/decimal.js-light.git",
+        "pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store",
         "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
         "pkg:npm/immer@10.2.0?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git",
         "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git",
-        "pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store",
         "pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git",
         "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
         "pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git",
@@ -1200,13 +1200,13 @@
       ]
     },
     {
-      "ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"
-    },
-    {
       "ref": "pkg:npm/react-redux@9.2.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/react-redux.git",
       "dependsOn": [
         "pkg:npm/use-sync-external-store@1.6.0?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/use-sync-external-store"
       ]
+    },
+    {
+      "ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"
     },
     {
       "ref": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"
@@ -1215,8 +1215,8 @@
       "ref": "pkg:npm/d3-scale@4.0.2?vcs_url=git%2Bhttps%3A//github.com/d3/d3-scale.git",
       "dependsOn": [
         "pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git",
-        "pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git",
         "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+        "pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git",
         "pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git",
         "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
         "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git"
@@ -1232,26 +1232,10 @@
       "ref": "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"
     },
     {
-      "ref": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"
-    },
-    {
       "ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"
     },
     {
-      "ref": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
-      "dependsOn": [
-        "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
-        "pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"
-      ]
-    },
-    {
-      "ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"
-    },
-    {
-      "ref": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
-      "dependsOn": [
-        "pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"
-      ]
+      "ref": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"
     },
     {
       "ref": "pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git",
@@ -1266,9 +1250,25 @@
       ]
     },
     {
+      "ref": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
+      "dependsOn": [
+        "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
+        "pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"
+      ]
+    },
+    {
+      "ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"
+    },
+    {
       "ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
       "dependsOn": [
         "pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"
+      ]
+    },
+    {
+      "ref": "pkg:npm/d3-time-format@4.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time-format.git",
+      "dependsOn": [
+        "pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git"
       ]
     },
     {

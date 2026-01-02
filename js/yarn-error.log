@@ -14,8 +14,12 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: connect ETIMEDOUT 104.16.1.35:443
-      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1495:16)
+  Error: Client network socket disconnected before secure TLS connection was established
+      at connResetException (node:internal/errors:720:14)
+      at TLSSocket.onConnectEnd (node:_tls_wrap:1605:19)
+      at TLSSocket.emit (node:events:526:35)
+      at endReadableNT (node:internal/streams/readable:1359:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
 
 npm manifest: 
   {
