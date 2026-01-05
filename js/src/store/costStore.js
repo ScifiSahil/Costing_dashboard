@@ -103,6 +103,7 @@ const TYPE_MAPPING = {
 // PLANT CODE MAPPING
 // ============================================================================
 const PLANT_CODE_MAPPING = {
+  // 🔥 Original mappings (kept for backward compatibility)
   "Mundhwa": "2001",
   "Ranjangaon E-84": "2002",
   "Transmission Ranjangaon": "2101",
@@ -118,7 +119,28 @@ const PLANT_CODE_MAPPING = {
   "Gujarat": "2026",
   "Heat Treatment": "2081",
   "Inmet Jejuri": "2201",
-  "Yokoha Jejuri": "2301"
+  "Yokoha Jejuri": "2301",
+  
+  // 🔥 NEW: UI location name mappings (for costscreener.jsx locations)
+  "Ranjangaon": "2002",      // Maps to Ranjangaon E-84
+  "Ranjangaon-2": "2101",    // Maps to Transmission Ranjangaon
+  "Baramati": "2102",        // Maps to Transmission Baramati
+  "Gujrat": "2026",          // Maps to Gujarat (note UI spelling: "Gujrat")
+  "Khed": "2021",            // Maps to Khed-1
+  "Ambhethan-1": "2022",     // Same as Ambethan-1
+  "Ambhethan-2": "2023",     // Same as Ambethan-2
+  
+  // 🔥 Additional short codes (optional, if needed by UI)
+  "RGN": "2002",
+  "RGN-2": "2101",
+  "MUN": "2001",
+  "BRM": "2102",
+  "BWD": "2025",
+  "GUT": "2026",
+  "CHK": "2020",
+  "KHD": "2021",
+  "AMB1": "2022",
+  "AMB2": "2023",
 };
 
 // ============================================================================
@@ -374,6 +396,7 @@ const useCostStore = create(
         console.log("📍 Setting location to:", location);
 
         if (!location || location === "All") {
+          console.log("🌍 Setting to ALL plants (group level)");
           set({
             selectedLocation: null,
             selectedPlantCode: null,
@@ -383,13 +406,18 @@ const useCostStore = create(
 
         const plantCode = PLANT_CODE_MAPPING[location];
         if (!plantCode) {
-          console.warn(`⚠️ No plant code mapping found for: ${location}`);
+          console.warn(`⚠️ No plant code mapping found for: "${location}"`);
+          console.warn("📋 Available mappings:", Object.keys(PLANT_CODE_MAPPING));
+        } else {
+          console.log(`🏭 Mapped "${location}" → Plant Code: ${plantCode}`);
         }
 
         set({
           selectedLocation: location,
           selectedPlantCode: plantCode || null,
         });
+        
+        console.log("✅ State updated - selectedPlantCode:", plantCode || null);
       },
 
       setSelectedType: (type) => {

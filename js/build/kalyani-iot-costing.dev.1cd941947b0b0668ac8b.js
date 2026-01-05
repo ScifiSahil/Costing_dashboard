@@ -35024,12 +35024,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
 /* harmony import */ var _MonthRangeSlider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MonthRangeSlider */ "./src/components/MonthRangeSlider.jsx");
 /* harmony import */ var _store_costStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/costStore */ "./src/store/costStore.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -35048,6 +35048,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 // Import Zustand Store
 
+
+// 🔥 SAFE NUMBER UTILITY - Crash prevention
+var safeNumber = function safeNumber(value) {
+  var decimals = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+  if (value === null || value === undefined || value === "") return "0";
+  var num = Number(value);
+  if (isNaN(num)) return "0";
+  return num.toFixed(decimals);
+};
 
 // Themes Configuration
 var themes = {
@@ -35416,20 +35425,22 @@ var getMonthName = function getMonthName(monthNo) {
   return monthNames[monthNo - 1] || "";
 };
 var CustomTooltip = function CustomTooltip(_ref) {
-  var _payload$find;
   var active = _ref.active,
     payload = _ref.payload,
     label = _ref.label,
     theme = _ref.theme,
     kpiName = _ref.kpiName;
   if (!active || !payload || !payload.length) return null;
-  var actual = Number((_payload$find = payload.find(function (p) {
+
+  // 🔥 SAFE: Parse actual value with fallback
+  var actualPayload = payload.find(function (p) {
     return p.dataKey === "actual";
-  })) === null || _payload$find === void 0 ? void 0 : _payload$find.value);
+  });
+  var actual = actualPayload ? Number(actualPayload.value || 0) : 0;
   if (isNaN(actual)) return null;
   var kpiTargets = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState().kpiTargets;
-  var target = Number(kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[kpiName]);
-  var hasTarget = !isNaN(target);
+  var target = Number((kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[kpiName]) || 0);
+  var hasTarget = target > 0;
   var diff = hasTarget ? actual - target : null;
   var diffPercent = hasTarget && target !== 0 ? diff / target * 100 : null;
   var isOverTarget = diff > 0;
@@ -35439,13 +35450,13 @@ var CustomTooltip = function CustomTooltip(_ref) {
     className: "text-sm font-bold ".concat(theme.primaryText, " mb-2")
   }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between text-sm font-semibold mb-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Actual"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", actual.toFixed(2))), target != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Actual"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", safeNumber(actual, 2))), hasTarget && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between text-sm font-semibold mb-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", target.toFixed(2))), target != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", safeNumber(target, 2))), hasTarget && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "my-2 border-t border-gray-300"
   }), diff != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between text-sm font-bold ".concat(isOverTarget ? "text-red-600" : "text-green-600")
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, isOverTarget ? "Above Target" : "Below Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", Math.abs(diff).toFixed(2), diffPercent != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, " (", Math.abs(diffPercent).toFixed(1), "%)"))));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, isOverTarget ? "Above Target" : "Below Target"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", safeNumber(Math.abs(diff), 2), diffPercent != null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, " (", safeNumber(Math.abs(diffPercent), 1), "%)"))));
 };
 
 // Tab Toggle Component
@@ -35762,6 +35773,8 @@ var CostScreener = function CostScreener() {
       from = 1;
       to = 6;
     }
+
+    // Reset location to "All" on initial load when category is "All"
     if (selectedCategory === "All") {
       setSelectedLocation("All");
     }
@@ -35787,11 +35800,14 @@ var CostScreener = function CostScreener() {
     }
     var monthlyData = {};
     apiData.forEach(function (item) {
-      var monthName = getMonthName(item.month_no);
+      // 🔥 FIX: Handle both group API (month_no) and plant API (month)
+      var monthNo = item.month_no || item.month;
+      var monthName = getMonthName(monthNo);
       if (!monthlyData[monthName]) {
         monthlyData[monthName] = {
           month: monthName,
-          monthNo: item.month_no,
+          monthNo: monthNo,
+          // 🔥 FIX: Use the normalized monthNo variable
           costs: {},
           total: 0,
           count: 0
@@ -35834,6 +35850,7 @@ var CostScreener = function CostScreener() {
   };
 
   // Transform API Data to KPI Cards
+  // Transform API Data to KPI Cards
   var transformApiDataToKpiCards = function transformApiDataToKpiCards() {
     if (!apiData || apiData.length === 0) {
       return [];
@@ -35841,7 +35858,8 @@ var CostScreener = function CostScreener() {
     var costHeadData = {};
     apiData.forEach(function (item) {
       var costHead = (item.cost_head || "Other").trim();
-      var monthNo = item.month_no;
+      // 🔥 FIX: Handle both group API (month_no) and plant API (month)
+      var monthNo = item.month_no || item.month;
       var costValue = parseFloat(item.cost_per_ton);
       if (!costValue || isNaN(costValue)) {
         var totalAmount = parseFloat(item.total_amount || 0);
@@ -35883,23 +35901,28 @@ var CostScreener = function CostScreener() {
       var budgetAmount = avgAmount * 1.05;
       return {
         kpiName: costHead.kpiName,
-        actual_per_tonne: Number(lastMonthAmount !== null && lastMonthAmount !== void 0 ? lastMonthAmount : 0).toFixed(2),
-        budget_per_tonne: parseFloat(budgetAmount.toFixed(2)),
+        actual_per_tonne: safeNumber(lastMonthAmount, 2),
+        // 🔥 FIXED
+        budget_per_tonne: parseFloat(safeNumber(budgetAmount, 2)),
+        // 🔥 FIXED
         trend: trend.map(function (val, idx) {
           var _kpiTargets$costHead$;
           return {
             month: months[idx],
-            actual: Number(val !== null && val !== void 0 ? val : 0).toFixed(2),
+            actual: safeNumber(val, 2),
+            // 🔥 FIXED - LINE 842 KA ISSUE YAHAN THA
             target: (_kpiTargets$costHead$ = kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[costHead.kpiName]) !== null && _kpiTargets$costHead$ !== void 0 ? _kpiTargets$costHead$ : null
           };
         }),
         months: months,
         monthly_costs: trend.map(function (val) {
-          return parseFloat(val.toFixed(2));
+          return parseFloat(safeNumber(val, 2));
         }),
+        // 🔥 FIXED
         monthly_budget: trend.map(function () {
-          return parseFloat(budgetAmount.toFixed(2));
+          return parseFloat(safeNumber(budgetAmount, 2));
         }),
+        // 🔥 FIXED
         production_percentage: null,
         target_percentage: null
       };
@@ -35909,8 +35932,10 @@ var CostScreener = function CostScreener() {
   var getTopCostContributors = function getTopCostContributors(kpiName, cardCurrentMonth) {
     if (!apiData || apiData.length === 0) return [];
     var kpiData = apiData.filter(function (item) {
-      return (item.cost_head || "Other").trim() === kpiName && item.month_no === cardCurrentMonth;
-    });
+      return (item.cost_head || "Other").trim() === kpiName && (item.month_no || item.month) === cardCurrentMonth;
+    } // 🔥 FIX: Handle both APIs
+    );
+
     if (kpiData.length === 0) return [];
     var contributors = {};
     kpiData.forEach(function (item) {
@@ -35944,43 +35969,57 @@ var CostScreener = function CostScreener() {
     return [];
   };
 
-  // ⭐ FIXED buildChartData function
+  // 🔥 FIXED: Build Chart Data with Safe Number Handling
+  // Build Chart Data with Safe Number Handling
   var buildChartData = function buildChartData(kpi, currentMonthToUse) {
-    var _kpi$production_perce2;
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var normalizedKpiName = kpi.kpiName;
-    var targetValue = kpiTargets[normalizedKpiName] || null;
+    var targetValue = Number(kpiTargets[normalizedKpiName] || 0);
     console.log("\uD83C\uDFAF Building chart for: ".concat(normalizedKpiName));
     console.log("\uD83D\uDCCA Target value: ".concat(targetValue ? "\u20B9".concat(targetValue) : "NOT FOUND"));
     var avgTargetPercent = kpi.production_percentage && kpi.production_percentage.length > 0 ? kpi.production_percentage.reduce(function (a, b) {
       return a + b;
     }, 0) / kpi.production_percentage.length : null;
 
-    // ⭐ CRITICAL FIX: Safely handle undefined values
-    var historicalData = (kpi.trend || []).map(function (value, index) {
+    // 🔥 SAFE: Build historical data with proper error handling
+    var historicalData = kpi.trend.map(function (value, index) {
       var _kpi$production_perce;
       var actualMonthNo = monthRange.from + index;
       var monthIndex = (actualMonthNo - 1) % 12;
       var isCurrentMonth = actualMonthNo === currentMonthToUse;
 
-      // ⭐ Safely extract actual value
-      var actualValue = (value === null || value === void 0 ? void 0 : value.actual) != null ? value.actual : 0;
+      // 🔥 SAFE: Extract actual value with multiple fallbacks
+      var actualValue = 0;
+      if (value && _typeof(value) === "object" && value.actual !== undefined) {
+        // If trend item is an object with 'actual' property
+        actualValue = value.actual;
+      } else if (typeof value === "number") {
+        // If trend item is directly a number
+        actualValue = value;
+      } else if (typeof value === "string") {
+        // If trend item is a string number
+        actualValue = parseFloat(value);
+      }
+
+      // Final safety check
+      if (isNaN(actualValue) || actualValue === null || actualValue === undefined) {
+        actualValue = 0;
+      }
       return {
         month: monthNames[monthIndex] || "M".concat(index + 1),
         monthNo: actualMonthNo,
-        actual: Number(actualValue).toFixed(3),
+        actual: safeNumber(actualValue, 3),
+        // 🔥 ALWAYS SAFE
         prediction: null,
-        target: targetValue,
+        target: targetValue > 0 ? targetValue : null,
         productionPercentPredicted: null,
         productionPercent: ((_kpi$production_perce = kpi.production_percentage) === null || _kpi$production_perce === void 0 ? void 0 : _kpi$production_perce[index]) || null,
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue ? actualValue - targetValue : 0
+        variance: targetValue > 0 ? actualValue - targetValue : 0
       };
     });
-    var percentLength = ((_kpi$production_perce2 = kpi.production_percentage) === null || _kpi$production_perce2 === void 0 ? void 0 : _kpi$production_perce2.length) || 0;
-    var lastPercent = percentLength > 0 ? kpi.production_percentage[percentLength - 1] : null;
     console.log("\u2705 Chart data built: ".concat(historicalData.length, " points with target: ").concat(targetValue));
     return historicalData;
   };
@@ -36315,8 +36354,10 @@ var CostScreener = function CostScreener() {
         className: "text-xxl font-extrabold text-slate-800"
       }, kpi.kpiName)), function () {
         var trend = kpi.monthly_costs || [];
-        var curr = trend[trend.length - 1];
-        var prev = trend[trend.length - 2];
+        var curr = trend[trend.length - 1] || 0;
+        var prev = trend[trend.length - 2] || curr;
+
+        // 🔥 SAFE: Variance calculation
         var variance = prev && prev !== 0 ? (curr - prev) / prev * 100 : 0;
         var isIncrease = variance > 0;
         var isOverBudget = isIncrease && variance > 0;
@@ -36328,7 +36369,7 @@ var CostScreener = function CostScreener() {
           className: "w-4 h-4 text-green-700"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
           className: "text-3xl font-extrabold ".concat(isOverBudget ? "text-red-700" : "text-green-700")
-        }, Math.abs(variance).toFixed(1), "%"));
+        }, safeNumber(Math.abs(variance), 1), "%"));
       }()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "relative mb-3",
         style: {
@@ -36365,10 +36406,12 @@ var CostScreener = function CostScreener() {
           fontWeight: 600
         },
         domain: [function (dataMin) {
-          var min = Math.min(dataMin, Number(kpiTargets[kpi.kpiName]) || dataMin);
+          var targetForKpi = Number(kpiTargets[kpi.kpiName] || 0);
+          var min = Math.min(dataMin, targetForKpi);
           return min < 0 ? min : 0;
         }, function (dataMax) {
-          return Math.max(dataMax, kpiTargets[kpi.kpiName]);
+          var targetForKpi = Number(kpiTargets[kpi.kpiName] || 0);
+          return Math.max(dataMax, targetForKpi);
         }]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_22__.Tooltip, {
         content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CustomTooltip, {
@@ -36376,7 +36419,7 @@ var CostScreener = function CostScreener() {
           kpiName: kpi.kpiName
         })
       }), function () {
-        var targetForKpi = kpiTargets[kpi.kpiName];
+        var targetForKpi = Number(kpiTargets[kpi.kpiName] || 0);
         if (!targetForKpi || targetForKpi <= 0) {
           return null;
         }
@@ -36413,8 +36456,10 @@ var CostScreener = function CostScreener() {
           var isHighlight = index === highlightIndex;
           var isHistorical = payload.isHistorical;
           if (!isHistorical) return null;
-          var target = Number(kpiTargets[kpi.kpiName]);
-          var value = payload.actual;
+
+          // 🔥 TARGET LOGIC
+          var target = Number(kpiTargets[kpi.kpiName] || 0);
+          var value = Number(payload.actual || 0);
           var fillColor = currentTheme.chartColors.actualLine;
           if (isHighlight && target) {
             fillColor = value > target ? "#ef4444" : "#10b981";
@@ -36464,7 +36509,7 @@ var CostScreener = function CostScreener() {
         var total = getTopCostContributors(kpi.kpiName, cardCurrentMonth).reduce(function (sum, c) {
           return sum + c.amount;
         }, 0);
-        var percentage = contributor.amount / total * 100;
+        var percentage = total > 0 ? contributor.amount / total * 100 : 0;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           key: index,
           className: "bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all"
@@ -36482,7 +36527,7 @@ var CostScreener = function CostScreener() {
           className: "text-sm font-bold text-orange-600"
         }, "\u20B9", contributor.amount.toLocaleString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           className: "text-xs font-semibold text-gray-500"
-        }, percentage.toFixed(1), "%"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        }, safeNumber(percentage, 1), "%"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           className: "w-full bg-gray-200 rounded-full h-2.5"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           className: "bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full transition-all duration-500",
@@ -36917,6 +36962,7 @@ var TYPE_MAPPING = {
 // PLANT CODE MAPPING
 // ============================================================================
 var PLANT_CODE_MAPPING = {
+  // 🔥 Original mappings (kept for backward compatibility)
   "Mundhwa": "2001",
   "Ranjangaon E-84": "2002",
   "Transmission Ranjangaon": "2101",
@@ -36932,7 +36978,34 @@ var PLANT_CODE_MAPPING = {
   "Gujarat": "2026",
   "Heat Treatment": "2081",
   "Inmet Jejuri": "2201",
-  "Yokoha Jejuri": "2301"
+  "Yokoha Jejuri": "2301",
+  // 🔥 NEW: UI location name mappings (for costscreener.jsx locations)
+  "Ranjangaon": "2002",
+  // Maps to Ranjangaon E-84
+  "Ranjangaon-2": "2101",
+  // Maps to Transmission Ranjangaon
+  "Baramati": "2102",
+  // Maps to Transmission Baramati
+  "Gujrat": "2026",
+  // Maps to Gujarat (note UI spelling: "Gujrat")
+  "Khed": "2021",
+  // Maps to Khed-1
+  "Ambhethan-1": "2022",
+  // Same as Ambethan-1
+  "Ambhethan-2": "2023",
+  // Same as Ambethan-2
+
+  // 🔥 Additional short codes (optional, if needed by UI)
+  "RGN": "2002",
+  "RGN-2": "2101",
+  "MUN": "2001",
+  "BRM": "2102",
+  "BWD": "2025",
+  "GUT": "2026",
+  "CHK": "2020",
+  "KHD": "2021",
+  "AMB1": "2022",
+  "AMB2": "2023"
 };
 
 // ============================================================================
@@ -37236,6 +37309,7 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     setSelectedLocation: function setSelectedLocation(location) {
       console.log("📍 Setting location to:", location);
       if (!location || location === "All") {
+        console.log("🌍 Setting to ALL plants (group level)");
         set({
           selectedLocation: null,
           selectedPlantCode: null
@@ -37244,12 +37318,16 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
       }
       var plantCode = PLANT_CODE_MAPPING[location];
       if (!plantCode) {
-        console.warn("\u26A0\uFE0F No plant code mapping found for: ".concat(location));
+        console.warn("\u26A0\uFE0F No plant code mapping found for: \"".concat(location, "\""));
+        console.warn("📋 Available mappings:", Object.keys(PLANT_CODE_MAPPING));
+      } else {
+        console.log("\uD83C\uDFED Mapped \"".concat(location, "\" \u2192 Plant Code: ").concat(plantCode));
       }
       set({
         selectedLocation: location,
         selectedPlantCode: plantCode || null
       });
+      console.log("✅ State updated - selectedPlantCode:", plantCode || null);
     },
     setSelectedType: function setSelectedType(type) {
       var _TYPE_MAPPING$type;
@@ -56209,4 +56287,4 @@ cs_web_components_base__WEBPACK_IMPORTED_MODULE_0__.Registry.registerReducer((0,
 /******/ })()
 ;
 });
-//# sourceMappingURL=kalyani-iot-costing.dev.6b0670de727e64c463dd.js.map
+//# sourceMappingURL=kalyani-iot-costing.dev.1cd941947b0b0668ac8b.js.map

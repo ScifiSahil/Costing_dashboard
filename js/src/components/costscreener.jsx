@@ -46,6 +46,14 @@ import MonthRangeSlider from "./MonthRangeSlider";
 // Import Zustand Store
 import { useCostStore } from "../store/costStore";
 
+// 🔥 SAFE NUMBER UTILITY - Crash prevention
+const safeNumber = (value, decimals = 2) => {
+  if (value === null || value === undefined || value === "") return "0";
+  const num = Number(value);
+  if (isNaN(num)) return "0";
+  return num.toFixed(decimals);
+};
+
 // Themes Configuration
 const themes = {
   ocean: {
@@ -441,14 +449,16 @@ const getMonthName = (monthNo) => {
 const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
   if (!active || !payload || !payload.length) return null;
 
-  const actual = Number(payload.find((p) => p.dataKey === "actual")?.value);
+  // 🔥 SAFE: Parse actual value with fallback
+  const actualPayload = payload.find((p) => p.dataKey === "actual");
+  const actual = actualPayload ? Number(actualPayload.value || 0) : 0;
 
   if (isNaN(actual)) return null;
 
   const kpiTargets = useCostStore.getState().kpiTargets;
-  const target = Number(kpiTargets?.[kpiName]);
+  const target = Number(kpiTargets?.[kpiName] || 0);
 
-  const hasTarget = !isNaN(target);
+  const hasTarget = target > 0;
 
   const diff = hasTarget ? actual - target : null;
   const diffPercent = hasTarget && target !== 0 ? (diff / target) * 100 : null;
@@ -465,19 +475,19 @@ const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
       {/* Actual */}
       <div className="flex justify-between text-sm font-semibold mb-1">
         <span>Actual</span>
-        <span>₹{actual.toFixed(2)}</span>
+        <span>₹{safeNumber(actual, 2)}</span>
       </div>
 
       {/* Target */}
-      {target != null && (
+      {hasTarget && (
         <div className="flex justify-between text-sm font-semibold mb-1">
           <span>Target</span>
-          <span>₹{target.toFixed(2)}</span>
+          <span>₹{safeNumber(target, 2)}</span>
         </div>
       )}
 
       {/* Divider */}
-      {target != null && <div className="my-2 border-t border-gray-300" />}
+      {hasTarget && <div className="my-2 border-t border-gray-300" />}
 
       {/* Difference */}
       {diff != null && (
@@ -488,8 +498,10 @@ const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
         >
           <span>{isOverTarget ? "Above Target" : "Below Target"}</span>
           <span>
-            ₹{Math.abs(diff).toFixed(2)}
-            {diffPercent != null && <> ({Math.abs(diffPercent).toFixed(1)}%)</>}
+            ₹{safeNumber(Math.abs(diff), 2)}
+            {diffPercent != null && (
+              <> ({safeNumber(Math.abs(diffPercent), 1)}%)</>
+            )}
           </span>
         </div>
       )}
@@ -586,7 +598,6 @@ const CostScreener = () => {
     (state) => state.setCurrentPeriodMonth
   );
 
-  // ⭐⭐⭐ ADD THESE THREE NEW LINES ⭐⭐⭐
   const kpiTargets = useCostStore((state) => state.kpiTargets);
   const targetLoading = useCostStore((state) => state.targetLoading);
   const fetchKpiTargets = useCostStore((state) => state.fetchKpiTargets);
@@ -604,7 +615,6 @@ const CostScreener = () => {
   const themeSelectorRef = useRef(null);
   const currentTheme = themes[selectedTheme];
 
-  // ⭐⭐⭐ NEW: Fetch targets when filters change ⭐⭐⭐
   useEffect(() => {
     console.log("🔄 Filters changed, fetching KPI targets...");
     fetchKpiTargets();
@@ -713,12 +723,14 @@ const CostScreener = () => {
     const monthlyData = {};
 
     apiData.forEach((item) => {
-      const monthName = getMonthName(item.month_no);
+      // 🔥 FIX: Handle both group API (month_no) and plant API (month)
+      const monthNo = item.month_no || item.month;
+      const monthName = getMonthName(monthNo);
 
       if (!monthlyData[monthName]) {
         monthlyData[monthName] = {
           month: monthName,
-          monthNo: item.month_no,
+          monthNo: monthNo, // 🔥 FIX: Use the normalized monthNo variable
           costs: {},
           total: 0,
           count: 0,
@@ -764,6 +776,7 @@ const CostScreener = () => {
   };
 
   // Transform API Data to KPI Cards
+  // Transform API Data to KPI Cards
   const transformApiDataToKpiCards = () => {
     if (!apiData || apiData.length === 0) {
       return [];
@@ -773,7 +786,8 @@ const CostScreener = () => {
 
     apiData.forEach((item) => {
       const costHead = (item.cost_head || "Other").trim();
-      const monthNo = item.month_no;
+      // 🔥 FIX: Handle both group API (month_no) and plant API (month)
+      const monthNo = item.month_no || item.month;
 
       let costValue = parseFloat(item.cost_per_ton);
 
@@ -821,21 +835,20 @@ const CostScreener = () => {
 
       return {
         kpiName: costHead.kpiName,
-        actual_per_tonne: Number(lastMonthAmount ?? 0).toFixed(2),
-        budget_per_tonne: parseFloat(budgetAmount.toFixed(2)),
-        // 👇 IMPORTANT CHANGE
+        actual_per_tonne: safeNumber(lastMonthAmount, 2), // 🔥 FIXED
+        budget_per_tonne: parseFloat(safeNumber(budgetAmount, 2)), // 🔥 FIXED
         trend: trend.map((val, idx) => ({
           month: months[idx],
-          actual: Number(val ?? 0).toFixed(2),
+          actual: safeNumber(val, 2), // 🔥 FIXED - LINE 842 KA ISSUE YAHAN THA
           target: kpiTargets?.[costHead.kpiName] ?? null,
         })),
-
         months: months,
-        monthly_costs: trend.map((val) => parseFloat(val.toFixed(2))),
-        monthly_budget: trend.map(() => parseFloat(budgetAmount.toFixed(2))),
+        monthly_costs: trend.map((val) => parseFloat(safeNumber(val, 2))), // 🔥 FIXED
+        monthly_budget: trend.map(() =>
+          parseFloat(safeNumber(budgetAmount, 2))
+        ), // 🔥 FIXED
         production_percentage: null,
         target_percentage: null,
-        months: months,
       };
     });
 
@@ -848,7 +861,7 @@ const CostScreener = () => {
     const kpiData = apiData.filter(
       (item) =>
         (item.cost_head || "Other").trim() === kpiName &&
-        item.month_no === cardCurrentMonth
+        (item.month_no || item.month) === cardCurrentMonth // 🔥 FIX: Handle both APIs
     );
 
     if (kpiData.length === 0) return [];
@@ -882,7 +895,8 @@ const CostScreener = () => {
     return [];
   };
 
-  // ⭐⭐⭐ UPDATED: Build Chart Data with Target Support ⭐⭐⭐
+  // 🔥 FIXED: Build Chart Data with Safe Number Handling
+  // Build Chart Data with Safe Number Handling
   const buildChartData = (kpi, currentMonthToUse) => {
     const monthNames = [
       "Jan",
@@ -899,9 +913,8 @@ const CostScreener = () => {
       "Dec",
     ];
 
-    // ⭐ Get target for this specific KPI
     const normalizedKpiName = kpi.kpiName;
-    const targetValue = kpiTargets[normalizedKpiName] || null;
+    const targetValue = Number(kpiTargets[normalizedKpiName] || 0);
 
     console.log(`🎯 Building chart for: ${normalizedKpiName}`);
     console.log(
@@ -914,66 +927,52 @@ const CostScreener = () => {
           kpi.production_percentage.length
         : null;
 
+    // 🔥 SAFE: Build historical data with proper error handling
     const historicalData = kpi.trend.map((value, index) => {
       const actualMonthNo = monthRange.from + index;
       const monthIndex = (actualMonthNo - 1) % 12;
       const isCurrentMonth = actualMonthNo === currentMonthToUse;
 
+      // 🔥 SAFE: Extract actual value with multiple fallbacks
+      let actualValue = 0;
+
+      if (value && typeof value === "object" && value.actual !== undefined) {
+        // If trend item is an object with 'actual' property
+        actualValue = value.actual;
+      } else if (typeof value === "number") {
+        // If trend item is directly a number
+        actualValue = value;
+      } else if (typeof value === "string") {
+        // If trend item is a string number
+        actualValue = parseFloat(value);
+      }
+
+      // Final safety check
+      if (
+        isNaN(actualValue) ||
+        actualValue === null ||
+        actualValue === undefined
+      ) {
+        actualValue = 0;
+      }
+
       return {
         month: monthNames[monthIndex] || `M${index + 1}`,
         monthNo: actualMonthNo,
-        actual: Number(value.actual ?? 0).toFixed
-  ? Number(value.actual).toFixed(3)
-  : 0,
-
+        actual: safeNumber(actualValue, 3), // 🔥 ALWAYS SAFE
         prediction: null,
-        target: targetValue, // ⭐ ADD TARGET
+        target: targetValue > 0 ? targetValue : null,
         productionPercentPredicted: null,
         productionPercent: kpi.production_percentage?.[index] || null,
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue ? value.actual - targetValue : 0, // ⭐ VARIANCE
+        variance: targetValue > 0 ? actualValue - targetValue : 0,
       };
     });
 
-    // const lastValue = kpi.trend[kpi.trend.length - 1];
-    // const prevValue = kpi.trend[kpi.trend.length - 2] || lastValue;
-    // const costDirection = lastValue >= prevValue ? 1 : -1;
-    // const lastMonthNo =
-    //   historicalData[historicalData.length - 1]?.monthNo || 12;
-    // const nextMonthNo = (lastMonthNo % 12) + 1;
-    // const monthIndex = (nextMonthNo - 1) % 12;
-    // const stepChange =
-    //   Math.abs(lastValue - prevValue) * 0.2 || lastValue * 0.05;
-    // const predictedValue = lastValue + costDirection * stepChange;
-
-    const percentLength = kpi.production_percentage?.length || 0;
-    const lastPercent =
-      percentLength > 0 ? kpi.production_percentage[percentLength - 1] : null;
-
-    // const predictionData = [
-    //   {
-    //     month: monthNames[monthIndex] || `M${monthIndex + 1}`,
-    //     monthNo: nextMonthNo,
-    //     actual: null,
-    //     prediction: parseFloat(predictedValue.toFixed(2)),
-    //     target: targetValue, // ⭐ ADD TARGET
-    //     targetForCheck: null,
-    //     productionPercent: null,
-    //     productionPercentPredicted: lastPercent,
-    //     productionTarget: avgTargetPercent,
-    //     productionTargetForCheck: avgTargetPercent,
-    //     isHistorical: false,
-    //     isHighlighted: false,
-    //     variance: targetValue ? predictedValue - targetValue : 0, // ⭐ VARIANCE
-    //   },
-    // ];
-
     console.log(
-      `✅ Chart data built: ${
-        historicalData.length + 1
-      } points with target: ${targetValue}`
+      `✅ Chart data built: ${historicalData.length} points with target: ${targetValue}`
     );
     return historicalData;
   };
@@ -1384,15 +1383,14 @@ const CostScreener = () => {
 
                     {(() => {
                       const trend = kpi.monthly_costs || [];
+                      const curr = trend[trend.length - 1] || 0;
+                      const prev = trend[trend.length - 2] || curr;
 
-                      const curr = trend[trend.length - 1];
-                      const prev = trend[trend.length - 2];
-
+                      // 🔥 SAFE: Variance calculation
                       const variance =
                         prev && prev !== 0 ? ((curr - prev) / prev) * 100 : 0;
 
                       const isIncrease = variance > 0;
-
                       const isOverBudget = isIncrease && variance > 0;
 
                       return (
@@ -1411,7 +1409,7 @@ const CostScreener = () => {
                               isOverBudget ? "text-red-700" : "text-green-700"
                             }`}
                           >
-                            {Math.abs(variance).toFixed(1)}%
+                            {safeNumber(Math.abs(variance), 1)}%
                           </span>
                         </div>
                       );
@@ -1419,12 +1417,11 @@ const CostScreener = () => {
                   </div>
 
                   {/* Chart Area */}
-                  {/* Chart Area */}
                   <div
                     className="relative mb-3"
                     style={{
-                      height: "224px", // ⭐ ADDED
-                      minHeight: "224px", // ⭐ ADDED
+                      height: "224px",
+                      minHeight: "224px",
                       cursor: isModalOpen ? "default" : "pointer",
                       zIndex: isModalOpen ? 1 : 1,
                       pointerEvents: isModalOpen ? "none" : "all",
@@ -1432,12 +1429,9 @@ const CostScreener = () => {
                     onClick={(e) => {
                       if (isModalOpen) return;
                       e.stopPropagation();
-                      // ... rest of onClick code ...
                     }}
                   >
                     <ResponsiveContainer width="100%" height={224}>
-                      {" "}
-                      {/* ⭐ CHANGED */}
                       <ComposedChart
                         data={chartData}
                         margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
@@ -1451,16 +1445,18 @@ const CostScreener = () => {
                           tick={{ fontSize: 15, fontWeight: 600 }}
                           domain={[
                             (dataMin) => {
-                              const min = Math.min(
-                                dataMin,
-                                Number(kpiTargets[kpi.kpiName]) || dataMin
+                              const targetForKpi = Number(
+                                kpiTargets[kpi.kpiName] || 0
                               );
-
+                              const min = Math.min(dataMin, targetForKpi);
                               return min < 0 ? min : 0;
                             },
-
-                            (dataMax) =>
-                              Math.max(dataMax, kpiTargets[kpi.kpiName]),
+                            (dataMax) => {
+                              const targetForKpi = Number(
+                                kpiTargets[kpi.kpiName] || 0
+                              );
+                              return Math.max(dataMax, targetForKpi);
+                            },
                           ]}
                         />
                         <Tooltip
@@ -1472,9 +1468,11 @@ const CostScreener = () => {
                           }
                         />
 
-                        {/* Target Line Code */}
+                        {/* Target Line */}
                         {(() => {
-                          const targetForKpi = kpiTargets[kpi.kpiName];
+                          const targetForKpi = Number(
+                            kpiTargets[kpi.kpiName] || 0
+                          );
 
                           if (!targetForKpi || targetForKpi <= 0) {
                             return null;
@@ -1522,14 +1520,14 @@ const CostScreener = () => {
                             if (!isHistorical) return null;
 
                             // 🔥 TARGET LOGIC
-                            const target = Number(kpiTargets[kpi.kpiName]);
-                            const value = payload.actual;
+                            const target = Number(kpiTargets[kpi.kpiName] || 0);
+                            const value = Number(payload.actual || 0);
 
                             let fillColor = currentTheme.chartColors.actualLine;
 
                             if (isHighlight && target) {
                               fillColor =
-                                value > target ? "#ef4444" : "#10b981"; // 🔴 / 🟢
+                                value > target ? "#ef4444" : "#10b981";
                             }
 
                             return (
@@ -1596,7 +1594,9 @@ const CostScreener = () => {
                               cardCurrentMonth
                             ).reduce((sum, c) => sum + c.amount, 0);
                             const percentage =
-                              (contributor.amount / total) * 100;
+                              total > 0
+                                ? (contributor.amount / total) * 100
+                                : 0;
 
                             return (
                               <div
@@ -1617,7 +1617,7 @@ const CostScreener = () => {
                                       ₹{contributor.amount.toLocaleString()}
                                     </div>
                                     <div className="text-xs font-semibold text-gray-500">
-                                      {percentage.toFixed(1)}%
+                                      {safeNumber(percentage, 1)}%
                                     </div>
                                   </div>
                                 </div>
