@@ -5,6 +5,7 @@ import { API_ENDPOINTS, getMonthNameForApi } from "../utils/apiConfig";
 // ============================================================================
 // ⭐⭐⭐ ENHANCED KPI NAME MAPPING (Backend → Frontend) ⭐⭐⭐
 // ============================================================================
+const API_BASE_URL = "https://ktflceprd.kalyanicorp.com/";
 const KPI_NAME_MAPPING = {
   // Power
   power: "Power",
@@ -50,12 +51,12 @@ const KPI_NAME_MAPPING = {
   "eastablishment Expenses": "Establishment Exp",
 
   // Packing
-  "packing": "Packing",
-  "Packing": "Packing",
+  packing: "Packing",
+  Packing: "Packing",
 
   // Freight
-  "freight": "Freight",
-  "Freight": "Freight",
+  freight: "Freight",
+  Freight: "Freight",
 
   // Raw Material
   "Raw Material": "Raw Material",
@@ -104,43 +105,43 @@ const TYPE_MAPPING = {
 // ============================================================================
 const PLANT_CODE_MAPPING = {
   // 🔥 Original mappings (kept for backward compatibility)
-  "Mundhwa": "2001",
+  Mundhwa: "2001",
   "Ranjangaon E-84": "2002",
   "Transmission Ranjangaon": "2101",
   "Transmission Baramati": "2102",
-  "Chakan": "2020",
+  Chakan: "2020",
   "Khed-1": "2021",
   "Khed-2": "2027",
   "Ambethan-1": "2022",
   "Ambethan-2": "2023",
   "Ambethan-3": "2028",
   "Baramati KTFL": "2024",
-  "Bhiwadi": "2025",
-  "Gujarat": "2026",
+  Bhiwadi: "2025",
+  Gujarat: "2026",
   "Heat Treatment": "2081",
   "Inmet Jejuri": "2201",
   "Yokoha Jejuri": "2301",
-  
+
   // 🔥 NEW: UI location name mappings (for costscreener.jsx locations)
-  "Ranjangaon": "2002",      // Maps to Ranjangaon E-84
-  "Ranjangaon-2": "2101",    // Maps to Transmission Ranjangaon
-  "Baramati": "2102",        // Maps to Transmission Baramati
-  "Gujrat": "2026",          // Maps to Gujarat (note UI spelling: "Gujrat")
-  "Khed": "2021",            // Maps to Khed-1
-  "Ambhethan-1": "2022",     // Same as Ambethan-1
-  "Ambhethan-2": "2023",     // Same as Ambethan-2
-  
+  Ranjangaon: "2002", // Maps to Ranjangaon E-84
+  "Ranjangaon-2": "2101", // Maps to Transmission Ranjangaon
+  Baramati: "2102", // Maps to Transmission Baramati
+  Gujrat: "2026", // Maps to Gujarat (note UI spelling: "Gujrat")
+  Khed: "2021", // Maps to Khed-1
+  "Ambhethan-1": "2022", // Same as Ambethan-1
+  "Ambhethan-2": "2023", // Same as Ambethan-2
+
   // 🔥 Additional short codes (optional, if needed by UI)
-  "RGN": "2002",
+  RGN: "2002",
   "RGN-2": "2101",
-  "MUN": "2001",
-  "BRM": "2102",
-  "BWD": "2025",
-  "GUT": "2026",
-  "CHK": "2020",
-  "KHD": "2021",
-  "AMB1": "2022",
-  "AMB2": "2023",
+  MUN: "2001",
+  BRM: "2102",
+  BWD: "2025",
+  GUT: "2026",
+  CHK: "2020",
+  KHD: "2021",
+  AMB1: "2022",
+  AMB2: "2023",
 };
 
 // ============================================================================
@@ -186,9 +187,14 @@ export const generateSubParamType = (selectedSubParams) => {
 };
 
 export const parseSubParamCodes = (codeString) => {
-  if (!codeString) return { fuel: [], power: [], subcontract: [] };
+  if (typeof codeString !== "string") {
+    return { fuel: [], power: [], subcontract: [] };
+  }
 
-  const codes = codeString.split(",").map((c) => c.trim());
+  const codes = codeString
+    .split(",")
+    .map((c) => String(c).trim().toUpperCase())
+    .filter(Boolean);
 
   const result = {
     fuel: [],
@@ -221,8 +227,21 @@ class CacheManager {
     this.cacheTimeout = 5 * 60 * 1000;
   }
 
-  generateKey(viewType, location, fromMonth, toMonth, year) {
-    return `${viewType}-${location}-${fromMonth}-${toMonth}-${year}`;
+  generateKey(
+    viewType,
+    viewMode,
+    location,
+    fromMonth,
+    fromYear,
+    toMonth,
+    toYear,
+    useDefault = false
+  ) {
+    if (useDefault) {
+      return `${viewType}-${viewMode}-${location}-DEFAULT`;
+    }
+
+    return `${viewType}-${viewMode}-${location}-${fromMonth}-${fromYear}-${toMonth}-${toYear}`;
   }
 
   get(key) {
@@ -256,6 +275,13 @@ class CacheManager {
 const cacheManager = new CacheManager();
 let currentAbortController = null;
 
+// 🔥 Utility: format date to YYYY-MM-DD (for DAY custom API)
+const formatDate = (year, month, day) => {
+  const mm = String(month).padStart(2, "0");
+  const dd = String(day).padStart(2, "0");
+  return `${year}-${mm}-${dd}`;
+};
+
 // ============================================================================
 // ZUSTAND STORE
 // ============================================================================
@@ -263,508 +289,260 @@ const useCostStore = create(
   persist(
     (set, get) => ({
       // ====================================================================
-      // USER PLANT CODE
+      // THEME & VIEW STATE
       // ====================================================================
-      userPlantCode: null,
-      userPlantCodeLoaded: false,
-      userPlantCodeError: null,
-
-      fetchUserPlantCode: async () => {
-        const { userPlantCodeLoaded } = get();
-        if (userPlantCodeLoaded) {
-          const code = get().userPlantCode;
-          console.log("✅ Plant code already loaded:", code);
-          return code;
-        }
-
-        try {
-          const apiUrl = API_ENDPOINTS.PLANT_CODE;
-          console.log("🔄 Fetching user plant code from:", apiUrl);
-
-          const response = await fetch(apiUrl);
-
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-
-          const data = await response.json();
-          console.log("📥 Raw Response:", data);
-
-          if (data.plant_code) {
-            const plantCode = String(data.plant_code).trim();
-            console.log("✅✅✅ User plant code fetched:", plantCode);
-
-            set({
-              userPlantCode: plantCode,
-              userPlantCodeLoaded: true,
-              userPlantCodeError: null,
-            });
-            return plantCode;
-          } else {
-            throw new Error("No plant_code in API response");
-          }
-        } catch (error) {
-          console.error("❌ CRITICAL ERROR fetching plant code:", error);
-          set({
-            userPlantCodeError: error.message,
-            userPlantCodeLoaded: true,
-          });
-          throw error;
-        }
-      },
-
-      // ====================================================================
-      // COST CENTERS
-      // ====================================================================
-      costCenters: [],
-      costCenterLoaded: false,
-      costCenterError: null,
-
-      fetchCostCentersOnce: async () => {
-        const { costCenterLoaded, userPlantCode } = get();
-        if (costCenterLoaded) {
-          console.log(
-            "✅ Cost centers already loaded for plant:",
-            userPlantCode
-          );
-          return;
-        }
-
-        try {
-          let plantCode = userPlantCode;
-          if (!plantCode) {
-            console.log("⚠️ Plant code not loaded, fetching now...");
-            plantCode = await get().fetchUserPlantCode();
-          }
-
-          if (!plantCode) {
-            throw new Error("❌ FAILED: Unable to determine plant code");
-          }
-
-          console.log("🎯 Using Plant Code:", plantCode);
-
-          const url = `${API_ENDPOINTS.COST_CENTER_MASTER}?$filter=plant_code%20eq%20%27${plantCode}%27`;
-
-          console.log("🔄 Fetching cost centers from:", url);
-          const response = await fetch(url);
-
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-
-          const data = await response.json();
-          console.log("📥 Raw cost center response:", data);
-
-          let centers = [];
-          if (data && Array.isArray(data.objects)) {
-            centers = data.objects;
-          } else if (Array.isArray(data)) {
-            centers = data;
-          }
-
-          console.log(`✅ Loaded ${centers.length} cost centers`);
-
-          set({
-            costCenters: centers,
-            costCenterLoaded: true,
-            costCenterError: null,
-          });
-        } catch (error) {
-          console.error("❌ Error loading cost centers:", error);
-          set({
-            costCenterError: error.message,
-            costCenterLoaded: true,
-            costCenters: [],
-          });
-        }
-      },
-
-      // ====================================================================
-      // VIEW TYPE & LOCATION
-      // ====================================================================
+      selectedTheme: "ocean",
+      setSelectedTheme: (theme) => set({ selectedTheme: theme }),
+      // 🔥 ADD BELOW
+      isDefaultView: true,
+      setIsDefaultView: (val) => set({ isDefaultView: val }),
       viewType: "production",
-      selectedLocation: null,
-      selectedPlantCode: null,
-      selectedType: "ALL",
+      setViewType: (view) => {
+        console.log(`🔄 Switching view to: ${view}`);
+        set({ viewType: view, apiData: [], apiLoading: true });
+        const { monthRange, currentYear } = get();
+        get().fetchCostData(
+          monthRange.fromMonth,
+          monthRange.fromYear,
+          monthRange.toMonth,
+          monthRange.toYear,
+          view,
+          true
+        );
+      },
+      selectedDayFrom: 1,
+      selectedDayTo: new Date().getDate(),
 
-      setViewType: (type) => {
-        console.log("🔄 Changing view type to:", type);
-        set({ viewType: type });
+      setSelectedDayRange: (from, to) =>
+        set({
+          selectedDayFrom: from,
+          selectedDayTo: to,
+        }),
+      // 🔥 NEW: VIEW MODE (month | day)
+      viewMode: "month",
+      setViewMode: (mode) => {
+        const today = new Date();
+
+        if (mode === "day") {
+          set({
+            viewMode: "day",
+            selectedDayFrom: 1,
+            selectedDayTo: today.getDate(),
+            monthRange: {
+              fromMonth: today.getMonth() + 1,
+              toMonth: today.getMonth() + 1,
+              fromYear: today.getFullYear(),
+              toYear: today.getFullYear(),
+            },
+            isDefaultView: true,
+            apiLoading: true,
+          });
+
+          // 🔥 DEFAULT DAY API (MTD)
+          get().fetchCostData(
+            today.getMonth() + 1,
+            today.getFullYear(),
+            today.getMonth() + 1,
+            today.getFullYear(),
+            get().viewType,
+            true
+          );
+        } else {
+          set({ viewMode: mode });
+        }
       },
 
+      selectedDay: null,
+
+      setSelectedDay: (day) =>
+        set(() => ({
+          selectedDay: day,
+        })),
+
+      // ====================================================================
+      // FILTER STATE
+      // ====================================================================
+      selectedLocation: "All",
       setSelectedLocation: (location) => {
-        console.log("📍 Setting location to:", location);
+        console.log(`📍 Location changed to: ${location}`);
 
-        if (!location || location === "All") {
-          console.log("🌍 Setting to ALL plants (group level)");
-          set({
-            selectedLocation: null,
-            selectedPlantCode: null,
-          });
-          return;
-        }
-
-        const plantCode = PLANT_CODE_MAPPING[location];
-        if (!plantCode) {
-          console.warn(`⚠️ No plant code mapping found for: "${location}"`);
-          console.warn("📋 Available mappings:", Object.keys(PLANT_CODE_MAPPING));
-        } else {
-          console.log(`🏭 Mapped "${location}" → Plant Code: ${plantCode}`);
-        }
+        const plantCode = PLANT_CODE_MAPPING[location] || null;
 
         set({
           selectedLocation: location,
-          selectedPlantCode: plantCode || null,
+          selectedPlantCode: plantCode,
+          apiData: [],
+          apiLoading: true,
         });
-        
-        console.log("✅ State updated - selectedPlantCode:", plantCode || null);
+
+        const { monthRange, viewType } = get();
+
+        // 🔥 UPDATED: Pass useDefaultApi flag
+        const useDefaultApi = location === "All" && !get().selectedType;
+
+        get().fetchCostData(
+          monthRange.fromMonth,
+          monthRange.fromYear,
+          monthRange.toMonth,
+          monthRange.toYear,
+          viewType,
+          useDefaultApi
+        );
       },
 
+      selectedPlantCode: null,
+
+      selectedType: null,
       setSelectedType: (type) => {
-        const TYPE_MAPPING = {
-          Forging: "ALL_FRG",
-          Machining: "ALL_MCH",
-          ALL: null,
-        };
+        console.log(`🏭 Type changed to: ${type}`);
+
+        const mappedType = TYPE_MAPPING[type];
 
         set({
-          selectedType: TYPE_MAPPING[type] ?? null,
+          selectedType: mappedType,
+          selectedLocation: type === "ALL" ? "All" : get().selectedLocation,
+          selectedPlantCode: type === "ALL" ? null : get().selectedPlantCode,
+          apiData: [],
+          apiLoading: true,
+          isDefaultView: true, // 🔥 ADD THIS LINE
+        });
+
+        const { monthRange, viewType } = get();
+
+        // 🔥 ALWAYS default API (NO FILTERS)
+        const useDefaultApi = true;
+
+        get().fetchCostData(
+          monthRange.fromMonth,
+          monthRange.fromYear,
+          monthRange.toMonth,
+          monthRange.toYear,
+          viewType,
+          true
+        );
+      },
+
+      // ====================================================================
+      // DATE RANGE STATE
+      // ====================================================================
+      currentYear: new Date().getFullYear(),
+      setCurrentYear: (year) => set({ currentYear: year }),
+
+      monthRange: {
+        fromMonth: 1,
+        fromYear: new Date().getFullYear(),
+        toMonth: new Date().getMonth() + 1,
+        toYear: new Date().getFullYear(),
+      },
+
+      setMonthRange: (fromMonth, fromYear, toMonth, toYear) => {
+        const currentYear = get().currentYear || new Date().getFullYear();
+
+        const safeFromYear =
+          typeof fromYear === "number" ? fromYear : currentYear;
+        const safeToYear = typeof toYear === "number" ? toYear : currentYear;
+
+        console.log(
+          `📅 Month range FIXED: ${fromMonth}/${safeFromYear} → ${toMonth}/${safeToYear}`
+        );
+
+        set({
+          monthRange: {
+            fromMonth,
+            fromYear: safeFromYear,
+            toMonth,
+            toYear: safeToYear,
+          },
         });
       },
 
-      // ====================================================================
-      // DATE RANGE
-      // ====================================================================
-      currentYear: 2025,
-      monthRange: { from: 1, to: 6 },
       currentPeriodMonth: new Date().getMonth() + 1,
-      loadingProgress: 0,
-
-      setMonthRange: (from, to) => {
-        console.log("📅 Setting month range:", from, "to", to);
-        set({ monthRange: { from, to } });
-      },
-
-      setCurrentPeriodMonth: (month) => {
-        console.log("📍 Setting current period month to:", month);
-        set({ currentPeriodMonth: month });
-      },
 
       // ====================================================================
-      // THEME
-      // ====================================================================
-      selectedTheme: "ocean",
-      setSelectedTheme: (theme) => {
-        console.log("🎨 Changing theme to:", theme);
-        set({ selectedTheme: theme });
-      },
-
-      // ====================================================================
-      // API DATA & LOADING
+      // API STATE
       // ====================================================================
       apiData: [],
-      apiLoading: false,
+      apiLoading: true,
       apiError: null,
+      loadingProgress: 0,
 
-      // ⭐⭐⭐ TARGET SUPPORT ⭐⭐⭐
+      // ====================================================================
+      // KPI TARGETS
+      // ====================================================================
       kpiTargets: {},
       targetLoading: false,
 
-      // ====================================================================
-      // ⭐⭐⭐ FIXED: FETCH KPI TARGETS WITH PROPER FIELD READING ⭐⭐⭐
-      // ====================================================================
       fetchKpiTargets: async () => {
         try {
-          const {
-            selectedPlantCode,
-            selectedType,
-            viewType,
-            currentYear,
-            monthRange,
-            apiData,
-          } = get();
-
+          console.log("🎯 Fetching KPI targets (Plant-aware API)...");
           set({ targetLoading: true });
 
-          console.log("🎯 ========== FETCHING KPI TARGETS ==========");
-          console.log("📊 Current Filters:", {
-            viewType,
-            selectedType,
-            selectedPlantCode,
-            year: currentYear,
-            months: monthRange,
-          });
+          const { viewType, selectedPlantCode } = get();
 
           const prodOrSale = viewType === "production" ? "Production" : "Sale";
+          const plantCode = selectedPlantCode ? selectedPlantCode : "NULL";
 
-          // ⭐ TYPE MAPPING
-          let apiType = null;
-          if (selectedType && selectedType !== "ALL") {
-            apiType = TYPE_MAPPING[selectedType] || selectedType;
-            console.log(`🔄 Type Mapping: "${selectedType}" → "${apiType}"`);
-          }
+          const apiUrl =
+            `${API_BASE_URL}/internal/cost_kpi_entry` +
+            `?view=month` +
+            `&prod_or_sale=${prodOrSale}` +
+            `&plant_code=${plantCode}`;
 
-          // ⭐ TRY NEW ENDPOINT FIRST (WITH FILTERS)
-          if (API_ENDPOINTS.KPI_TARGETS_FILTERED) {
-            console.log("✅ Using NEW filtered endpoint");
-
-            const filters = {
-              year: currentYear,
-              fromMonth: monthRange.from,
-              toMonth: monthRange.to,
-              prodOrSale: prodOrSale,
-            };
-
-            if (selectedPlantCode) {
-              filters.plantCode = selectedPlantCode;
-              console.log(`📍 Plant Filter: ${selectedPlantCode}`);
-            }
-
-            if (apiType) {
-              filters.type = apiType;
-              console.log(`🏭 Type Filter: ${apiType}`);
-            }
-
-            const apiUrl = API_ENDPOINTS.KPI_TARGETS_FILTERED(filters);
-            console.log("🌐 Target API URL:", apiUrl);
-            console.log("📊 Final Filters:", filters);
-
-            try {
-              const response = await fetch(apiUrl);
-
-              if (!response.ok) {
-                throw new Error(
-                  `HTTP ${response.status}: ${response.statusText}`
-                );
-              }
-
-              const result = await response.json();
-              console.log("✅ KPI Targets API Response:", result);
-
-              // Extract current KPI names from graph data
-              const currentKpis = new Set();
-              if (apiData && Array.isArray(apiData)) {
-                apiData.forEach((item) => {
-                  const kpiName = normalizeKpiName(
-                    item.kpi_name || item.cost_head || ""
-                  );
-                  if (kpiName) {
-                    currentKpis.add(kpiName);
-                  }
-                });
-              }
-              console.log("📊 KPIs in current graph:", Array.from(currentKpis));
-
-              // Process response
-              let targetsData = null;
-
-              if (result.status === "success" && Array.isArray(result.data)) {
-                targetsData = result.data;
-                console.log(
-                  `📦 Response Format: Array with ${targetsData.length} entries`
-                );
-              } else if (result.status === "success" && result.targets) {
-                console.log("📦 Response Format: Object with targets");
-                const normalizedTargets = {};
-                Object.entries(result.targets).forEach(([key, value]) => {
-                  const normalizedKey = normalizeKpiName(key);
-                  normalizedTargets[normalizedKey] = parseFloat(value);
-                  console.log(`  ✓ ${key} → ${normalizedKey} = ₹${value}`);
-                });
-
-                // Check matching
-                console.log("🔍 Matching with graph data:");
-                Object.keys(normalizedTargets).forEach((kpi) => {
-                  const hasData = currentKpis.has(kpi);
-                  console.log(
-                    `  ${hasData ? "✅" : "⚠️"} ${kpi}: ₹${
-                      normalizedTargets[kpi]
-                    } ${hasData ? "(HAS DATA)" : "(NO DATA)"}`
-                  );
-                });
-
-                set({
-                  kpiTargets: normalizedTargets,
-                  targetLoading: false,
-                });
-
-                console.log(
-                  "✅ KPI Targets loaded (object format):",
-                  normalizedTargets
-                );
-                return normalizedTargets;
-              } else if (Array.isArray(result)) {
-                targetsData = result;
-                console.log(
-                  `📦 Response Format: Direct array with ${targetsData.length} entries`
-                );
-              }
-
-              // ⭐⭐⭐ CRITICAL FIX: Process array format with proper field reading ⭐⭐⭐
-              if (targetsData && Array.isArray(targetsData)) {
-                console.log(
-                  `🔄 Processing ${targetsData.length} target entries...`
-                );
-
-                const targets = {};
-                const latestTargets = {};
-                const matchedTargets = {};
-                const unmatchedTargets = {};
-
-                targetsData.forEach((item, index) => {
-                  const kpiName = item.kpi_name || item.cost_head || "Other";
-                  const normalizedName = normalizeKpiName(kpiName.trim());
-
-                  // ⭐⭐⭐ FIXED: Read cost_value FIRST, then fallback to other fields ⭐⭐⭐
-                  const targetValue = parseFloat(
-                    item.cost_value ||
-                      item.target_per_ton ||
-                      item.target_value ||
-                      0
-                  );
-
-                  const entryDate = new Date(
-                    item.cost_date || item.entry_date || item.date || 0
-                  );
-
-                  if (index < 5) {
-                    console.log(
-                      `  [${index}] ${kpiName} → ${normalizedName} = ₹${targetValue}`
-                    );
-                  }
-
-                  if (targetValue > 0) {
-                    if (
-                      !latestTargets[normalizedName] ||
-                      entryDate > latestTargets[normalizedName].date
-                    ) {
-                      latestTargets[normalizedName] = {
-                        value: targetValue,
-                        date: entryDate,
-                      };
-                    }
-                  }
-                });
-
-                // Extract values and check matching
-                Object.entries(latestTargets).forEach(([kpi, data]) => {
-                  targets[kpi] = data.value;
-
-                  if (currentKpis.has(kpi)) {
-                    matchedTargets[kpi] = data.value;
-                  } else {
-                    unmatchedTargets[kpi] = data.value;
-                  }
-                });
-
-                console.log("\n🔍 ========== MATCHING RESULTS ==========");
-                Object.keys(matchedTargets).forEach((kpi) => {
-                  console.log(
-                    `✅ MATCHED: ${kpi} = ₹${matchedTargets[kpi]} (Will show on graph)`
-                  );
-                });
-                Object.keys(unmatchedTargets).forEach((kpi) => {
-                  console.log(
-                    `⚠️ UNMATCHED: ${kpi} = ₹${unmatchedTargets[kpi]} (No graph data)`
-                  );
-                });
-
-                console.log("\n📊 ========== SUMMARY ==========");
-                console.log(`Total Targets: ${Object.keys(targets).length}`);
-                console.log(
-                  `Matched (will show): ${Object.keys(matchedTargets).length}`
-                );
-                console.log(
-                  `Unmatched: ${Object.keys(unmatchedTargets).length}`
-                );
-
-                set({
-                  kpiTargets: targets,
-                  targetLoading: false,
-                });
-
-                console.log("✅ Final Processed Targets:", targets);
-                return targets;
-              }
-
-              console.warn("⚠️ No valid target data in new API response");
-            } catch (newApiError) {
-              console.warn("⚠️ New API failed:", newApiError.message);
-              console.log("⚠️ Falling back to old endpoint...");
-            }
-          }
-
-          // ⭐ FALLBACK TO OLD ENDPOINT
-          console.log("⚠️ Using OLD endpoint as fallback");
-
-          if (!API_ENDPOINTS.KPI_TARGETS) {
-            console.warn("❌ No KPI_TARGETS endpoint configured");
-            set({ targetLoading: false, kpiTargets: {} });
-            return null;
-          }
-
-          let apiUrl = API_ENDPOINTS.KPI_TARGETS + "?latest_only=true";
-
-          if (selectedPlantCode) {
-            apiUrl += `&plant_code=${selectedPlantCode}`;
-          } else {
-            apiUrl += `&plant_code=0`;
-          }
-
-          if (apiType) {
-            apiUrl += `&type=${apiType}`;
-          } else if (selectedType && selectedType !== "ALL") {
-            apiUrl += `&type=${selectedType}`;
-          } else {
-            apiUrl += `&type=ALL`;
-          }
-
-          apiUrl += `&prod_or_sale=${prodOrSale}`;
-
-          console.log("🎯 Old API URL:", apiUrl);
+          console.log("📡 [KPI Targets] Fetching from:", apiUrl);
 
           const response = await fetch(apiUrl);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
           const result = await response.json();
 
-          if (result.status === "success" && result.targets) {
-            const normalizedTargets = {};
+          if (result.status === "success" && Array.isArray(result.data)) {
+            const targetsMap = {};
 
-            Object.entries(result.targets).forEach(([key, value]) => {
-              const normalizedKey = normalizeKpiName(key);
-              normalizedTargets[normalizedKey] = parseFloat(value);
-              console.log(`  ✓ ${key} → ${normalizedKey} = ₹${value}`);
+            result.data.forEach((item) => {
+              if (!item.kpi_name) return;
+
+              const normalizedKpiName = normalizeKpiName(item.kpi_name);
+
+              // 🔥 cost_value = TARGET
+              if (item.cost_value != null && !isNaN(item.cost_value)) {
+                targetsMap[normalizedKpiName] = Number(item.cost_value);
+              }
             });
 
-            console.log("✅ Targets from old API:", normalizedTargets);
+            console.log("✅ [KPI Targets] Loaded targets:", targetsMap);
 
             set({
-              kpiTargets: normalizedTargets,
+              kpiTargets: targetsMap,
               targetLoading: false,
             });
 
-            return normalizedTargets;
-          } else {
-            console.warn("⚠️ No targets from old API");
-            set({
-              kpiTargets: {},
-              targetLoading: false,
-            });
-            return null;
+            return targetsMap;
           }
+
+          console.warn("⚠️ No KPI target data found");
+          set({ kpiTargets: {}, targetLoading: false });
+          return null;
         } catch (error) {
           console.error("❌ Error fetching KPI targets:", error);
-          set({
-            targetLoading: false,
-            kpiTargets: {},
-          });
+          set({ targetLoading: false, kpiTargets: {} });
           return null;
         }
       },
 
       // ====================================================================
-      // FETCH COST DATA (UPDATED WITH NEW API LOGIC)
+      // 🔥🔥🔥 UPDATED FETCH COST DATA WITH DEFAULT API SUPPORT 🔥🔥🔥
       // ====================================================================
-      fetchCostData: async (fromMonth, toMonth, year, viewType) => {
+      fetchCostData: async (
+        fromMonth,
+        fromYear,
+        toMonth,
+        toYear,
+        viewType,
+        useDefaultApi = false,
+        dayRange = null
+      ) => {
         if (currentAbortController) {
           console.log("⚠️ Aborting previous request...");
           currentAbortController.abort();
@@ -775,27 +553,34 @@ const useCostStore = create(
         try {
           const { selectedLocation, selectedPlantCode, selectedType } = get();
 
+          // 🔥 Generate cache key with useDefaultApi flag
+          const { viewMode } = get();
+
           const cacheKey = cacheManager.generateKey(
             viewType,
+            viewMode,
             selectedLocation || "All Plants",
             fromMonth,
+            fromYear,
             toMonth,
-            year
+            toYear,
+            useDefaultApi
           );
 
-          // ⭐⭐⭐ CACHE HIT SECTION - FIXED ⭐⭐⭐
+          // ⭐⭐⭐ CACHE HIT SECTION ⭐⭐⭐
           const cachedData = cacheManager.get(cacheKey);
           if (cachedData) {
             console.log("✅ Using cached data");
 
-            // ⭐ Don't try to extract targets from cost data cache
             set({
               apiData: cachedData,
               apiLoading: false,
             });
 
-            // ⭐ Fetch targets separately with await
-            await get().fetchKpiTargets();
+            // 🔥 Target sirf MONTH view ke liye
+if (get().viewMode !== "day") {
+  await get().fetchKpiTargets();
+}
 
             console.log("✅ Cached data loaded, targets fetched separately");
             return;
@@ -803,47 +588,63 @@ const useCostStore = create(
 
           set({ apiLoading: true, apiError: null, loadingProgress: 10 });
 
-          const fromMonthName = getMonthNameForApi(fromMonth);
-          const toMonthName = getMonthNameForApi(toMonth);
-
           let apiUrl;
 
-          // ⭐⭐⭐ NEW API LOGIC WITH 3 CASES ⭐⭐⭐
-          if (viewType === "production") {
-            // ✅ CASE 1: Plant selected → PLANT API
-            if (selectedPlantCode) {
-              apiUrl = API_ENDPOINTS.PROD_PLANTWISE_CUSTOM(
-                selectedPlantCode,
-                year,
-                fromMonth,
-                toMonth
-              );
-              console.log("🏭 Using PLANT API for:", selectedPlantCode);
-            }
-            // ✅ CASE 2: Type selected (Forging / Machining)
-            else if (selectedType) {
-              apiUrl = `${API_ENDPOINTS.PROD_COST}?view=month&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}&type=${selectedType}`;
-              console.log("🏭 Using TYPE API for:", selectedType);
-            }
-            // ✅ CASE 3: ALL
-            else {
-              apiUrl = API_ENDPOINTS.PROD_COST_CUSTOM(
-                year,
-                fromMonth,
-                toMonth
-              );
-              console.log("🏭 Using ALL API");
-            }
-          } else {
-            // Sale view logic (unchanged)
-            apiUrl = `${API_ENDPOINTS.SALE_COST}?view=month&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}`;
+          // 🔥🔥🔥 NEW LOGIC: Use default base API or custom API 🔥🔥🔥
+       if (useDefaultApi) {
+  // 🔥 DEFAULT APIs
+  if (viewMode === "day") {
+    // ✅ PLANT SELECTED
+    if (selectedPlantCode) {
+      apiUrl = `${API_BASE_URL}/internal/frg_plt_prod_cpt?view=day&plantcode=${selectedPlantCode}&range=mtd`;
+      console.log("📆 DAY DEFAULT PLANT API (MTD)");
+    }
+    // ✅ GROUP LEVEL
+    else {
+      apiUrl = `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day&range=mtd`;
+      console.log("📆 DAY DEFAULT GROUP API (MTD)");
+    }
+  } else {
+    apiUrl = `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=month`;
+    console.log("📅 MONTH DEFAULT API");
+  }
+}
 
-            if (selectedPlantCode) {
-              apiUrl += `&plant_code=${selectedPlantCode}`;
+ else {
+            // 🔥 CUSTOM RANGE
+            const from = `${fromYear}-${String(fromMonth).padStart(2, "0")}`;
+            const to = `${toYear}-${String(toMonth).padStart(2, "0")}`;
+
+            if (
+  viewMode === "day" &&
+  !useDefaultApi &&
+  dayRange?.fromDay &&
+  dayRange?.toDay
+) {
+  const formatDate = (y, m, d) =>
+    `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+  const fromDate = formatDate(fromYear, fromMonth, dayRange.fromDay);
+  const toDate = formatDate(toYear, toMonth, dayRange.toDay);
+
+  apiUrl = selectedPlantCode
+    ? `${API_BASE_URL}/internal/frg_plt_prod_cpt?view=day&plantcode=${selectedPlantCode}&from_date=${fromDate}&to_date=${toDate}`
+    : `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day&from_date=${fromDate}&to_date=${toDate}`;
+
+  console.log("📆 DAY CUSTOM DATE API");
+} else {
+              apiUrl = selectedPlantCode
+                ? `${API_BASE_URL}/internal/frg_plt_prod_cpt?view=month&plantcode=${selectedPlantCode}&from_month=${from}&to_month=${to}`
+                : `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=month&from_month=${from}&to_month=${to}`;
+
+              console.log("📅 MONTH CUSTOM API");
             }
           }
 
-          console.log(`📡 [${viewType.toUpperCase()}] Fetching API:`, apiUrl);
+          console.log(
+            `📡 [${String(viewType || "").toUpperCase()}] Fetching API:`,
+            apiUrl
+          );
 
           set({ loadingProgress: 30 });
 
@@ -875,49 +676,63 @@ const useCostStore = create(
           const result = await response.json();
           console.log("✅ API Response received:", result);
 
-          // ⭐⭐⭐ FRESH API SUCCESS SECTION - FIXED ⭐⭐⭐
+          // ⭐⭐⭐ SUCCESS SECTION ⭐⭐⭐
           if (result.status === "success") {
             const data = result.data;
 
-            cacheManager.set(cacheKey, data);
+            const finalData =
+              viewMode === "day"
+                ? data.map((item) => ({
+                    ...item,
+                    date: item.tran_date?.split(" ")[0], // YYYY-MM-DD
+                    cost_head: normalizeKpiName(item.cost_head),
+                    total_amount: Number(item.total_amount || 0),
+                  }))
+                : data;
+
+            cacheManager.set(cacheKey, finalData);
 
             console.log(
-              `✅ [${viewType.toUpperCase()}] Loaded ${data.length} records`
+              `✅ [${String(viewType || "").toUpperCase()}] Loaded ${
+                data.length
+              } records`
             );
 
-            // ⭐ Don't try to extract targets from cost data
             set({
-              apiData: data,
+              apiData: finalData,
               apiLoading: false,
               loadingProgress: 100,
-              monthRange: { from: fromMonth, to: toMonth },
               apiError: null,
             });
 
-            // ⭐ Fetch targets separately with await
-            await get().fetchKpiTargets();
+            // 🔥 Target sirf MONTH view ke liye
+if (get().viewMode !== "day") {
+  await get().fetchKpiTargets();
+}
 
             console.log("✅ Fresh data loaded, targets fetched");
           }
-          // ⭐⭐⭐ ARRAY RESPONSE SECTION - FIXED ⭐⭐⭐
+          // ⭐⭐⭐ ARRAY RESPONSE SECTION ⭐⭐⭐
           else if (Array.isArray(result)) {
             cacheManager.set(cacheKey, result);
 
             console.log(
-              `✅ [${viewType.toUpperCase()}] Loaded ${result.length} records`
+              `✅ [${String(viewType || "").toUpperCase()}] Loaded ${
+                result.length
+              } records`
             );
 
-            // ⭐ Don't try to extract targets from cost data
             set({
               apiData: result,
               apiLoading: false,
               loadingProgress: 100,
-              monthRange: { from: fromMonth, to: toMonth },
               apiError: null,
             });
 
-            // ⭐ Fetch targets separately with await
-            await get().fetchKpiTargets();
+            // 🔥 Target sirf MONTH view ke liye
+if (get().viewMode !== "day") {
+  await get().fetchKpiTargets();
+}
 
             console.log("✅ Array data loaded, targets fetched");
           } else {
@@ -968,28 +783,63 @@ const useCostStore = create(
 
       setCurrentMonth: () => {
         const month = new Date().getMonth() + 1;
+        const year = new Date().getFullYear();
+
         set({
-          monthRange: { from: month, to: month },
+          monthRange: {
+            fromMonth: month,
+            fromYear: year,
+            toMonth: month,
+            toYear: year,
+          },
           currentPeriodMonth: month,
         });
+
         return month;
       },
 
+      setCurrentPeriodMonth: (month) => {
+        set({ currentPeriodMonth: month });
+      },
+
       setLast12Months: () => {
-        const currentMonth = new Date().getMonth() + 1;
-        const from = Math.max(1, currentMonth - 11);
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear();
+
+        const fromMonth = currentMonth === 12 ? 1 : currentMonth;
+        const fromYear = currentMonth === 12 ? currentYear : currentYear - 1;
+
         set({
-          monthRange: { from, to: currentMonth },
+          monthRange: {
+            fromMonth,
+            fromYear,
+            toMonth: currentMonth,
+            toYear: currentYear,
+          },
           currentPeriodMonth: currentMonth,
         });
-        return { from, to: currentMonth };
+
+        return {
+          fromMonth,
+          fromYear,
+          toMonth: currentMonth,
+          toYear: currentYear,
+        };
       },
 
       setFullYear: () => {
+        const year = new Date().getFullYear();
+
         set({
-          monthRange: { from: 1, to: 12 },
-          currentPeriodMonth: 12,
+          monthRange: {
+            fromMonth: 1,
+            fromYear: year,
+            toMonth: 12,
+            toYear: year,
+          },
         });
+
         return { from: 1, to: 12 };
       },
 
@@ -1009,4 +859,4 @@ const useCostStore = create(
   )
 );
 
-export { useCostStore, cacheManager };
+export { useCostStore, cacheManager, normalizeKpiName };

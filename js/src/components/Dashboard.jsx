@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AllPlants from "./AllPlants";
-import CostCenterMaster from "./CostCenterMaster"; 
-import { Suspense, lazy, useMemo, useCallback } from 'react';
+import CostCenterMaster from "./CostCenterMaster";
+import { Suspense, lazy, useMemo, useCallback } from "react";
 
 // 2. Add skeleton component
 const LoadingSkeletons = React.memo(() => (
@@ -69,7 +69,9 @@ const Dashboard = () => {
   const totalTarget = kpiData.reduce((sum, kpi) => sum + kpi.target, 0);
   const totalPredictive = kpiData.reduce((sum, kpi) => sum + kpi.predictive, 0);
   const overallEfficiency = ((totalTarget / totalCost) * 100).toFixed(1);
-
+  const handleLogout = () => {
+    window.location.href = "/server/__quit__";
+  };
   const plants = {
     "All Plant": {
       category: "Overview",
@@ -303,6 +305,44 @@ const Dashboard = () => {
             onMouseLeave={(e) => (e.target.style.transform = "translateY(0px)")}
           >
             Master Data
+          </button>
+          <button
+            onClick={handleLogout}
+            title="Logout"
+            style={{
+              background: "rgba(255,255,255,0.15)",
+              color: "white",
+              padding: "6px 10px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              transition: "0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "translateY(-2px)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "translateY(0px)")
+            }
+          >
+            {/* Logout Icon */}
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"
+              />
+            </svg>
           </button>
         </div>
       </div>

@@ -15,6 +15,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import ActionInsightsModal from "./ActionInsightsModal";
+import { normalizeKpiName } from "../store/costStore";
 
 import {
   Zap,
@@ -53,7 +54,10 @@ const safeNumber = (value, decimals = 2) => {
   if (isNaN(num)) return "0";
   return num.toFixed(decimals);
 };
-
+const roundTick = (value) => {
+  if (value === null || value === undefined) return "";
+  return Math.round(Number(value));
+};
 // Themes Configuration
 const themes = {
   ocean: {
@@ -454,9 +458,26 @@ const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
   const actual = actualPayload ? Number(actualPayload.value || 0) : 0;
 
   if (isNaN(actual)) return null;
+  const viewMode = useCostStore.getState().viewMode;
+  if (viewMode === "day") {
+    return (
+      <div
+        className={`${theme.cardBg} p-4 rounded-xl ${theme.shadow} ${theme.border} border min-w-[180px]`}
+      >
+        <p className={`text-sm font-bold ${theme.primaryText} mb-2`}>
+          {typeof label === "string" ? label.split("T")[0] : label}
+        </p>
 
+        <div className="flex justify-between text-sm font-semibold">
+          <span>Actual :- </span>
+          <span>₹{safeNumber(actual, 2)}</span>
+        </div>
+      </div>
+    );
+  }
   const kpiTargets = useCostStore.getState().kpiTargets;
-  const target = Number(kpiTargets?.[kpiName] || 0);
+  const normalizedName = normalizeKpiName(kpiName);
+  const target = Number(kpiTargets?.[normalizedName] || 0);
 
   const hasTarget = target > 0;
 
@@ -469,8 +490,20 @@ const CustomTooltip = ({ active, payload, label, theme, kpiName }) => {
     <div
       className={`${theme.cardBg} p-4 rounded-xl ${theme.shadow} ${theme.border} border min-w-[220px]`}
     >
-      {/* Month */}
-      <p className={`text-sm font-bold ${theme.primaryText} mb-2`}>{label}</p>
+      <p className={`text-sm font-bold ${theme.primaryText} mb-2`}>
+        {(() => {
+          const viewMode = useCostStore.getState().viewMode;
+
+          if (viewMode === "day") {
+            // 🔥 yyyy-mm-ddT00:00:00 → yyyy-mm-dd
+            if (typeof label === "string") {
+              return label.split("T")[0];
+            }
+          }
+
+          return label;
+        })()}
+      </p>
 
       {/* Actual */}
       <div className="flex justify-between text-sm font-semibold mb-1">
@@ -519,8 +552,18 @@ const TabToggle = ({ theme }) => {
   const fetchCostData = useCostStore((state) => state.fetchCostData);
 
   const handleToggle = async (type) => {
+    setIsDefaultView(true);
+
     setViewType(type);
-    await fetchCostData(monthRange.from, monthRange.to, currentYear, type);
+
+    fetchCostData(
+      monthRange.fromMonth,
+      monthRange.fromYear,
+      monthRange.toMonth,
+      monthRange.toYear,
+      type,
+      true
+    );
   };
 
   return (
@@ -601,6 +644,8 @@ const CostScreener = () => {
   const kpiTargets = useCostStore((state) => state.kpiTargets);
   const targetLoading = useCostStore((state) => state.targetLoading);
   const fetchKpiTargets = useCostStore((state) => state.fetchKpiTargets);
+  const selectedDay = useCostStore((state) => state.selectedDay);
+  const viewMode = useCostStore((state) => state.viewMode);
 
   // Local States
   const [showThemeSelector, setShowThemeSelector] = useState(false);
@@ -630,7 +675,14 @@ const CostScreener = () => {
   const handleLocationSelect = async (locationName) => {
     setSelectedLocation(locationName);
     const { monthRange, currentYear, viewType } = useCostStore.getState();
-    await fetchCostData(monthRange.from, monthRange.to, currentYear, viewType);
+    await fetchCostData(
+      monthRange.fromMonth,
+      monthRange.fromYear,
+      monthRange.toMonth,
+      monthRange.toYear,
+      viewType,
+      false
+    );
   };
 
   const openPowerForm = () => {
@@ -675,31 +727,57 @@ const CostScreener = () => {
     ],
   };
 
+  // 🔥🔥🔥 UPDATED: Default initialization with last 6 months base API 🔥🔥🔥
   useEffect(() => {
-    console.log("🚀 Component Mounted - Initializing");
+    console.log(
+      "🚀 Component Mounted - Using DEFAULT Base API (Last 6 Months)"
+    );
 
     const today = new Date();
-    const currentMonth = today.getMonth() + 1;
+    const currentMonth = today.getMonth() + 1; // 1–12
+    const currentYear = today.getFullYear();
 
-    setCurrentPeriodMonth(currentMonth);
+    // 🔥 UI slider ke liye last 6 months (cross-year safe)
+    let toMonth = currentMonth;
+    let toYear = currentYear;
 
-    let to = currentMonth;
-    let from = currentMonth - 5;
+    let fromMonth = currentMonth - 5;
+    let fromYear = currentYear;
 
-    if (from < 1) {
-      from = 1;
-      to = 6;
+    if (fromMonth <= 0) {
+      fromMonth = 12 + fromMonth; // eg Jan → Jul
+      fromYear = currentYear - 1;
     }
 
-    // Reset location to "All" on initial load when category is "All"
-    if (selectedCategory === "All") {
+    // 🔥 Store sync (UI only)
+    if (typeof setCurrentPeriodMonth === "function") {
+      setCurrentPeriodMonth(currentMonth);
+    }
+
+    const store = useCostStore.getState();
+
+    if (store.setMonthRange) {
+      store.setMonthRange(fromMonth, fromYear, toMonth, toYear);
+    }
+
+    if (store.setCurrentYear) {
+      store.setCurrentYear(currentYear);
+    }
+
+    // Reset location to All
+    if (
+      selectedCategory === "All" &&
+      typeof setSelectedLocation === "function"
+    ) {
       setSelectedLocation("All");
     }
 
-    useCostStore.getState().setMonthRange(from, to);
-
-    fetchCostData(from, to, currentYear, viewType);
+    // 🔥 IMPORTANT:
+    // DEFAULT API call → NO FILTERS
+    // Backend last 6 months dega
+    fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, true);
   }, []);
+  // Empty dependencies = runs only once on mount
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -832,7 +910,7 @@ const CostScreener = () => {
       const lastMonthAmount = trend[trend.length - 1] || 0;
       const avgAmount = trend.reduce((a, b) => a + b, 0) / trend.length;
       const budgetAmount = avgAmount * 1.05;
-
+      const normalizedName = normalizeKpiName(costHead.kpiName);
       return {
         kpiName: costHead.kpiName,
         actual_per_tonne: safeNumber(lastMonthAmount, 2), // 🔥 FIXED
@@ -840,7 +918,8 @@ const CostScreener = () => {
         trend: trend.map((val, idx) => ({
           month: months[idx],
           actual: safeNumber(val, 2), // 🔥 FIXED - LINE 842 KA ISSUE YAHAN THA
-          target: kpiTargets?.[costHead.kpiName] ?? null,
+
+          target: kpiTargets?.[normalizedName] ?? null,
         })),
         months: months,
         monthly_costs: trend.map((val) => parseFloat(safeNumber(val, 2))), // 🔥 FIXED
@@ -894,10 +973,69 @@ const CostScreener = () => {
     }
     return [];
   };
+  const transformDayWiseChartData = () => {
+    if (!apiData || apiData.length === 0 || !selectedDay) return [];
 
-  // 🔥 FIXED: Build Chart Data with Safe Number Handling
-  // Build Chart Data with Safe Number Handling
+    // filter only selected day
+    const filtered = apiData.filter((item) => {
+      if (!item.date) return false;
+      const day = new Date(item.date).getDate();
+      return day === selectedDay;
+    });
+
+    if (filtered.length === 0) return [];
+
+    const grouped = {};
+
+    filtered.forEach((item) => {
+      const costHead = normalizeKpiName(item.cost_head || "Other");
+      const amount = Number(item.total_amount || 0);
+
+      if (!grouped[costHead]) {
+        grouped[costHead] = 0;
+      }
+      grouped[costHead] += amount;
+    });
+
+    return Object.entries(grouped).map(([key, value]) => ({
+      name: key,
+      value: Number(value.toFixed(2)),
+    }));
+  };
+
+  // 🔥 FIXED: Build Chart Data with ACTUAL API MONTHS (using kpi.months array)
   const buildChartData = (kpi, currentMonthToUse) => {
+    // 🔥 DAY VIEW: Build chart directly from apiData
+    if (viewMode === "day") {
+      if (!apiData || apiData.length === 0) return [];
+
+      // sirf is KPI ka data
+      const dayKpiData = apiData.filter(
+        (item) =>
+          normalizeKpiName(item.cost_head) === normalizeKpiName(kpi.kpiName)
+      );
+
+      if (dayKpiData.length === 0) return [];
+
+      return dayKpiData.map((item) => ({
+        month: item.date, // YYYY-MM-DD
+        actual: Number(item.cost_per_ton || 0), // ✅ DIRECT FROM API
+        isHistorical: true,
+        isHighlighted: false,
+      }));
+    }
+
+    // 🔥 SAFETY: Check if kpi and required properties exist
+    if (
+      !kpi ||
+      !kpi.months ||
+      !Array.isArray(kpi.months) ||
+      kpi.months.length === 0
+    ) {
+      console.warn("⚠️ Invalid KPI data for chart:", kpi?.kpiName);
+      return [];
+    }
+
     const monthNames = [
       "Jan",
       "Feb",
@@ -913,7 +1051,7 @@ const CostScreener = () => {
       "Dec",
     ];
 
-    const normalizedKpiName = kpi.kpiName;
+    const normalizedKpiName = normalizeKpiName(kpi.kpiName);
     const targetValue = Number(kpiTargets[normalizedKpiName] || 0);
 
     console.log(`🎯 Building chart for: ${normalizedKpiName}`);
@@ -927,39 +1065,37 @@ const CostScreener = () => {
           kpi.production_percentage.length
         : null;
 
-    // 🔥 SAFE: Build historical data with proper error handling
-    const historicalData = kpi.trend.map((value, index) => {
-      const actualMonthNo = monthRange.from + index;
+    // 🔥 CRITICAL FIX: Use kpi.months array (actual API months) and kpi.trend
+    const actualMonths = kpi.months || [];
+    const trendData = kpi.trend || [];
+
+    console.log(`📅 Actual API months for ${normalizedKpiName}:`, actualMonths);
+
+    // 🔥 SAFE: Build historical data with ACTUAL API months
+    const historicalData = actualMonths.map((actualMonthNo, index) => {
       const monthIndex = (actualMonthNo - 1) % 12;
       const isCurrentMonth = actualMonthNo === currentMonthToUse;
 
-      // 🔥 SAFE: Extract actual value with multiple fallbacks
+      // 🔥 Get actual value from trend array
+      const trendItem = trendData[index];
       let actualValue = 0;
 
-      if (value && typeof value === "object" && value.actual !== undefined) {
-        // If trend item is an object with 'actual' property
-        actualValue = value.actual;
-      } else if (typeof value === "number") {
-        // If trend item is directly a number
-        actualValue = value;
-      } else if (typeof value === "string") {
-        // If trend item is a string number
-        actualValue = parseFloat(value);
+      if (trendItem && typeof trendItem === "object") {
+        actualValue = trendItem.actual || 0;
+      } else if (typeof trendItem === "number") {
+        actualValue = trendItem;
       }
 
       // Final safety check
-      if (
-        isNaN(actualValue) ||
-        actualValue === null ||
-        actualValue === undefined
-      ) {
-        actualValue = 0;
-      }
+      const safeActualValue =
+        isNaN(actualValue) || actualValue === null || actualValue === undefined
+          ? 0
+          : actualValue;
 
       return {
         month: monthNames[monthIndex] || `M${index + 1}`,
         monthNo: actualMonthNo,
-        actual: safeNumber(actualValue, 3), // 🔥 ALWAYS SAFE
+        actual: safeNumber(safeActualValue, 3), // 🔥 ALWAYS SAFE
         prediction: null,
         target: targetValue > 0 ? targetValue : null,
         productionPercentPredicted: null,
@@ -967,12 +1103,13 @@ const CostScreener = () => {
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue > 0 ? actualValue - targetValue : 0,
+        variance: targetValue > 0 ? safeActualValue - targetValue : 0,
       };
     });
 
     console.log(
-      `✅ Chart data built: ${historicalData.length} points with target: ${targetValue}`
+      `✅ Chart data built: ${historicalData.length} points with months:`,
+      historicalData.map((d) => `${d.month}(${d.monthNo})`).join(", ")
     );
     return historicalData;
   };
@@ -1007,8 +1144,11 @@ const CostScreener = () => {
 
   // Render Combined Chart
   const renderCombinedChart = () => {
-    const baseData = transformApiDataToChartFormat();
-
+    const baseData =
+      viewMode === "day"
+        ? transformDayWiseChartData()
+        : transformApiDataToChartFormat();
+    const safeChartData = Array.isArray(baseData) ? baseData : [];
     if (apiLoading) {
       return (
         <div
@@ -1041,46 +1181,18 @@ const CostScreener = () => {
           <button
             onClick={() => {
               fetchCostData(
-                monthRange.from,
-                monthRange.to,
+                monthRange.fromMonth,
+                monthRange.fromYear,
+                monthRange.toMonth,
+                monthRange.toYear,
                 currentYear,
-                viewType
+                viewType,
+                false
               );
             }}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold"
           >
             Retry
-          </button>
-        </div>
-      );
-    }
-
-    if (!baseData || baseData.length === 0) {
-      return (
-        <div
-          className={`${currentTheme.cardBg} rounded-xl p-8 text-center ${currentTheme.shadow} m-6`}
-        >
-          <div className="text-gray-400 text-5xl mb-4">📊</div>
-          <p className={`${currentTheme.primaryText} font-bold text-lg mb-2`}>
-            No Data Available
-          </p>
-          <p
-            className={`${currentTheme.secondaryText} text-sm font-medium mb-4`}
-          >
-            No {viewType} data found for the selected period.
-          </p>
-          <button
-            onClick={() => {
-              fetchCostData(
-                monthRange.from,
-                monthRange.to,
-                currentYear,
-                viewType
-              );
-            }}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold"
-          >
-            Load Data
           </button>
         </div>
       );
@@ -1200,10 +1312,24 @@ const CostScreener = () => {
                   margin={{ top: 20, right: 50, left: 10, bottom: 10 }}
                 >
                   <XAxis
-                    dataKey="month"
+                    dataKey={viewMode === "day" ? "name" : "month"}
+                    tickFormatter={(value) => {
+                      // 🔥 DAY view → show only day number
+                      if (viewMode === "day") {
+                        const d = new Date(value);
+                        return isNaN(d) ? value : d.getDate(); // 1,2,3...
+                      }
+
+                      // MONTH view → unchanged
+                      return value;
+                    }}
                     tick={{ fontSize: 15, fontWeight: 600 }}
                   />
-                  <YAxis tick={{ fontSize: 15, fontWeight: 600 }} />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontSize: 15, fontWeight: 600 }}
+                    tickFormatter={roundTick}
+                  />
                   <Tooltip content={<CustomTooltip theme={currentTheme} />} />
                   <Legend
                     wrapperStyle={{ fontSize: "15px", fontWeight: 600 }}
@@ -1276,10 +1402,24 @@ const CostScreener = () => {
                 >
                   <CartesianGrid stroke={currentTheme.gridColor} />
                   <XAxis
-                    dataKey="month"
+                    dataKey={viewMode === "day" ? "name" : "month"}
+                    tickFormatter={(value) => {
+                      // 🔥 DAY view → show only day number
+                      if (viewMode === "day") {
+                        const d = new Date(value);
+                        return isNaN(d) ? value : d.getDate(); // 1,2,3...
+                      }
+
+                      // MONTH view → unchanged
+                      return value;
+                    }}
                     tick={{ fontSize: 15, fontWeight: 600 }}
                   />
-                  <YAxis tick={{ fontSize: 15, fontWeight: 600 }} />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontSize: 15, fontWeight: 600 }}
+                    tickFormatter={roundTick}
+                  />
                   <Tooltip content={<CustomTooltip theme={currentTheme} />} />
                   <Legend
                     wrapperStyle={{ fontSize: "15px", fontWeight: 600 }}
@@ -1347,6 +1487,15 @@ const CostScreener = () => {
               const cardCurrentMonth =
                 cardCurrentMonths[kpi.kpiName] || currentPeriodMonth;
               const chartData = buildChartData(kpi, cardCurrentMonth);
+
+              // 🔥 SAFETY: Skip card if no chart data
+              if (!chartData || chartData.length === 0) {
+                console.warn(
+                  `⚠️ No chart data for ${kpi.kpiName}, skipping card`
+                );
+                return null;
+              }
+
               const currentMonthIndex = chartData.findIndex(
                 (d) => d.monthNo === cardCurrentMonth
               );
@@ -1381,39 +1530,39 @@ const CostScreener = () => {
                       </span>
                     </div>
 
-                    {(() => {
-                      const trend = kpi.monthly_costs || [];
-                      const curr = trend[trend.length - 1] || 0;
-                      const prev = trend[trend.length - 2] || curr;
+                    {viewMode !== "day" &&
+                      (() => {
+                        const trend = kpi.monthly_costs || [];
+                        const curr = trend[trend.length - 1] || 0;
+                        const prev = trend[trend.length - 2] || curr;
 
-                      // 🔥 SAFE: Variance calculation
-                      const variance =
-                        prev && prev !== 0 ? ((curr - prev) / prev) * 100 : 0;
+                        const variance =
+                          prev && prev !== 0 ? ((curr - prev) / prev) * 100 : 0;
 
-                      const isIncrease = variance > 0;
-                      const isOverBudget = isIncrease && variance > 0;
+                        const isIncrease = variance > 0;
+                        const isOverBudget = isIncrease && variance > 0;
 
-                      return (
-                        <div
-                          className={`flex items-center gap-1 px-3 py-1 rounded-full ${
-                            isOverBudget ? "bg-red-100" : "bg-green-100"
-                          }`}
-                        >
-                          {isOverBudget ? (
-                            <ArrowUp className="w-4 h-4 text-red-700" />
-                          ) : (
-                            <ArrowDown className="w-4 h-4 text-green-700" />
-                          )}
-                          <span
-                            className={`text-3xl font-extrabold ${
-                              isOverBudget ? "text-red-700" : "text-green-700"
+                        return (
+                          <div
+                            className={`flex items-center gap-1 px-3 py-1 rounded-full ${
+                              isOverBudget ? "bg-red-100" : "bg-green-100"
                             }`}
                           >
-                            {safeNumber(Math.abs(variance), 1)}%
-                          </span>
-                        </div>
-                      );
-                    })()}
+                            {isOverBudget ? (
+                              <ArrowUp className="w-4 h-4 text-red-700" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-green-700" />
+                            )}
+                            <span
+                              className={`text-3xl font-extrabold ${
+                                isOverBudget ? "text-red-700" : "text-green-700"
+                              }`}
+                            >
+                              {safeNumber(Math.abs(variance), 1)}%
+                            </span>
+                          </div>
+                        );
+                      })()}
                   </div>
 
                   {/* Chart Area */}
@@ -1438,27 +1587,44 @@ const CostScreener = () => {
                       >
                         <XAxis
                           dataKey="month"
+                          tickFormatter={(value) => {
+                            // 🔥 DAY view → show only day number
+                            if (viewMode === "day") {
+                              const d = new Date(value);
+                              return isNaN(d) ? value : d.getDate(); // 1,2,3...
+                            }
+
+                            // MONTH view → unchanged
+                            return value;
+                          }}
                           tick={{ fontSize: 15, fontWeight: 600 }}
                         />
 
                         <YAxis
+                          allowDecimals={false}
                           tick={{ fontSize: 15, fontWeight: 600 }}
-                          domain={[
-                            (dataMin) => {
-                              const targetForKpi = Number(
-                                kpiTargets[kpi.kpiName] || 0
-                              );
-                              const min = Math.min(dataMin, targetForKpi);
-                              return min < 0 ? min : 0;
-                            },
-                            (dataMax) => {
-                              const targetForKpi = Number(
-                                kpiTargets[kpi.kpiName] || 0
-                              );
-                              return Math.max(dataMax, targetForKpi);
-                            },
-                          ]}
+                          tickFormatter={roundTick}
+                          domain={
+                            viewMode === "day"
+                              ? ["auto", "auto"] // 🔥 DAY: target ignore
+                              : [
+                                  (dataMin) => {
+                                    const targetForKpi = Number(
+                                      kpiTargets[kpi.kpiName] || 0
+                                    );
+                                    const min = Math.min(dataMin, targetForKpi);
+                                    return min < 0 ? min : 0;
+                                  },
+                                  (dataMax) => {
+                                    const targetForKpi = Number(
+                                      kpiTargets[kpi.kpiName] || 0
+                                    );
+                                    return Math.max(dataMax, targetForKpi);
+                                  },
+                                ]
+                          }
                         />
+
                         <Tooltip
                           content={
                             <CustomTooltip
@@ -1469,34 +1635,36 @@ const CostScreener = () => {
                         />
 
                         {/* Target Line */}
-                        {(() => {
-                          const targetForKpi = Number(
-                            kpiTargets[kpi.kpiName] || 0
-                          );
+                        {/* Target Line */}
+                        {viewMode !== "day" &&
+                          (() => {
+                            const targetForKpi = Number(
+                              kpiTargets[kpi.kpiName] || 0
+                            );
 
-                          if (!targetForKpi || targetForKpi <= 0) {
-                            return null;
-                          }
+                            if (!targetForKpi || targetForKpi <= 0) {
+                              return null;
+                            }
 
-                          return (
-                            <ReferenceLine
-                              y={targetForKpi}
-                              stroke="#ff8c00"
-                              strokeWidth={2.5}
-                              strokeDasharray="5 5"
-                              label={{
-                                value: `Target: ₹${Math.round(
-                                  targetForKpi
-                                ).toLocaleString()}`,
-                                position: "right",
-                                fill: "#ff8c00",
-                                fontSize: 12,
-                                fontWeight: "bold",
-                                offset: 10,
-                              }}
-                            />
-                          );
-                        })()}
+                            return (
+                              <ReferenceLine
+                                y={targetForKpi}
+                                stroke="#ff8c00"
+                                strokeWidth={2.5}
+                                strokeDasharray="5 5"
+                                label={{
+                                  value: `Target: ₹${Math.round(
+                                    targetForKpi
+                                  ).toLocaleString()}`,
+                                  position: "right",
+                                  fill: "#ff8c00",
+                                  fontSize: 12,
+                                  fontWeight: "bold",
+                                  offset: 10,
+                                }}
+                              />
+                            );
+                          })()}
 
                         <Area
                           type="monotone"
@@ -1722,10 +1890,13 @@ const CostScreener = () => {
                   const { monthRange, currentYear } = useCostStore.getState();
 
                   await fetchCostData(
-                    monthRange.from,
-                    monthRange.to,
+                    monthRange.fromMonth,
+                    monthRange.fromYear,
+                    monthRange.toMonth,
+                    monthRange.toYear,
                     currentYear,
-                    "production"
+                    "production",
+                    true
                   );
                 }}
                 className={`px-4 py-2 text-sm rounded-xl font-bold transition-all ${

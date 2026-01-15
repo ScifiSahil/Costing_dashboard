@@ -43,30 +43,30 @@ def _setup(self, request):
 def get_base_path(self, request):
     return request.path
 
-
-class CostingEntryApp(BaseApp):
-    pass
-
-
-@Root.mount(app=CostingEntryApp, path="/kalyani.iot/costing_entry")  # ✅ FIXED: CostingEntryApp
-def _mount_costing_entry_app():  # ✅ FIXED: Unique function name
-    return CostingEntryApp()
-
-
-@CostingEntryApp.view(model=BaseModel, name="document_title", internal=True)
-def entry_document_title(self, request):  # ✅ Unique name
-    return "Costing Entry"
-
-
-@CostingEntryApp.view(model=BaseModel, name="app_component", internal=True)
-def _entry_setup(self, request):  # ✅ Unique name
-    request.app.include("kalyani-iot-costing", "0.0.1")
-    return "kalyani-iot-costing-Entryform"
-
-
-@CostingEntryApp.view(model=BaseModel, name="base_path", internal=True)
-def get_entry_base_path(self, request):  # ✅ Unique name
-    return request.path
+#
+# class CostingEntryApp(BaseApp):
+#     pass
+#
+#
+# @Root.mount(app=CostingEntryApp, path="/kalyani.iot/costing_entry")  # ✅ FIXED: CostingEntryApp
+# def _mount_costing_entry_app():  # ✅ FIXED: Unique function name
+#     return CostingEntryApp()
+#
+#
+# @CostingEntryApp.view(model=BaseModel, name="document_title", internal=True)
+# def entry_document_title(self, request):  # ✅ Unique name
+#     return "Costing Entry"
+#
+#
+# @CostingEntryApp.view(model=BaseModel, name="app_component", internal=True)
+# def _entry_setup(self, request):  # ✅ Unique name
+#     request.app.include("kalyani-iot-costing", "0.0.1")
+#     return "kalyani-iot-costing-Entryform"
+#
+#
+# @CostingEntryApp.view(model=BaseModel, name="base_path", internal=True)
+# def get_entry_base_path(self, request):  # ✅ Unique name
+#     return request.path
 
 
 @sig.connect(rte.APPLICATIONS_LOADED_HOOK)

@@ -66,7 +66,7 @@ export const API_ENDPOINTS = {
   
   // Default KPI Targets (month view)
   KPI_TARGETS: `${API_BASE_URL}/internal/cost_kpi_entry?view=month`,
-
+ // https://ktflceprd.kalyanicorp.com//internal/cost_kpi_entry?view=month&prod_or_sale=Production&plant_code=NULL
   // Filtered KPI Targets with parameters
   KPI_TARGETS_FILTERED: (filters = {}) => {
     let url = `${API_BASE_URL}/internal/cost_kpi_entry?view=month`;
@@ -114,6 +114,9 @@ export const API_ENDPOINTS = {
 
   // Day View - Default
   PROD_COST_DAY: `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day`,
+  // 🔥 Day View - Default (Current Month - MTD)
+  PROD_COST_DAY_MTD: `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day&range=mtd`,
+
 
   // Day View - Custom Range
   PROD_COST_DAY_CUSTOM: (year, fromMonth, toMonth) => {
@@ -121,6 +124,10 @@ export const API_ENDPOINTS = {
     const toMonthName = getMonthNameForApi(toMonth);
     return `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}`;
   },
+  // 🔥 Day View - Custom DATE range (YYYY-MM-DD)
+PROD_COST_DAY_DATE_RANGE: (fromDate, toDate) =>
+  `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day&from_date=${fromDate}&to_date=${toDate}`,
+
 
   // Year View - Default (Current year)
   PROD_COST_YEAR: `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=year`,
@@ -193,6 +200,8 @@ export const API_ENDPOINTS = {
 
   // Day View - Default
   SALE_COST_DAY: `${API_BASE_URL}/internal/frg_grp_sale_cpt?view=day`,
+// 🔥 Day View - Default (Current Month - MTD)
+  SALE_COST_DAY_MTD: `${API_BASE_URL}/internal/frg_grp_sale_cpt?view=day&range=mtd`,
 
   // Day View - Custom Range
   SALE_COST_DAY_CUSTOM: (year, fromMonth, toMonth) => {

@@ -30988,6 +30988,9 @@ var Dashboard = function Dashboard() {
     return sum + kpi.predictive;
   }, 0);
   var overallEfficiency = (totalTarget / totalCost * 100).toFixed(1);
+  var handleLogout = function handleLogout() {
+    window.location.href = "/server/__quit__";
+  };
   var plants = {
     "All Plant": {
       category: "Overview",
@@ -31151,7 +31154,39 @@ var Dashboard = function Dashboard() {
     onMouseLeave: function onMouseLeave(e) {
       return e.target.style.transform = "translateY(0px)";
     }
-  }, "Master Data"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Master Data"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleLogout,
+    title: "Logout",
+    style: {
+      background: "rgba(255,255,255,0.15)",
+      color: "white",
+      padding: "6px 10px",
+      borderRadius: "8px",
+      border: "none",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+      transition: "0.2s"
+    },
+    onMouseEnter: function onMouseEnter(e) {
+      return e.currentTarget.style.transform = "translateY(-2px)";
+    },
+    onMouseLeave: function onMouseLeave(e) {
+      return e.currentTarget.style.transform = "translateY(0px)";
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
+    className: "w-5 h-5",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 2,
+    d: "M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex-1 overflow-auto"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_AllPlants__WEBPACK_IMPORTED_MODULE_1__["default"], {
     showDetailsPage: showDetailsPage,
@@ -33900,6 +33935,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/chevron-left.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/calendar.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/chevron-right.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/chevron-down.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/arrow-right.js");
 /* harmony import */ var _store_costStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/costStore */ "./src/store/costStore.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -33914,7 +33951,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// 🔥 FINANCIAL YEAR FORMAT: April to March
+var monthNames = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
+
+// 🔥 Mapping financial year index to calendar month
+var financialToCalendarMonth = function financialToCalendarMonth(fIndex) {
+  return (fIndex + 3) % 12 + 1;
+};
+
+// 🔥 Mapping calendar month to financial year index
+var calendarToFinancialIndex = function calendarToFinancialIndex(calMonth) {
+  return (calMonth + 8) % 12;
+};
 var MonthRangeSlider = function MonthRangeSlider(_ref) {
   var theme = _ref.theme,
     _ref$compact = _ref.compact,
@@ -33923,23 +33972,34 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState2 = _slicedToArray(_useState, 2),
     isDragging = _useState2[0],
-    setIsDragging = _useState2[1]; // 'start', 'end', or 'range'
+    setIsDragging = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
     _useState4 = _slicedToArray(_useState3, 2),
     dragStartX = _useState4[0],
     setDragStartX = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      from: 1,
-      to: 12
+      fromMonth: 4,
+      fromYear: 2024,
+      toMonth: 3,
+      toYear: 2025
     }),
     _useState6 = _slicedToArray(_useState5, 2),
     initialRange = _useState6[0],
     setInitialRange = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    showQuarterDropdown = _useState8[0],
+    setShowQuarterDropdown = _useState8[1];
+  var quarterDropdownRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
 
   // Zustand Store
-  var monthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
-    return state.monthRange;
-  });
+  var _useCostStore = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+      return state.monthRange;
+    }),
+    fromMonth = _useCostStore.fromMonth,
+    fromYear = _useCostStore.fromYear,
+    toMonth = _useCostStore.toMonth,
+    toYear = _useCostStore.toYear;
   var setMonthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
     return state.setMonthRange;
   });
@@ -33952,51 +34012,230 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
   var viewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
     return state.viewType;
   });
+  var viewMode = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.viewMode;
+  });
+  var isDayView = viewMode === "day";
+  var setViewMode = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.setViewMode;
+  });
   var fetchCostData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
     return state.fetchCostData;
   });
   var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
     return state.apiLoading;
   });
-
-  // Get current month for "Current Month" preset
+  var isDefaultView = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.isDefaultView;
+  });
+  var setIsDefaultView = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.setIsDefaultView;
+  });
+  var selectedDayFrom = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.selectedDayFrom;
+  });
+  var selectedDayTo = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.selectedDayTo;
+  });
+  var setSelectedDayRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_1__.useCostStore)(function (state) {
+    return state.setSelectedDayRange;
+  });
+  var getDaysInMonth = function getDaysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  };
   var systemYear = new Date().getFullYear();
   var systemMonth = new Date().getMonth() + 1;
 
-  // 🔥 KEY FIX
-  var effectiveMonth = currentYear === systemYear ? systemMonth : 12;
+  // 🔥 Get Financial Year from calendar year
+  var getFinancialYearFromDate = function getFinancialYearFromDate(month, year) {
+    // If month is Jan, Feb, or Mar, financial year started in previous calendar year
+    if (month >= 1 && month <= 3) {
+      return year - 1;
+    }
+    // If month is Apr to Dec, financial year started in same calendar year
+    return year;
+  };
 
-  // Quick presets
-  var presets = [{
+  // 🔥 Current Financial Year
+  var currentFinancialYear = getFinancialYearFromDate(systemMonth, systemYear);
+
+  // 🔥 Helper: Get position on 12-month financial scale (0-100)
+  var getPositionFromMonth = function getPositionFromMonth(calMonth) {
+    var fIndex = calendarToFinancialIndex(calMonth);
+    return fIndex / 11 * 100;
+  };
+
+  // 🔥 Helper: Get calendar month from position (1-12)
+  var getMonthFromPosition = function getMonthFromPosition(position) {
+    var fIndex = Math.round(position / 100 * 11);
+    return financialToCalendarMonth(fIndex);
+  };
+
+  // 🔥 Quarter options (Financial Year)
+  var quarterOptions = [{
+    label: "Q1 (Apr-Jun)",
+    value: "q1",
+    from: 4,
+    to: 6
+  }, {
+    label: "Q2 (Jul-Sep)",
+    value: "q2",
+    from: 7,
+    to: 9
+  }, {
+    label: "Q3 (Oct-Dec)",
+    value: "q3",
+    from: 10,
+    to: 12
+  }, {
+    label: "Q4 (Jan-Mar)",
+    value: "q4",
+    from: 1,
+    to: 3
+  }];
+
+  // 🔥 Current effective month (for current FY)
+  var effectiveMonth = currentYear === currentFinancialYear ? systemMonth : 3;
+
+  // 🔥 Preset buttons
+  var presets = viewMode === "day" ? [{
+    label: "Last 7 Days",
+    value: "7d",
+    getRange: function getRange() {
+      var today = new Date();
+      var fromDate = new Date();
+      fromDate.setDate(today.getDate() - 6);
+      return {
+        from: fromDate.getMonth() + 1,
+        to: today.getMonth() + 1,
+        fromYear: fromDate.getFullYear(),
+        toYear: today.getFullYear(),
+        fromDay: fromDate.getDate(),
+        toDay: today.getDate()
+      };
+    }
+  }, {
+    label: "Last 14 Days",
+    value: "14d",
+    getRange: function getRange() {
+      var today = new Date();
+      var fromDate = new Date();
+      fromDate.setDate(today.getDate() - 13);
+      return {
+        from: fromDate.getMonth() + 1,
+        to: today.getMonth() + 1,
+        fromYear: fromDate.getFullYear(),
+        toYear: today.getFullYear(),
+        fromDay: fromDate.getDate(),
+        toDay: today.getDate()
+      };
+    }
+  }, {
     label: "Current Month",
+    value: "cm",
+    getRange: function getRange() {
+      var today = new Date();
+      return {
+        from: today.getMonth() + 1,
+        to: today.getMonth() + 1,
+        fromYear: today.getFullYear(),
+        toYear: today.getFullYear(),
+        fromDay: 1,
+        toDay: today.getDate()
+      };
+    }
+  }, {
+    label: "Full Month",
+    value: "fm",
+    getRange: function getRange() {
+      var today = new Date();
+      var totalDays = getDaysInMonth(today.getMonth() + 1, today.getFullYear());
+      return {
+        from: today.getMonth() + 1,
+        to: today.getMonth() + 1,
+        fromYear: today.getFullYear(),
+        toYear: today.getFullYear(),
+        fromDay: 1,
+        toDay: totalDays
+      };
+    }
+  }] : [{
+    label: "Current",
     value: "current",
-    from: effectiveMonth,
-    to: effectiveMonth
+    getRange: function getRange() {
+      return {
+        from: effectiveMonth,
+        to: effectiveMonth,
+        fromYear: effectiveMonth >= 4 ? currentYear : currentYear + 1,
+        toYear: effectiveMonth >= 4 ? currentYear : currentYear + 1
+      };
+    }
   }, {
     label: "Last 3M",
     value: "3m",
-    from: Math.max(1, effectiveMonth - 2),
-    to: effectiveMonth
+    getRange: function getRange() {
+      var to = effectiveMonth;
+      var from = effectiveMonth - 2;
+      var toYr = effectiveMonth >= 4 ? currentYear : currentYear + 1;
+      var fromYr = toYr;
+      if (from <= 0) {
+        from += 12;
+        fromYr -= 1;
+      }
+      return {
+        from: from,
+        to: to,
+        fromYear: fromYr,
+        toYear: toYr
+      };
+    }
   }, {
     label: "Last 6M",
     value: "6m",
-    from: Math.max(1, effectiveMonth - 5),
-    to: effectiveMonth
+    getRange: function getRange() {
+      var to = effectiveMonth;
+      var from = effectiveMonth - 5;
+      var toYr = effectiveMonth >= 4 ? currentYear : currentYear + 1;
+      var fromYr = toYr;
+      if (from <= 0) {
+        from += 12;
+        fromYr -= 1;
+      }
+      return {
+        from: from,
+        to: to,
+        fromYear: fromYr,
+        toYear: toYr
+      };
+    }
   }, {
     label: "YTD",
     value: "ytd",
-    from: 1,
-    to: effectiveMonth
+    getRange: function getRange() {
+      return {
+        from: 4,
+        to: effectiveMonth,
+        fromYear: currentYear,
+        toYear: effectiveMonth >= 4 ? currentYear : currentYear + 1
+      };
+    }
   }, {
     label: "Full Year",
     value: "full",
-    from: 1,
-    to: 12
+    getRange: function getRange() {
+      return {
+        from: 4,
+        to: 3,
+        fromYear: currentYear,
+        toYear: currentYear + 1
+      };
+    }
   }];
 
-  // Handle preset click
+  // 🔥 Handle preset click
   var handlePresetClick = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(preset) {
+      var range;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -34006,10 +34245,27 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
             }
             return _context.abrupt("return");
           case 2:
-            setMonthRange(preset.from, preset.to);
-            _context.next = 5;
-            return fetchCostData(preset.from, preset.to, currentYear, viewType);
-          case 5:
+            setIsDefaultView(false);
+            range = preset.getRange();
+            if (!isDayView) {
+              _context.next = 11;
+              break;
+            }
+            setMonthRange(range.from, range.fromYear, range.to, range.toYear);
+            setSelectedDayRange(range.fromDay, range.toDay);
+            _context.next = 9;
+            return fetchCostData(range.from, range.fromYear, range.to, range.toYear, viewType, false, {
+              fromDay: range.fromDay,
+              toDay: range.toDay
+            });
+          case 9:
+            _context.next = 14;
+            break;
+          case 11:
+            setMonthRange(range.from, range.fromYear, range.to, range.toYear);
+            _context.next = 14;
+            return fetchCostData(range.from, range.fromYear, range.to, range.toYear, viewType, false);
+          case 14:
           case "end":
             return _context.stop();
         }
@@ -34020,77 +34276,151 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
     };
   }();
 
-  // Get active preset
-  var getActivePreset = function getActivePreset() {
-    var preset = presets.find(function (p) {
-      return p.from === monthRange.from && p.to === monthRange.to;
-    });
-    return (preset === null || preset === void 0 ? void 0 : preset.value) || null;
-  };
-
-  // Calculate position from month (1-12)
-  var getPositionFromMonth = function getPositionFromMonth(month) {
-    return (month - 1) / 11 * 100;
-  };
-
-  // Calculate month from position (0-100)
-  var getMonthFromPosition = function getMonthFromPosition(position) {
-    var month = Math.round(position / 100 * 11) + 1;
-    return Math.max(1, Math.min(12, month));
-  };
-
-  // Handle mouse down on slider track
-  var handleTrackClick = function handleTrackClick(e) {
-    if (apiLoading || isDragging) return;
-    var rect = sliderRef.current.getBoundingClientRect();
-    var clickX = e.clientX - rect.left;
-    var position = clickX / rect.width * 100;
-    var clickedMonth = getMonthFromPosition(position);
-
-    // Determine which handle is closer
-    var startPos = getPositionFromMonth(monthRange.from);
-    var endPos = getPositionFromMonth(monthRange.to);
-    var clickPos = position;
-    var distToStart = Math.abs(clickPos - startPos);
-    var distToEnd = Math.abs(clickPos - endPos);
-    if (distToStart < distToEnd) {
-      if (clickedMonth <= monthRange.to) {
-        updateRange(clickedMonth, monthRange.to);
-      }
-    } else {
-      if (clickedMonth >= monthRange.from) {
-        updateRange(monthRange.from, clickedMonth);
-      }
-    }
-  };
-
-  // Update range and fetch data
-  var updateRange = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(from, to) {
-      var _ref4;
+  // 🔥 Handle quarter selection
+  var handleQuarterClick = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(quarter) {
+      var fromMonth, toMonth, fromYr, toYr;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            if (from > to) {
-              _ref4 = [to, from];
-              from = _ref4[0];
-              to = _ref4[1];
+            if (!apiLoading) {
+              _context2.next = 2;
+              break;
             }
-            setMonthRange(from, to);
-            _context2.next = 4;
-            return fetchCostData(from, to, currentYear, viewType);
-          case 4:
+            return _context2.abrupt("return");
+          case 2:
+            setIsDefaultView(false);
+            fromMonth = quarter.from;
+            toMonth = quarter.to; // Q4 crosses year boundary (Jan-Mar next year)
+            fromYr = quarter.value === "q4" ? currentYear : currentYear;
+            toYr = quarter.value === "q4" ? currentYear + 1 : currentYear;
+            setMonthRange(fromMonth, fromYr, toMonth, toYr);
+            _context2.next = 10;
+            return fetchCostData(fromMonth, fromYr, toMonth, toYr, viewType, false);
+          case 10:
+            setShowQuarterDropdown(false);
+          case 11:
           case "end":
             return _context2.stop();
         }
       }, _callee2);
     }));
-    return function updateRange(_x3, _x4) {
+    return function handleQuarterClick(_x3) {
       return _ref3.apply(this, arguments);
     };
   }();
 
-  // Handle drag start
+  // 🔥 Get active preset
+  var getActivePreset = function getActivePreset() {
+    var preset = presets.find(function (p) {
+      var range = p.getRange ? p.getRange() : p;
+      if (isDayView) {
+        return range.from === fromMonth && range.to === toMonth && range.fromYear === fromYear && range.toYear === toYear && range.fromDay === selectedDayFrom && range.toDay === selectedDayTo;
+      }
+      return range.from === fromMonth && range.to === toMonth && range.fromYear === fromYear && range.toYear === toYear;
+    });
+    if (preset) return preset.value;
+    var quarter = quarterOptions.find(function (q) {
+      var fromYr = q.value === "q4" ? currentYear : currentYear;
+      var toYr = q.value === "q4" ? currentYear + 1 : currentYear;
+      return q.from === fromMonth && q.to === toMonth && fromYr === fromYear && toYr === toYear;
+    });
+    if (quarter) return quarter.value;
+    return null;
+  };
+
+  // 🔥 Update range and fetch data
+  var updateRange = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(newFromMonth, newFromYear, newToMonth, newToYear) {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            setMonthRange(newFromMonth, newFromYear, newToMonth, newToYear);
+            if (!isDefaultView) {
+              _context3.next = 4;
+              break;
+            }
+            setIsDefaultView(false);
+            return _context3.abrupt("return");
+          case 4:
+            _context3.next = 6;
+            return fetchCostData(newFromMonth, newFromYear, newToMonth, newToYear, viewType, false);
+          case 6:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return function updateRange(_x4, _x5, _x6, _x7) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+
+  // 🔥 Handle track click for DAY VIEW
+  var handleDayTrackClick = function handleDayTrackClick(e) {
+    if (apiLoading || isDragging) return;
+    var rect = sliderRef.current.getBoundingClientRect();
+    var clickX = e.clientX - rect.left;
+    var percent = Math.max(0, Math.min(1, clickX / rect.width));
+    var totalDays = getDaysInMonth(fromMonth, fromYear);
+    var clickedDay = Math.max(1, Math.min(totalDays, Math.ceil(percent * totalDays)));
+
+    // Determine which handle is closer
+    var distToFrom = Math.abs(clickedDay - selectedDayFrom);
+    var distToTo = Math.abs(clickedDay - selectedDayTo);
+    if (distToFrom < distToTo) {
+      // Move FROM handle
+      if (clickedDay <= selectedDayTo) {
+        setSelectedDayRange(clickedDay, selectedDayTo);
+        fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, false, {
+          fromDay: clickedDay,
+          toDay: selectedDayTo
+        });
+      }
+    } else {
+      // Move TO handle
+      if (clickedDay >= selectedDayFrom) {
+        setSelectedDayRange(selectedDayFrom, clickedDay);
+        fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, false, {
+          fromDay: selectedDayFrom,
+          toDay: clickedDay
+        });
+      }
+    }
+  };
+
+  // 🔥 Handle track click for MONTH VIEW
+  var handleTrackClick = function handleTrackClick(e) {
+    if (viewMode === "day") {
+      handleDayTrackClick(e);
+      return;
+    }
+    if (apiLoading || isDragging) return;
+    var rect = sliderRef.current.getBoundingClientRect();
+    var clickX = e.clientX - rect.left;
+    var position = clickX / rect.width * 100;
+    var clickedMonth = getMonthFromPosition(position);
+    var isStartVisible = fromYear === currentYear;
+    var isEndVisible = toYear === currentYear;
+    if (isStartVisible && isEndVisible) {
+      var startPos = getPositionFromMonth(fromMonth);
+      var endPos = getPositionFromMonth(toMonth);
+      var clickPos = position;
+      var distToStart = Math.abs(clickPos - startPos);
+      var distToEnd = Math.abs(clickPos - endPos);
+      if (distToStart < distToEnd) {
+        updateRange(clickedMonth, fromYear, toMonth, toYear);
+      } else {
+        updateRange(fromMonth, fromYear, clickedMonth, toYear);
+      }
+    } else if (isStartVisible) {
+      updateRange(clickedMonth, fromYear, toMonth, toYear);
+    } else if (isEndVisible) {
+      updateRange(fromMonth, fromYear, clickedMonth, toYear);
+    }
+  };
+
+  // 🔥 Handle drag start
   var handleDragStart = function handleDragStart(e, type) {
     var _e$touches, _e$touches$;
     if (apiLoading) return;
@@ -34098,71 +34428,142 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
     e.stopPropagation();
     setIsDragging(type);
     setDragStartX(e.clientX || ((_e$touches = e.touches) === null || _e$touches === void 0 ? void 0 : (_e$touches$ = _e$touches[0]) === null || _e$touches$ === void 0 ? void 0 : _e$touches$.clientX));
-    setInitialRange({
-      from: monthRange.from,
-      to: monthRange.to
-    });
+    if (isDayView) {
+      setInitialRange({
+        fromDay: selectedDayFrom,
+        toDay: selectedDayTo
+      });
+    } else {
+      setInitialRange({
+        fromMonth: fromMonth,
+        fromYear: fromYear,
+        toMonth: toMonth,
+        toYear: toYear
+      });
+    }
   };
 
-  // Handle drag move
+  // 🔥 Handle drag move for DAY VIEW
+  var handleDayDragMove = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (e, clientX) {
+    if (!sliderRef.current) return;
+    var rect = sliderRef.current.getBoundingClientRect();
+    var position = (clientX - rect.left) / rect.width * 100;
+    var percent = Math.max(0, Math.min(100, position)) / 100;
+    var totalDays = getDaysInMonth(fromMonth, fromYear);
+    var newDay = Math.max(1, Math.min(totalDays, Math.ceil(percent * totalDays)));
+    if (isDragging === "dayFrom") {
+      if (newDay <= selectedDayTo) {
+        setSelectedDayRange(newDay, selectedDayTo);
+      }
+    } else if (isDragging === "dayTo") {
+      if (newDay >= selectedDayFrom) {
+        setSelectedDayRange(selectedDayFrom, newDay);
+      }
+    }
+  }, [isDragging, fromMonth, fromYear, selectedDayFrom, selectedDayTo, setSelectedDayRange]);
+
+  // 🔥 Handle drag move for MONTH VIEW
+  var handleMonthDragMove = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (e, clientX) {
+    if (!sliderRef.current) return;
+    var rect = sliderRef.current.getBoundingClientRect();
+    var position = (clientX - rect.left) / rect.width * 100;
+    var deltaX = clientX - dragStartX;
+    var deltaMonths = Math.round(deltaX / rect.width * 11);
+    if (isDragging === "start") {
+      var newMonth = getMonthFromPosition(position);
+      if (currentYear === fromYear) {
+        setMonthRange(newMonth, fromYear, toMonth, toYear);
+      }
+    } else if (isDragging === "end") {
+      var _newMonth = getMonthFromPosition(position);
+      if (currentYear === toYear) {
+        setMonthRange(fromMonth, fromYear, _newMonth, toYear);
+      }
+    } else if (isDragging === "range") {
+      if (currentYear === fromYear && currentYear === toYear) {
+        var fromFIndex = calendarToFinancialIndex(initialRange.fromMonth);
+        var toFIndex = calendarToFinancialIndex(initialRange.toMonth);
+        var newFromFIndex = fromFIndex + deltaMonths;
+        var newToFIndex = toFIndex + deltaMonths;
+        if (newFromFIndex < 0) {
+          var shift = -newFromFIndex;
+          newFromFIndex = 0;
+          newToFIndex = Math.min(11, newToFIndex + shift);
+        }
+        if (newToFIndex > 11) {
+          var _shift = newToFIndex - 11;
+          newToFIndex = 11;
+          newFromFIndex = Math.max(0, newFromFIndex - _shift);
+        }
+        var newFromMonth = financialToCalendarMonth(newFromFIndex);
+        var newToMonth = financialToCalendarMonth(newToFIndex);
+        setMonthRange(newFromMonth, fromYear, newToMonth, toYear);
+      }
+    }
+  }, [isDragging, fromMonth, fromYear, toMonth, toYear, dragStartX, initialRange, setMonthRange, currentYear]);
+
+  // 🔥 Handle drag move (combined)
   var handleDragMove = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (e) {
     var _e$touches2, _e$touches2$;
     if (!isDragging || !sliderRef.current) return;
     var clientX = e.clientX || ((_e$touches2 = e.touches) === null || _e$touches2 === void 0 ? void 0 : (_e$touches2$ = _e$touches2[0]) === null || _e$touches2$ === void 0 ? void 0 : _e$touches2$.clientX);
-    var rect = sliderRef.current.getBoundingClientRect();
-    var position = (clientX - rect.left) / rect.width * 100;
-    var newMonth = getMonthFromPosition(position);
-    if (isDragging === "start") {
-      if (newMonth <= monthRange.to) {
-        setMonthRange(newMonth, monthRange.to);
-      }
-    } else if (isDragging === "end") {
-      if (newMonth >= monthRange.from) {
-        setMonthRange(monthRange.from, newMonth);
-      }
-    } else if (isDragging === "range") {
-      var deltaX = clientX - dragStartX;
-      var deltaMonths = Math.round(deltaX / rect.width * 11);
-      var newFrom = initialRange.from + deltaMonths;
-      var newTo = initialRange.to + deltaMonths;
-
-      // Clamp to valid range
-      if (newFrom < 1) {
-        newTo = newTo + (1 - newFrom);
-        newFrom = 1;
-      }
-      if (newTo > 12) {
-        newFrom = newFrom - (newTo - 12);
-        newTo = 12;
-      }
-      newFrom = Math.max(1, Math.min(12, newFrom));
-      newTo = Math.max(1, Math.min(12, newTo));
-      if (newFrom <= newTo) {
-        setMonthRange(newFrom, newTo);
-      }
+    if (isDayView) {
+      handleDayDragMove(e, clientX);
+    } else {
+      handleMonthDragMove(e, clientX);
     }
-  }, [isDragging, monthRange, dragStartX, initialRange, setMonthRange]);
+  }, [isDragging, isDayView, handleDayDragMove, handleMonthDragMove]);
 
-  // Handle drag end
-  var handleDragEnd = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+  // 🔥 Handle drag end
+  var handleDragEnd = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          if (!isDragging) {
-            _context3.next = 4;
+          if (isDragging) {
+            _context4.next = 2;
             break;
           }
+          return _context4.abrupt("return");
+        case 2:
           setIsDragging(null);
-          _context3.next = 4;
-          return fetchCostData(monthRange.from, monthRange.to, currentYear, viewType);
-        case 4:
+          if (!isDefaultView) {
+            _context4.next = 6;
+            break;
+          }
+          setIsDefaultView(false);
+          return _context4.abrupt("return");
+        case 6:
+          if (!isDayView) {
+            _context4.next = 11;
+            break;
+          }
+          _context4.next = 9;
+          return fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, false, {
+            fromDay: selectedDayFrom,
+            toDay: selectedDayTo
+          });
+        case 9:
+          _context4.next = 13;
+          break;
+        case 11:
+          _context4.next = 13;
+          return fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, false);
+        case 13:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
-  })), [isDragging, monthRange, currentYear, viewType, fetchCostData]);
+    }, _callee4);
+  })), [isDragging, isDayView, fromMonth, fromYear, toMonth, toYear, viewType, selectedDayFrom, selectedDayTo, fetchCostData, isDefaultView, setIsDefaultView]);
+  var getDayLabel = function getDayLabel(day) {
+    var d = new Date(fromYear, fromMonth - 1, day);
+    return d.toLocaleDateString("en-US", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short"
+    });
+  };
 
-  // Add/remove event listeners
+  // 🔥 Add/remove event listeners
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (isDragging) {
       window.addEventListener("mousemove", handleDragMove);
@@ -34178,48 +34579,124 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
     };
   }, [isDragging, handleDragMove, handleDragEnd]);
 
-  // Year navigation
-  var handleYearChange = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(delta) {
-      var newYear;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
-          case 0:
-            if (!apiLoading) {
-              _context4.next = 2;
-              break;
-            }
-            return _context4.abrupt("return");
-          case 2:
-            newYear = currentYear + delta;
-            setCurrentYear(newYear);
-            _context4.next = 6;
-            return fetchCostData(monthRange.from, monthRange.to, newYear, viewType);
-          case 6:
-          case "end":
-            return _context4.stop();
-        }
-      }, _callee4);
-    }));
-    return function handleYearChange(_x5) {
-      return _ref6.apply(this, arguments);
+  // 🔥 Close dropdown on outside click
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var handleClickOutside = function handleClickOutside(event) {
+      if (quarterDropdownRef.current && !quarterDropdownRef.current.contains(event.target)) {
+        setShowQuarterDropdown(false);
+      }
     };
-  }();
-  var startPosition = getPositionFromMonth(monthRange.from);
-  var endPosition = getPositionFromMonth(monthRange.to);
+    document.addEventListener("mousedown", handleClickOutside);
+    return function () {
+      return document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // 🔥 Year navigation - Navigate Financial Years
+  var handleYearChange = function handleYearChange(delta) {
+    if (apiLoading) return;
+    var newYear = currentYear + delta;
+
+    // Limit: can't go beyond current FY + 1 or before 2020
+    if (newYear < 2020 || newYear > currentFinancialYear + 1) return;
+    setCurrentYear(newYear);
+  };
+
+  // 🔥 Month change for Day View
+  var handleMonthChange = function handleMonthChange(delta) {
+    if (apiLoading) return;
+    var newMonth = fromMonth + delta;
+    var newYear = fromYear;
+    if (newMonth > 12) {
+      newMonth = 1;
+      newYear += 1;
+    } else if (newMonth < 1) {
+      newMonth = 12;
+      newYear -= 1;
+    }
+
+    // Check bounds
+    var targetFY = getFinancialYearFromDate(newMonth, newYear);
+    if (targetFY < 2020 || targetFY > currentFinancialYear) return;
+    setMonthRange(newMonth, newYear, newMonth, newYear);
+
+    // Reset to full month
+    var totalDays = getDaysInMonth(newMonth, newYear);
+    setSelectedDayRange(1, totalDays);
+    fetchCostData(newMonth, newYear, newMonth, newYear, viewType, false, {
+      fromDay: 1,
+      toDay: totalDays
+    });
+  };
+
+  // 🔥 Calculate positions for current year view
+  var getDisplayPositionForMonth = function getDisplayPositionForMonth(month, year) {
+    if (year < currentYear) {
+      return -10;
+    }
+    if (year > currentYear) {
+      return 110;
+    }
+    return getPositionFromMonth(month);
+  };
+  var startPosition = getDisplayPositionForMonth(fromMonth, fromYear);
+  var endPosition = getDisplayPositionForMonth(toMonth, toYear);
   var activePreset = getActivePreset();
+  var isCrossYear = fromYear !== toYear;
+
+  // 🔥 Format display text
+  var getDisplayText = function getDisplayText() {
+    var getMonthName = function getMonthName(month) {
+      var standardMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return standardMonths[month - 1];
+    };
+    if (isDayView) {
+      return "".concat(getMonthName(fromMonth), " ").concat(fromYear);
+    }
+    return "".concat(getMonthName(fromMonth), " '").concat(String(fromYear).slice(-2), " \u2013 ").concat(getMonthName(toMonth), " '").concat(String(toYear).slice(-2));
+  };
+
+  // 🔥 Check if month is in selected range
+  var isMonthInRange = function isMonthInRange(fIndex) {
+    var calMonth = financialToCalendarMonth(fIndex);
+    if (fromYear === toYear && fromYear === currentYear) {
+      if (fromMonth > toMonth) {
+        return calMonth >= fromMonth || calMonth <= toMonth;
+      }
+      return calMonth >= fromMonth && calMonth <= toMonth;
+    }
+    if (fromYear < currentYear && toYear === currentYear) {
+      return calMonth <= toMonth;
+    }
+    if (fromYear === currentYear && toYear > currentYear) {
+      return calMonth >= fromMonth;
+    }
+    return false;
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "".concat(compact ? "px-5 py-4" : "p-6", " relative")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center justify-between mb-5"
+    className: "flex gap-2 mb-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return setViewMode("month");
+    },
+    className: "px-4 py-2 rounded-lg text-sm font-bold transition-all ".concat(viewMode === "month" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300")
+  }, "Month"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return setViewMode("day");
+    },
+    className: "px-4 py-2 rounded-lg text-sm font-bold transition-all ".concat(viewMode === "day" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300")
+  }, "Day")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center justify-between mb-5 gap-4 flex-wrap"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex items-center gap-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: function onClick() {
-      return handleYearChange(1);
+      return isDayView ? handleMonthChange(-1) : handleYearChange(-1);
     },
-    disabled: apiLoading || currentYear <= 2020,
-    className: "p-2 rounded-lg transition-all ".concat(apiLoading || currentYear <= 2020 ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100 active:scale-95")
+    disabled: apiLoading,
+    className: "p-2 rounded-lg transition-all ".concat(apiLoading ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100 active:scale-95")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: "w-6 h-6 text-gray-600"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -34228,16 +34705,20 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
     className: "w-6 h-6 text-blue-600"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "text-lg font-extrabold text-gray-800"
-  }, currentYear)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  }, isDayView ? getDisplayText() : "FY ".concat(currentYear, "-").concat(String(currentYear + 1).slice(-2)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: function onClick() {
-      return handleYearChange(1);
+      return isDayView ? handleMonthChange(1) : handleYearChange(1);
     },
-    disabled: apiLoading || currentYear >= new Date().getFullYear(),
-    className: "p-2 rounded-lg transition-all ".concat(apiLoading || currentYear >= new Date().getFullYear() ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100 active:scale-95")
+    disabled: apiLoading,
+    className: "p-2 rounded-lg transition-all ".concat(apiLoading ? "opacity-40 cursor-not-allowed" : "hover:bg-gray-100 active:scale-95")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], {
     className: "w-6 h-6 text-gray-600"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex items-center gap-2"
+    className: "px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg border border-blue-300"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-sm font-bold text-blue-900"
+  }, isDayView ? "".concat(selectedDayFrom, " - ").concat(selectedDayTo, " ").concat(getDisplayText()) : getDisplayText())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2 flex-wrap"
   }, presets.map(function (preset) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
       key: preset.value,
@@ -34245,46 +34726,148 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
         return handlePresetClick(preset);
       },
       disabled: apiLoading,
-      className: "px-4 py-2.5 rounded-xl text-base font-bold transition-all ".concat(activePreset === preset.value ? "bg-blue-500 text-white shadow-lg" : "bg-gray-100 text-gray-700 hover:bg-gray-200", " ").concat(apiLoading ? "opacity-50 cursor-not-allowed" : "")
+      className: "px-3 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ".concat(activePreset === preset.value ? "bg-blue-500 text-white shadow-lg" : "bg-gray-100 text-gray-700 hover:bg-gray-200", " ").concat(apiLoading ? "opacity-50 cursor-not-allowed" : "")
     }, preset.label);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "relative pt-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "flex justify-between mb-4 px-1"
-  }, monthNames.map(function (month, index) {
-    var monthNum = index + 1;
-    var isInRange = monthNum >= monthRange.from && monthNum <= monthRange.to;
-    var isEndpoint = monthNum === monthRange.from || monthNum === monthRange.to;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      key: month,
-      className: "text-base font-bold transition-all cursor-pointer select-none px-1 ".concat(isEndpoint ? "text-blue-600 scale-110" : isInRange ? "text-blue-500" : "text-gray-400"),
+  }), !isDayView && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "relative",
+    ref: quarterDropdownRef
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: function onClick() {
+      return setShowQuarterDropdown(!showQuarterDropdown);
+    },
+    disabled: apiLoading,
+    className: "px-3 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1 ".concat(quarterOptions.some(function (q) {
+      return q.value === activePreset;
+    }) ? "bg-blue-500 text-white shadow-lg" : "bg-gray-100 text-gray-700 hover:bg-gray-200", " ").concat(apiLoading ? "opacity-50 cursor-not-allowed" : "")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Quarters"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "w-4 h-4 transition-transform ".concat(showQuarterDropdown ? "rotate-180" : "")
+  })), showQuarterDropdown && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-200 py-2 min-w-[160px] z-50"
+  }, quarterOptions.map(function (quarter) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      key: quarter.value,
       onClick: function onClick() {
-        if (apiLoading) return;
-        // Smart click: closest handle moves to this month
-        var distToStart = Math.abs(monthNum - monthRange.from);
-        var distToEnd = Math.abs(monthNum - monthRange.to);
-        if (distToStart <= distToEnd && monthNum <= monthRange.to) {
-          updateRange(monthNum, monthRange.to);
-        } else if (monthNum >= monthRange.from) {
-          updateRange(monthRange.from, monthNum);
-        }
-      }
-    }, month);
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    ref: sliderRef,
-    className: "relative h-5 bg-gray-200 rounded-full cursor-pointer overflow-visible",
-    onClick: handleTrackClick
+        return handleQuarterClick(quarter);
+      },
+      disabled: apiLoading,
+      className: "w-full px-4 py-2 text-left text-sm font-medium transition-all ".concat(activePreset === quarter.value ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-50", " ").concat(apiLoading ? "opacity-50 cursor-not-allowed" : "")
+    }, quarter.label);
+  }))))), isCrossYear && !isDayView && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center justify-between mb-3 px-2"
+  }, fromYear < currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-100 to-purple-200 border-2 border-purple-400 rounded-lg shadow-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "w-4 h-4 text-purple-700"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-xs font-extrabold text-purple-900"
+  }, "Start: ", getDisplayText().split(" – ")[0])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-200 border-2 border-blue-400 rounded-lg shadow-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "w-4 h-4 text-blue-700"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-xs font-extrabold text-blue-900"
+  }, "Viewing: FY ", currentYear, "-", String(currentYear + 1).slice(-2))), toYear > currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-green-100 to-green-200 border-2 border-green-400 rounded-lg shadow-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "w-4 h-4 text-green-700"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-xs font-extrabold text-green-900"
+  }, "End: ", getDisplayText().split(" – ")[1]))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "relative pt-4 pb-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute h-full bg-blue-400 rounded-full transition-all duration-150 shadow-md",
+    className: "relative"
+  }, !isDayView && fromYear < currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-purple-300 via-purple-200 to-transparent rounded-l-full pointer-events-none z-10 flex items-center justify-start pl-2 border-l-4 border-purple-500 animate-pulse"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: "w-5 h-5 text-purple-700 rotate-180"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-[9px] font-extrabold text-purple-900 mt-0.5"
+  }, "'", String(fromYear).slice(-2)))), !isDayView && toYear > currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-green-300 via-green-200 to-transparent rounded-r-full pointer-events-none z-10 flex items-center justify-end pr-2 border-r-4 border-green-500 animate-pulse"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-col items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: "w-5 h-5 text-green-700"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-[9px] font-extrabold text-green-900 mt-0.5"
+  }, "'", String(toYear).slice(-2)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    ref: sliderRef,
+    className: "relative rounded-full overflow-hidden ".concat(isDayView ? "h-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 cursor-pointer" : "h-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 cursor-pointer"),
+    onClick: handleTrackClick
+  }, isDayView && function () {
+    var totalDays = getDaysInMonth(fromMonth, fromYear);
+    var leftPos = (selectedDayFrom - 1) / totalDays * 100;
+    var rightPos = selectedDayTo / totalDays * 100;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "absolute h-full bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transition-all duration-200",
+      style: {
+        left: "".concat(leftPos, "%"),
+        width: "".concat(rightPos - leftPos, "%")
+      }
+    }), Array.from({
+      length: totalDays
+    }, function (_, i) {
+      return i + 1;
+    }).map(function (day) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+        key: day,
+        className: "absolute top-0 bottom-0 w-px bg-gray-300 opacity-50",
+        style: {
+          left: "".concat((day - 0.5) / totalDays * 100, "%")
+        }
+      });
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n                        bg-white border-[3px] border-blue-600 \n                        rounded-full shadow-xl cursor-ew-resize hover:scale-125 transition-transform z-20\n                        ".concat(isDragging === "dayFrom" ? "scale-125 border-blue-700 shadow-2xl animate-pulse" : ""),
+      style: {
+        left: "".concat(leftPos, "%")
+      },
+      onMouseDown: function onMouseDown(e) {
+        return handleDragStart(e, "dayFrom");
+      },
+      onTouchStart: function onTouchStart(e) {
+        return handleDragStart(e, "dayFrom");
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "absolute inset-1.5 bg-blue-600 rounded-full"
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n                        bg-white border-[3px] border-blue-600 \n                        rounded-full shadow-xl cursor-ew-resize hover:scale-125 transition-transform z-20\n                        ".concat(isDragging === "dayTo" ? "scale-125 border-blue-700 shadow-2xl animate-pulse" : ""),
+      style: {
+        left: "".concat(rightPos, "%")
+      },
+      onMouseDown: function onMouseDown(e) {
+        return handleDragStart(e, "dayTo");
+      },
+      onTouchStart: function onTouchStart(e) {
+        return handleDragStart(e, "dayTo");
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "absolute inset-1.5 bg-blue-600 rounded-full"
+    })));
+  }(), !isDayView && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, !isCrossYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute h-full bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transition-all duration-150",
     style: {
-      left: "".concat(startPosition, "%"),
-      width: "".concat(endPosition - startPosition, "%")
+      left: "".concat(Math.max(0, startPosition), "%"),
+      width: "".concat(Math.min(100, endPosition) - Math.max(0, startPosition), "%")
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }), isCrossYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, fromYear < currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute h-full bg-gradient-to-r from-purple-400 to-blue-500 shadow-lg border-l-4 border-purple-600",
+    style: {
+      left: "0%",
+      width: "".concat(Math.min(100, endPosition), "%")
+    }
+  }), toYear > currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute h-full bg-gradient-to-r from-blue-500 to-green-500 shadow-lg border-r-4 border-green-600",
+    style: {
+      left: "".concat(Math.max(0, startPosition), "%"),
+      width: "".concat(100 - Math.max(0, startPosition), "%")
+    }
+  })), !isCrossYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "absolute h-full cursor-grab active:cursor-grabbing",
     style: {
-      left: "".concat(startPosition, "%"),
-      width: "".concat(endPosition - startPosition, "%")
+      left: "".concat(Math.max(0, startPosition), "%"),
+      width: "".concat(Math.min(100, endPosition) - Math.max(0, startPosition), "%")
     },
     onMouseDown: function onMouseDown(e) {
       return handleDragStart(e, "range");
@@ -34292,8 +34875,8 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
     onTouchStart: function onTouchStart(e) {
       return handleDragStart(e, "range");
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n              bg-white border-[3px] border-blue-500 rounded-full shadow-lg cursor-ew-resize\n              hover:scale-125 hover:border-blue-600 transition-transform z-20\n              ".concat(isDragging === "start" ? "scale-125 border-blue-600 shadow-xl" : ""),
+  }), fromYear === currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n                      bg-white border-[3px] ".concat(fromYear < currentYear ? "border-purple-600" : "border-blue-600", " \n                      rounded-full shadow-xl cursor-ew-resize hover:scale-125 transition-transform z-20\n                      ").concat(isDragging === "start" ? "scale-125 border-blue-700 shadow-2xl animate-pulse" : ""),
     style: {
       left: "".concat(startPosition, "%")
     },
@@ -34304,9 +34887,9 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
       return handleDragStart(e, "start");
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute inset-1.5 bg-blue-500 rounded-full"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n              bg-white border-[3px] border-blue-500 rounded-full shadow-lg cursor-ew-resize\n              hover:scale-125 hover:border-blue-600 transition-transform z-20\n              ".concat(isDragging === "end" ? "scale-125 border-blue-600 shadow-xl" : ""),
+    className: "absolute inset-1.5 ".concat(fromYear < currentYear ? "bg-purple-600" : "bg-blue-600", " rounded-full")
+  })), toYear === currentYear && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 \n                      bg-white border-[3px] ".concat(toYear > currentYear ? "border-green-600" : "border-blue-600", " \n                      rounded-full shadow-xl cursor-ew-resize hover:scale-125 transition-transform z-20\n                      ").concat(isDragging === "end" ? "scale-125 border-blue-700 shadow-2xl animate-pulse" : ""),
     style: {
       left: "".concat(endPosition, "%")
     },
@@ -34317,19 +34900,64 @@ var MonthRangeSlider = function MonthRangeSlider(_ref) {
       return handleDragStart(e, "end");
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute inset-1.5 bg-blue-500 rounded-full"
+    className: "absolute inset-1.5 ".concat(toYear > currentYear ? "bg-green-600" : "bg-blue-600", " rounded-full")
   })), monthNames.map(function (_, index) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: index,
-      className: "absolute top-1/2 -translate-y-1/2 w-0.5 h-3 bg-gray-300 rounded-full",
+      className: "absolute top-0 bottom-0 w-px bg-gray-400 opacity-60",
       style: {
         left: "".concat(index / 11 * 100, "%")
       }
     });
-  }))), apiLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "absolute inset-0 bg-white/50 rounded-xl flex items-center justify-center"
+  }))), !isDayView && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "relative mt-6 h-6"
+  }, monthNames.map(function (name, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: name,
+      className: "absolute text-xs font-bold tracking-wide transition-colors ".concat(isMonthInRange(index) ? "text-blue-700 scale-110" : "text-gray-500"),
+      style: {
+        left: "".concat(index / 11 * 100, "%"),
+        transform: "translateX(-50%)",
+        whiteSpace: "nowrap"
+      }
+    }, name);
+  })), isDayView && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "relative mt-6 h-6"
+  }, Array.from({
+    length: getDaysInMonth(fromMonth, fromYear)
+  }, function (_, i) {
+    return i + 1;
+  }).map(function (day) {
+    var totalDays = getDaysInMonth(fromMonth, fromYear);
+    var isInRange = day >= selectedDayFrom && day <= selectedDayTo;
+
+    // Show every 5th day or first/last day
+    var shouldShow = day === 1 || day === totalDays || day % 5 === 0;
+    if (!shouldShow) return null;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: day,
+      className: "absolute text-xs font-bold transition-colors ".concat(isInRange ? "text-blue-700" : "text-gray-500"),
+      style: {
+        left: "".concat((day - 0.5) / totalDays * 100, "%"),
+        transform: "translateX(-50%)"
+      }
+    }, day);
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mt-8 flex justify-between items-center px-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "w-7 h-7 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"
+    className: "bg-blue-50 border-2 border-blue-400 rounded-lg px-4 py-2 shadow-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-sm font-bold text-blue-900"
+  }, "From: ", getDayLabel(selectedDayFrom))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: "w-5 h-5 text-gray-400"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "bg-blue-50 border-2 border-blue-400 rounded-lg px-4 py-2 shadow-md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "text-sm font-bold text-blue-900"
+  }, "To: ", getDayLabel(selectedDayTo))))))), apiLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "absolute inset-0 bg-white/60 backdrop-blur-sm rounded-xl flex items-center justify-center z-50"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MonthRangeSlider);
@@ -35004,6 +35632,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/chart/ComposedChart.js");
 /* harmony import */ var recharts__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! recharts */ "./node_modules/recharts/es6/cartesian/Area.js");
 /* harmony import */ var _ActionInsightsModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ActionInsightsModal */ "./src/components/ActionInsightsModal.jsx");
+/* harmony import */ var _store_costStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store/costStore */ "./src/store/costStore.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/package.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/zap.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/fuel.js");
@@ -35022,8 +35651,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trending-up.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
-/* harmony import */ var _MonthRangeSlider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MonthRangeSlider */ "./src/components/MonthRangeSlider.jsx");
-/* harmony import */ var _store_costStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/costStore */ "./src/store/costStore.js");
+/* harmony import */ var _MonthRangeSlider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MonthRangeSlider */ "./src/components/MonthRangeSlider.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -35046,6 +35674,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 // Import Zustand Store
 
 
@@ -35057,7 +35686,10 @@ var safeNumber = function safeNumber(value) {
   if (isNaN(num)) return "0";
   return num.toFixed(decimals);
 };
-
+var roundTick = function roundTick(value) {
+  if (value === null || value === undefined) return "";
+  return Math.round(Number(value));
+};
 // Themes Configuration
 var themes = {
   ocean: {
@@ -35438,8 +36070,19 @@ var CustomTooltip = function CustomTooltip(_ref) {
   });
   var actual = actualPayload ? Number(actualPayload.value || 0) : 0;
   if (isNaN(actual)) return null;
-  var kpiTargets = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState().kpiTargets;
-  var target = Number((kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[kpiName]) || 0);
+  var viewMode = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState().viewMode;
+  if (viewMode === "day") {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "".concat(theme.cardBg, " p-4 rounded-xl ").concat(theme.shadow, " ").concat(theme.border, " border min-w-[180px]")
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+      className: "text-sm font-bold ".concat(theme.primaryText, " mb-2")
+    }, typeof label === "string" ? label.split("T")[0] : label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "flex justify-between text-sm font-semibold"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Actual :- "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", safeNumber(actual, 2))));
+  }
+  var kpiTargets = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState().kpiTargets;
+  var normalizedName = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(kpiName);
+  var target = Number((kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[normalizedName]) || 0);
   var hasTarget = target > 0;
   var diff = hasTarget ? actual - target : null;
   var diffPercent = hasTarget && target !== 0 ? diff / target * 100 : null;
@@ -35448,7 +36091,16 @@ var CustomTooltip = function CustomTooltip(_ref) {
     className: "".concat(theme.cardBg, " p-4 rounded-xl ").concat(theme.shadow, " ").concat(theme.border, " border min-w-[220px]")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "text-sm font-bold ".concat(theme.primaryText, " mb-2")
-  }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, function () {
+    var viewMode = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState().viewMode;
+    if (viewMode === "day") {
+      // 🔥 yyyy-mm-ddT00:00:00 → yyyy-mm-dd
+      if (typeof label === "string") {
+        return label.split("T")[0];
+      }
+    }
+    return label;
+  }()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between text-sm font-semibold mb-1"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "Actual"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u20B9", safeNumber(actual, 2))), hasTarget && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "flex justify-between text-sm font-semibold mb-1"
@@ -35462,22 +36114,22 @@ var CustomTooltip = function CustomTooltip(_ref) {
 // Tab Toggle Component
 var TabToggle = function TabToggle(_ref2) {
   var theme = _ref2.theme;
-  var viewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var viewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.viewType;
   });
-  var setViewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var setViewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.setViewType;
   });
-  var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.apiLoading;
   });
-  var currentYear = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var currentYear = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.currentYear;
   });
-  var monthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var monthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.monthRange;
   });
-  var fetchCostData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var fetchCostData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.fetchCostData;
   });
   var handleToggle = /*#__PURE__*/function () {
@@ -35485,9 +36137,9 @@ var TabToggle = function TabToggle(_ref2) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
+            setIsDefaultView(true);
             setViewType(type);
-            _context.next = 3;
-            return fetchCostData(monthRange.from, monthRange.to, currentYear, type);
+            fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, type, true);
           case 3:
           case "end":
             return _context.stop();
@@ -35528,56 +36180,62 @@ var TabToggle = function TabToggle(_ref2) {
 // Main Component
 var CostScreener = function CostScreener() {
   // Zustand Store
-  var viewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var viewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.viewType;
   });
-  var setViewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var setViewType = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.setViewType;
   });
-  var apiData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var apiData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.apiData;
   });
-  var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var apiLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.apiLoading;
   });
-  var apiError = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var apiError = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.apiError;
   });
-  var selectedTheme = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var selectedTheme = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.selectedTheme;
   });
-  var setSelectedTheme = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var setSelectedTheme = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.setSelectedTheme;
   });
-  var selectedLocation = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var selectedLocation = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.selectedLocation;
   });
-  var setSelectedLocation = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var setSelectedLocation = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.setSelectedLocation;
   });
-  var fetchCostData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var fetchCostData = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.fetchCostData;
   });
-  var currentYear = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var currentYear = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.currentYear;
   });
-  var monthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var monthRange = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.monthRange;
   });
-  var currentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var currentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.currentPeriodMonth;
   });
-  var setCurrentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var setCurrentPeriodMonth = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.setCurrentPeriodMonth;
   });
-  var kpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var kpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.kpiTargets;
   });
-  var targetLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var targetLoading = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.targetLoading;
   });
-  var fetchKpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore)(function (state) {
+  var fetchKpiTargets = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
     return state.fetchKpiTargets;
+  });
+  var selectedDay = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
+    return state.selectedDay;
+  });
+  var viewMode = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore)(function (state) {
+    return state.viewMode;
   });
 
   // Local States
@@ -35627,9 +36285,9 @@ var CostScreener = function CostScreener() {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             setSelectedLocation(locationName);
-            _useCostStore$getStat = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState(), monthRange = _useCostStore$getStat.monthRange, currentYear = _useCostStore$getStat.currentYear, viewType = _useCostStore$getStat.viewType;
+            _useCostStore$getStat = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState(), monthRange = _useCostStore$getStat.monthRange, currentYear = _useCostStore$getStat.currentYear, viewType = _useCostStore$getStat.viewType;
             _context2.next = 4;
-            return fetchCostData(monthRange.from, monthRange.to, currentYear, viewType);
+            return fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, viewType, false);
           case 4:
           case "end":
             return _context2.stop();
@@ -35762,25 +36420,48 @@ var CostScreener = function CostScreener() {
       capacity: "82%"
     }]
   };
+
+  // 🔥🔥🔥 UPDATED: Default initialization with last 6 months base API 🔥🔥🔥
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    console.log("🚀 Component Mounted - Initializing");
+    console.log("🚀 Component Mounted - Using DEFAULT Base API (Last 6 Months)");
     var today = new Date();
-    var currentMonth = today.getMonth() + 1;
-    setCurrentPeriodMonth(currentMonth);
-    var to = currentMonth;
-    var from = currentMonth - 5;
-    if (from < 1) {
-      from = 1;
-      to = 6;
+    var currentMonth = today.getMonth() + 1; // 1–12
+    var currentYear = today.getFullYear();
+
+    // 🔥 UI slider ke liye last 6 months (cross-year safe)
+    var toMonth = currentMonth;
+    var toYear = currentYear;
+    var fromMonth = currentMonth - 5;
+    var fromYear = currentYear;
+    if (fromMonth <= 0) {
+      fromMonth = 12 + fromMonth; // eg Jan → Jul
+      fromYear = currentYear - 1;
     }
 
-    // Reset location to "All" on initial load when category is "All"
-    if (selectedCategory === "All") {
+    // 🔥 Store sync (UI only)
+    if (typeof setCurrentPeriodMonth === "function") {
+      setCurrentPeriodMonth(currentMonth);
+    }
+    var store = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState();
+    if (store.setMonthRange) {
+      store.setMonthRange(fromMonth, fromYear, toMonth, toYear);
+    }
+    if (store.setCurrentYear) {
+      store.setCurrentYear(currentYear);
+    }
+
+    // Reset location to All
+    if (selectedCategory === "All" && typeof setSelectedLocation === "function") {
       setSelectedLocation("All");
     }
-    _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState().setMonthRange(from, to);
-    fetchCostData(from, to, currentYear, viewType);
+
+    // 🔥 IMPORTANT:
+    // DEFAULT API call → NO FILTERS
+    // Backend last 6 months dega
+    fetchCostData(fromMonth, fromYear, toMonth, toYear, viewType, true);
   }, []);
+  // Empty dependencies = runs only once on mount
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     function handleClickOutside(event) {
       if (themeSelectorRef.current && !themeSelectorRef.current.contains(event.target)) {
@@ -35899,6 +36580,7 @@ var CostScreener = function CostScreener() {
         return a + b;
       }, 0) / trend.length;
       var budgetAmount = avgAmount * 1.05;
+      var normalizedName = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(costHead.kpiName);
       return {
         kpiName: costHead.kpiName,
         actual_per_tonne: safeNumber(lastMonthAmount, 2),
@@ -35906,12 +36588,13 @@ var CostScreener = function CostScreener() {
         budget_per_tonne: parseFloat(safeNumber(budgetAmount, 2)),
         // 🔥 FIXED
         trend: trend.map(function (val, idx) {
-          var _kpiTargets$costHead$;
+          var _kpiTargets$normalize;
           return {
             month: months[idx],
             actual: safeNumber(val, 2),
             // 🔥 FIXED - LINE 842 KA ISSUE YAHAN THA
-            target: (_kpiTargets$costHead$ = kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[costHead.kpiName]) !== null && _kpiTargets$costHead$ !== void 0 ? _kpiTargets$costHead$ : null
+
+            target: (_kpiTargets$normalize = kpiTargets === null || kpiTargets === void 0 ? void 0 : kpiTargets[normalizedName]) !== null && _kpiTargets$normalize !== void 0 ? _kpiTargets$normalize : null
           };
         }),
         months: months,
@@ -35968,12 +36651,66 @@ var CostScreener = function CostScreener() {
     }
     return [];
   };
+  var transformDayWiseChartData = function transformDayWiseChartData() {
+    if (!apiData || apiData.length === 0 || !selectedDay) return [];
 
-  // 🔥 FIXED: Build Chart Data with Safe Number Handling
-  // Build Chart Data with Safe Number Handling
+    // filter only selected day
+    var filtered = apiData.filter(function (item) {
+      if (!item.date) return false;
+      var day = new Date(item.date).getDate();
+      return day === selectedDay;
+    });
+    if (filtered.length === 0) return [];
+    var grouped = {};
+    filtered.forEach(function (item) {
+      var costHead = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(item.cost_head || "Other");
+      var amount = Number(item.total_amount || 0);
+      if (!grouped[costHead]) {
+        grouped[costHead] = 0;
+      }
+      grouped[costHead] += amount;
+    });
+    return Object.entries(grouped).map(function (_ref7) {
+      var _ref8 = _slicedToArray(_ref7, 2),
+        key = _ref8[0],
+        value = _ref8[1];
+      return {
+        name: key,
+        value: Number(value.toFixed(2))
+      };
+    });
+  };
+
+  // 🔥 FIXED: Build Chart Data with ACTUAL API MONTHS (using kpi.months array)
   var buildChartData = function buildChartData(kpi, currentMonthToUse) {
+    // 🔥 DAY VIEW: Build chart directly from apiData
+    if (viewMode === "day") {
+      if (!apiData || apiData.length === 0) return [];
+
+      // sirf is KPI ka data
+      var dayKpiData = apiData.filter(function (item) {
+        return (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(item.cost_head) === (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(kpi.kpiName);
+      });
+      if (dayKpiData.length === 0) return [];
+      return dayKpiData.map(function (item) {
+        return {
+          month: item.date,
+          // YYYY-MM-DD
+          actual: Number(item.cost_per_ton || 0),
+          // ✅ DIRECT FROM API
+          isHistorical: true,
+          isHighlighted: false
+        };
+      });
+    }
+
+    // 🔥 SAFETY: Check if kpi and required properties exist
+    if (!kpi || !kpi.months || !Array.isArray(kpi.months) || kpi.months.length === 0) {
+      console.warn("⚠️ Invalid KPI data for chart:", kpi === null || kpi === void 0 ? void 0 : kpi.kpiName);
+      return [];
+    }
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var normalizedKpiName = kpi.kpiName;
+    var normalizedKpiName = (0,_store_costStore__WEBPACK_IMPORTED_MODULE_3__.normalizeKpiName)(kpi.kpiName);
     var targetValue = Number(kpiTargets[normalizedKpiName] || 0);
     console.log("\uD83C\uDFAF Building chart for: ".concat(normalizedKpiName));
     console.log("\uD83D\uDCCA Target value: ".concat(targetValue ? "\u20B9".concat(targetValue) : "NOT FOUND"));
@@ -35981,34 +36718,32 @@ var CostScreener = function CostScreener() {
       return a + b;
     }, 0) / kpi.production_percentage.length : null;
 
-    // 🔥 SAFE: Build historical data with proper error handling
-    var historicalData = kpi.trend.map(function (value, index) {
+    // 🔥 CRITICAL FIX: Use kpi.months array (actual API months) and kpi.trend
+    var actualMonths = kpi.months || [];
+    var trendData = kpi.trend || [];
+    console.log("\uD83D\uDCC5 Actual API months for ".concat(normalizedKpiName, ":"), actualMonths);
+
+    // 🔥 SAFE: Build historical data with ACTUAL API months
+    var historicalData = actualMonths.map(function (actualMonthNo, index) {
       var _kpi$production_perce;
-      var actualMonthNo = monthRange.from + index;
       var monthIndex = (actualMonthNo - 1) % 12;
       var isCurrentMonth = actualMonthNo === currentMonthToUse;
 
-      // 🔥 SAFE: Extract actual value with multiple fallbacks
+      // 🔥 Get actual value from trend array
+      var trendItem = trendData[index];
       var actualValue = 0;
-      if (value && _typeof(value) === "object" && value.actual !== undefined) {
-        // If trend item is an object with 'actual' property
-        actualValue = value.actual;
-      } else if (typeof value === "number") {
-        // If trend item is directly a number
-        actualValue = value;
-      } else if (typeof value === "string") {
-        // If trend item is a string number
-        actualValue = parseFloat(value);
+      if (trendItem && _typeof(trendItem) === "object") {
+        actualValue = trendItem.actual || 0;
+      } else if (typeof trendItem === "number") {
+        actualValue = trendItem;
       }
 
       // Final safety check
-      if (isNaN(actualValue) || actualValue === null || actualValue === undefined) {
-        actualValue = 0;
-      }
+      var safeActualValue = isNaN(actualValue) || actualValue === null || actualValue === undefined ? 0 : actualValue;
       return {
         month: monthNames[monthIndex] || "M".concat(index + 1),
         monthNo: actualMonthNo,
-        actual: safeNumber(actualValue, 3),
+        actual: safeNumber(safeActualValue, 3),
         // 🔥 ALWAYS SAFE
         prediction: null,
         target: targetValue > 0 ? targetValue : null,
@@ -36017,10 +36752,12 @@ var CostScreener = function CostScreener() {
         productionTarget: avgTargetPercent,
         isHistorical: true,
         isHighlighted: isCurrentMonth,
-        variance: targetValue > 0 ? actualValue - targetValue : 0
+        variance: targetValue > 0 ? safeActualValue - targetValue : 0
       };
     });
-    console.log("\u2705 Chart data built: ".concat(historicalData.length, " points with target: ").concat(targetValue));
+    console.log("\u2705 Chart data built: ".concat(historicalData.length, " points with months:"), historicalData.map(function (d) {
+      return "".concat(d.month, "(").concat(d.monthNo, ")");
+    }).join(", "));
     return historicalData;
   };
 
@@ -36047,7 +36784,8 @@ var CostScreener = function CostScreener() {
 
   // Render Combined Chart
   var renderCombinedChart = function renderCombinedChart() {
-    var baseData = transformApiDataToChartFormat();
+    var baseData = viewMode === "day" ? transformDayWiseChartData() : transformApiDataToChartFormat();
+    var safeChartData = Array.isArray(baseData) ? baseData : [];
     if (apiLoading) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
         className: "".concat(currentTheme.cardBg, " rounded-xl p-8 text-center ").concat(currentTheme.shadow, " m-6")
@@ -36068,26 +36806,10 @@ var CostScreener = function CostScreener() {
         className: "".concat(currentTheme.secondaryText, " text-sm font-medium mb-4")
       }, apiError), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         onClick: function onClick() {
-          fetchCostData(monthRange.from, monthRange.to, currentYear, viewType);
+          fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, currentYear, viewType, false);
         },
         className: "px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold"
       }, "Retry"));
-    }
-    if (!baseData || baseData.length === 0) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "".concat(currentTheme.cardBg, " rounded-xl p-8 text-center ").concat(currentTheme.shadow, " m-6")
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "text-gray-400 text-5xl mb-4"
-      }, "\uD83D\uDCCA"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-        className: "".concat(currentTheme.primaryText, " font-bold text-lg mb-2")
-      }, "No Data Available"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-        className: "".concat(currentTheme.secondaryText, " text-sm font-medium mb-4")
-      }, "No ", viewType, " data found for the selected period."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-        onClick: function onClick() {
-          fetchCostData(monthRange.from, monthRange.to, currentYear, viewType);
-        },
-        className: "px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold"
-      }, "Load Data"));
     }
     var combinedData = [];
     var actualTotals = combinedData.map(function (d) {
@@ -36136,10 +36858,10 @@ var CostScreener = function CostScreener() {
       className: "w-4 h-4"
     }), "Choose Theme")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       className: "max-h-96 overflow-y-auto"
-    }, Object.entries(themes).map(function (_ref7) {
-      var _ref8 = _slicedToArray(_ref7, 2),
-        key = _ref8[0],
-        theme = _ref8[1];
+    }, Object.entries(themes).map(function (_ref9) {
+      var _ref10 = _slicedToArray(_ref9, 2),
+        key = _ref10[0],
+        theme = _ref10[1];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
         key: key,
         onClick: function onClick() {
@@ -36185,16 +36907,28 @@ var CostScreener = function CostScreener() {
         bottom: 10
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_20__.XAxis, {
-      dataKey: "month",
+      dataKey: viewMode === "day" ? "name" : "month",
+      tickFormatter: function tickFormatter(value) {
+        // 🔥 DAY view → show only day number
+        if (viewMode === "day") {
+          var d = new Date(value);
+          return isNaN(d) ? value : d.getDate(); // 1,2,3...
+        }
+
+        // MONTH view → unchanged
+        return value;
+      },
       tick: {
         fontSize: 15,
         fontWeight: 600
       }
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_21__.YAxis, {
+      allowDecimals: false,
       tick: {
         fontSize: 15,
         fontWeight: 600
-      }
+      },
+      tickFormatter: roundTick
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_22__.Tooltip, {
       content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CustomTooltip, {
         theme: currentTheme
@@ -36262,16 +36996,28 @@ var CostScreener = function CostScreener() {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_26__.CartesianGrid, {
       stroke: currentTheme.gridColor
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_20__.XAxis, {
-      dataKey: "month",
+      dataKey: viewMode === "day" ? "name" : "month",
+      tickFormatter: function tickFormatter(value) {
+        // 🔥 DAY view → show only day number
+        if (viewMode === "day") {
+          var d = new Date(value);
+          return isNaN(d) ? value : d.getDate(); // 1,2,3...
+        }
+
+        // MONTH view → unchanged
+        return value;
+      },
       tick: {
         fontSize: 15,
         fontWeight: 600
       }
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_21__.YAxis, {
+      allowDecimals: false,
       tick: {
         fontSize: 15,
         fontWeight: 600
-      }
+      },
+      tickFormatter: roundTick
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_22__.Tooltip, {
       content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(CustomTooltip, {
         theme: currentTheme
@@ -36328,6 +37074,12 @@ var CostScreener = function CostScreener() {
       var IconComponent = iconMap[kpi.kpiName] || lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"];
       var cardCurrentMonth = cardCurrentMonths[kpi.kpiName] || currentPeriodMonth;
       var chartData = buildChartData(kpi, cardCurrentMonth);
+
+      // 🔥 SAFETY: Skip card if no chart data
+      if (!chartData || chartData.length === 0) {
+        console.warn("\u26A0\uFE0F No chart data for ".concat(kpi.kpiName, ", skipping card"));
+        return null;
+      }
       var currentMonthIndex = chartData.findIndex(function (d) {
         return d.monthNo === cardCurrentMonth;
       });
@@ -36352,12 +37104,10 @@ var CostScreener = function CostScreener() {
         className: "w-6 h-6 text-white"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
         className: "text-xxl font-extrabold text-slate-800"
-      }, kpi.kpiName)), function () {
+      }, kpi.kpiName)), viewMode !== "day" && function () {
         var trend = kpi.monthly_costs || [];
         var curr = trend[trend.length - 1] || 0;
         var prev = trend[trend.length - 2] || curr;
-
-        // 🔥 SAFE: Variance calculation
         var variance = prev && prev !== 0 ? (curr - prev) / prev * 100 : 0;
         var isIncrease = variance > 0;
         var isOverBudget = isIncrease && variance > 0;
@@ -36396,16 +37146,29 @@ var CostScreener = function CostScreener() {
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_20__.XAxis, {
         dataKey: "month",
+        tickFormatter: function tickFormatter(value) {
+          // 🔥 DAY view → show only day number
+          if (viewMode === "day") {
+            var d = new Date(value);
+            return isNaN(d) ? value : d.getDate(); // 1,2,3...
+          }
+
+          // MONTH view → unchanged
+          return value;
+        },
         tick: {
           fontSize: 15,
           fontWeight: 600
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(recharts__WEBPACK_IMPORTED_MODULE_21__.YAxis, {
+        allowDecimals: false,
         tick: {
           fontSize: 15,
           fontWeight: 600
         },
-        domain: [function (dataMin) {
+        tickFormatter: roundTick,
+        domain: viewMode === "day" ? ["auto", "auto"] // 🔥 DAY: target ignore
+        : [function (dataMin) {
           var targetForKpi = Number(kpiTargets[kpi.kpiName] || 0);
           var min = Math.min(dataMin, targetForKpi);
           return min < 0 ? min : 0;
@@ -36418,7 +37181,7 @@ var CostScreener = function CostScreener() {
           theme: currentTheme,
           kpiName: kpi.kpiName
         })
-      }), function () {
+      }), viewMode !== "day" && function () {
         var targetForKpi = Number(kpiTargets[kpi.kpiName] || 0);
         if (!targetForKpi || targetForKpi <= 0) {
           return null;
@@ -36600,9 +37363,9 @@ var CostScreener = function CostScreener() {
               } else {
                 setSelectedLocation(null);
               }
-              _useCostStore$getStat2 = _store_costStore__WEBPACK_IMPORTED_MODULE_4__.useCostStore.getState(), monthRange = _useCostStore$getStat2.monthRange, currentYear = _useCostStore$getStat2.currentYear;
+              _useCostStore$getStat2 = _store_costStore__WEBPACK_IMPORTED_MODULE_3__.useCostStore.getState(), monthRange = _useCostStore$getStat2.monthRange, currentYear = _useCostStore$getStat2.currentYear;
               _context3.next = 5;
-              return fetchCostData(monthRange.from, monthRange.to, currentYear, "production");
+              return fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, currentYear, "production", true);
             case 5:
             case "end":
               return _context3.stop();
@@ -36652,7 +37415,7 @@ var CostScreener = function CostScreener() {
     theme: currentTheme
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "bg-gradient-to-r from-blue-50/50 to-cyan-50/50 rounded-xl border ".concat(currentTheme.border)
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MonthRangeSlider__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MonthRangeSlider__WEBPACK_IMPORTED_MODULE_4__["default"], {
     theme: currentTheme,
     compact: true
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, renderCombinedChart(), renderCardsView()));
@@ -36845,6 +37608,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SUB_PARAM_CODE_MAP": () => (/* binding */ SUB_PARAM_CODE_MAP),
 /* harmony export */   "cacheManager": () => (/* binding */ cacheManager),
 /* harmony export */   "generateSubParamType": () => (/* binding */ generateSubParamType),
+/* harmony export */   "normalizeKpiName": () => (/* binding */ normalizeKpiName),
 /* harmony export */   "parseSubParamCodes": () => (/* binding */ parseSubParamCodes),
 /* harmony export */   "useCostStore": () => (/* binding */ useCostStore)
 /* harmony export */ });
@@ -36876,6 +37640,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 // ============================================================================
 // ⭐⭐⭐ ENHANCED KPI NAME MAPPING (Backend → Frontend) ⭐⭐⭐
 // ============================================================================
+var API_BASE_URL = "https://ktflceprd.kalyanicorp.com/";
 var KPI_NAME_MAPPING = {
   // Power
   power: "Power",
@@ -36913,11 +37678,11 @@ var KPI_NAME_MAPPING = {
   "eastablishment expenses": "Establishment Exp",
   "eastablishment Expenses": "Establishment Exp",
   // Packing
-  "packing": "Packing",
-  "Packing": "Packing",
+  packing: "Packing",
+  Packing: "Packing",
   // Freight
-  "freight": "Freight",
-  "Freight": "Freight",
+  freight: "Freight",
+  Freight: "Freight",
   // Raw Material
   "Raw Material": "Raw Material",
   "raw material": "Raw Material",
@@ -36963,32 +37728,32 @@ var TYPE_MAPPING = {
 // ============================================================================
 var PLANT_CODE_MAPPING = {
   // 🔥 Original mappings (kept for backward compatibility)
-  "Mundhwa": "2001",
+  Mundhwa: "2001",
   "Ranjangaon E-84": "2002",
   "Transmission Ranjangaon": "2101",
   "Transmission Baramati": "2102",
-  "Chakan": "2020",
+  Chakan: "2020",
   "Khed-1": "2021",
   "Khed-2": "2027",
   "Ambethan-1": "2022",
   "Ambethan-2": "2023",
   "Ambethan-3": "2028",
   "Baramati KTFL": "2024",
-  "Bhiwadi": "2025",
-  "Gujarat": "2026",
+  Bhiwadi: "2025",
+  Gujarat: "2026",
   "Heat Treatment": "2081",
   "Inmet Jejuri": "2201",
   "Yokoha Jejuri": "2301",
   // 🔥 NEW: UI location name mappings (for costscreener.jsx locations)
-  "Ranjangaon": "2002",
+  Ranjangaon: "2002",
   // Maps to Ranjangaon E-84
   "Ranjangaon-2": "2101",
   // Maps to Transmission Ranjangaon
-  "Baramati": "2102",
+  Baramati: "2102",
   // Maps to Transmission Baramati
-  "Gujrat": "2026",
+  Gujrat: "2026",
   // Maps to Gujarat (note UI spelling: "Gujrat")
-  "Khed": "2021",
+  Khed: "2021",
   // Maps to Khed-1
   "Ambhethan-1": "2022",
   // Same as Ambethan-1
@@ -36996,16 +37761,16 @@ var PLANT_CODE_MAPPING = {
   // Same as Ambethan-2
 
   // 🔥 Additional short codes (optional, if needed by UI)
-  "RGN": "2002",
+  RGN: "2002",
   "RGN-2": "2101",
-  "MUN": "2001",
-  "BRM": "2102",
-  "BWD": "2025",
-  "GUT": "2026",
-  "CHK": "2020",
-  "KHD": "2021",
-  "AMB1": "2022",
-  "AMB2": "2023"
+  MUN: "2001",
+  BRM: "2102",
+  BWD: "2025",
+  GUT: "2026",
+  CHK: "2020",
+  KHD: "2021",
+  AMB1: "2022",
+  AMB2: "2023"
 };
 
 // ============================================================================
@@ -37047,14 +37812,16 @@ var generateSubParamType = function generateSubParamType(selectedSubParams) {
   return codes || null;
 };
 var parseSubParamCodes = function parseSubParamCodes(codeString) {
-  if (!codeString) return {
-    fuel: [],
-    power: [],
-    subcontract: []
-  };
+  if (typeof codeString !== "string") {
+    return {
+      fuel: [],
+      power: [],
+      subcontract: []
+    };
+  }
   var codes = codeString.split(",").map(function (c) {
-    return c.trim();
-  });
+    return String(c).trim().toUpperCase();
+  }).filter(Boolean);
   var result = {
     fuel: [],
     power: [],
@@ -37085,8 +37852,12 @@ var CacheManager = /*#__PURE__*/function () {
   }
   _createClass(CacheManager, [{
     key: "generateKey",
-    value: function generateKey(viewType, location, fromMonth, toMonth, year) {
-      return "".concat(viewType, "-").concat(location, "-").concat(fromMonth, "-").concat(toMonth, "-").concat(year);
+    value: function generateKey(viewType, viewMode, location, fromMonth, fromYear, toMonth, toYear) {
+      var useDefault = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : false;
+      if (useDefault) {
+        return "".concat(viewType, "-").concat(viewMode, "-").concat(location, "-DEFAULT");
+      }
+      return "".concat(viewType, "-").concat(viewMode, "-").concat(location, "-").concat(fromMonth, "-").concat(fromYear, "-").concat(toMonth, "-").concat(toYear);
     }
   }, {
     key: "get",
@@ -37122,35 +37893,191 @@ var CacheManager = /*#__PURE__*/function () {
 var cacheManager = new CacheManager();
 var currentAbortController = null;
 
+// 🔥 Utility: format date to YYYY-MM-DD (for DAY custom API)
+var formatDate = function formatDate(year, month, day) {
+  var mm = String(month).padStart(2, "0");
+  var dd = String(day).padStart(2, "0");
+  return "".concat(year, "-").concat(mm, "-").concat(dd);
+};
+
 // ============================================================================
 // ZUSTAND STORE
 // ============================================================================
 var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_middleware__WEBPACK_IMPORTED_MODULE_2__.persist)(function (set, get) {
   return {
     // ====================================================================
-    // USER PLANT CODE
+    // THEME & VIEW STATE
     // ====================================================================
-    userPlantCode: null,
-    userPlantCodeLoaded: false,
-    userPlantCodeError: null,
-    fetchUserPlantCode: function () {
-      var _fetchUserPlantCode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var _get, userPlantCodeLoaded, code, apiUrl, response, data, plantCode;
+    selectedTheme: "ocean",
+    setSelectedTheme: function setSelectedTheme(theme) {
+      return set({
+        selectedTheme: theme
+      });
+    },
+    // 🔥 ADD BELOW
+    isDefaultView: true,
+    setIsDefaultView: function setIsDefaultView(val) {
+      return set({
+        isDefaultView: val
+      });
+    },
+    viewType: "production",
+    setViewType: function setViewType(view) {
+      console.log("\uD83D\uDD04 Switching view to: ".concat(view));
+      set({
+        viewType: view,
+        apiData: [],
+        apiLoading: true
+      });
+      var _get = get(),
+        monthRange = _get.monthRange,
+        currentYear = _get.currentYear;
+      get().fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, view, true);
+    },
+    selectedDayFrom: 1,
+    selectedDayTo: new Date().getDate(),
+    setSelectedDayRange: function setSelectedDayRange(from, to) {
+      return set({
+        selectedDayFrom: from,
+        selectedDayTo: to
+      });
+    },
+    // 🔥 NEW: VIEW MODE (month | day)
+    viewMode: "month",
+    setViewMode: function setViewMode(mode) {
+      var today = new Date();
+      if (mode === "day") {
+        set({
+          viewMode: "day",
+          selectedDayFrom: 1,
+          selectedDayTo: today.getDate(),
+          monthRange: {
+            fromMonth: today.getMonth() + 1,
+            toMonth: today.getMonth() + 1,
+            fromYear: today.getFullYear(),
+            toYear: today.getFullYear()
+          },
+          isDefaultView: true,
+          apiLoading: true
+        });
+
+        // 🔥 DEFAULT DAY API (MTD)
+        get().fetchCostData(today.getMonth() + 1, today.getFullYear(), today.getMonth() + 1, today.getFullYear(), get().viewType, true);
+      } else {
+        set({
+          viewMode: mode
+        });
+      }
+    },
+    selectedDay: null,
+    setSelectedDay: function setSelectedDay(day) {
+      return set(function () {
+        return {
+          selectedDay: day
+        };
+      });
+    },
+    // ====================================================================
+    // FILTER STATE
+    // ====================================================================
+    selectedLocation: "All",
+    setSelectedLocation: function setSelectedLocation(location) {
+      console.log("\uD83D\uDCCD Location changed to: ".concat(location));
+      var plantCode = PLANT_CODE_MAPPING[location] || null;
+      set({
+        selectedLocation: location,
+        selectedPlantCode: plantCode,
+        apiData: [],
+        apiLoading: true
+      });
+      var _get2 = get(),
+        monthRange = _get2.monthRange,
+        viewType = _get2.viewType;
+
+      // 🔥 UPDATED: Pass useDefaultApi flag
+      var useDefaultApi = location === "All" && !get().selectedType;
+      get().fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, viewType, useDefaultApi);
+    },
+    selectedPlantCode: null,
+    selectedType: null,
+    setSelectedType: function setSelectedType(type) {
+      console.log("\uD83C\uDFED Type changed to: ".concat(type));
+      var mappedType = TYPE_MAPPING[type];
+      set({
+        selectedType: mappedType,
+        selectedLocation: type === "ALL" ? "All" : get().selectedLocation,
+        selectedPlantCode: type === "ALL" ? null : get().selectedPlantCode,
+        apiData: [],
+        apiLoading: true,
+        isDefaultView: true // 🔥 ADD THIS LINE
+      });
+
+      var _get3 = get(),
+        monthRange = _get3.monthRange,
+        viewType = _get3.viewType;
+
+      // 🔥 ALWAYS default API (NO FILTERS)
+      var useDefaultApi = true;
+      get().fetchCostData(monthRange.fromMonth, monthRange.fromYear, monthRange.toMonth, monthRange.toYear, viewType, true);
+    },
+    // ====================================================================
+    // DATE RANGE STATE
+    // ====================================================================
+    currentYear: new Date().getFullYear(),
+    setCurrentYear: function setCurrentYear(year) {
+      return set({
+        currentYear: year
+      });
+    },
+    monthRange: {
+      fromMonth: 1,
+      fromYear: new Date().getFullYear(),
+      toMonth: new Date().getMonth() + 1,
+      toYear: new Date().getFullYear()
+    },
+    setMonthRange: function setMonthRange(fromMonth, fromYear, toMonth, toYear) {
+      var currentYear = get().currentYear || new Date().getFullYear();
+      var safeFromYear = typeof fromYear === "number" ? fromYear : currentYear;
+      var safeToYear = typeof toYear === "number" ? toYear : currentYear;
+      console.log("\uD83D\uDCC5 Month range FIXED: ".concat(fromMonth, "/").concat(safeFromYear, " \u2192 ").concat(toMonth, "/").concat(safeToYear));
+      set({
+        monthRange: {
+          fromMonth: fromMonth,
+          fromYear: safeFromYear,
+          toMonth: toMonth,
+          toYear: safeToYear
+        }
+      });
+    },
+    currentPeriodMonth: new Date().getMonth() + 1,
+    // ====================================================================
+    // API STATE
+    // ====================================================================
+    apiData: [],
+    apiLoading: true,
+    apiError: null,
+    loadingProgress: 0,
+    // ====================================================================
+    // KPI TARGETS
+    // ====================================================================
+    kpiTargets: {},
+    targetLoading: false,
+    fetchKpiTargets: function () {
+      var _fetchKpiTargets = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _get4, viewType, selectedPlantCode, prodOrSale, plantCode, apiUrl, response, result, targetsMap;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              _get = get(), userPlantCodeLoaded = _get.userPlantCodeLoaded;
-              if (!userPlantCodeLoaded) {
-                _context.next = 5;
-                break;
-              }
-              code = get().userPlantCode;
-              console.log("✅ Plant code already loaded:", code);
-              return _context.abrupt("return", code);
-            case 5:
-              _context.prev = 5;
-              apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PLANT_CODE;
-              console.log("🔄 Fetching user plant code from:", apiUrl);
+              _context.prev = 0;
+              console.log("🎯 Fetching KPI targets (Plant-aware API)...");
+              set({
+                targetLoading: true
+              });
+              _get4 = get(), viewType = _get4.viewType, selectedPlantCode = _get4.selectedPlantCode;
+              prodOrSale = viewType === "production" ? "Production" : "Sale";
+              plantCode = selectedPlantCode ? selectedPlantCode : "NULL";
+              apiUrl = "".concat(API_BASE_URL, "/internal/cost_kpi_entry") + "?view=month" + "&prod_or_sale=".concat(prodOrSale) + "&plant_code=".concat(plantCode);
+              console.log("📡 [KPI Targets] Fetching from:", apiUrl);
               _context.next = 10;
               return fetch(apiUrl);
             case 10:
@@ -37164,498 +38091,48 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
               _context.next = 15;
               return response.json();
             case 15:
-              data = _context.sent;
-              console.log("📥 Raw Response:", data);
-              if (!data.plant_code) {
-                _context.next = 24;
+              result = _context.sent;
+              if (!(result.status === "success" && Array.isArray(result.data))) {
+                _context.next = 22;
                 break;
               }
-              plantCode = String(data.plant_code).trim();
-              console.log("✅✅✅ User plant code fetched:", plantCode);
-              set({
-                userPlantCode: plantCode,
-                userPlantCodeLoaded: true,
-                userPlantCodeError: null
-              });
-              return _context.abrupt("return", plantCode);
-            case 24:
-              throw new Error("No plant_code in API response");
-            case 25:
-              _context.next = 32;
-              break;
-            case 27:
-              _context.prev = 27;
-              _context.t0 = _context["catch"](5);
-              console.error("❌ CRITICAL ERROR fetching plant code:", _context.t0);
-              set({
-                userPlantCodeError: _context.t0.message,
-                userPlantCodeLoaded: true
-              });
-              throw _context.t0;
-            case 32:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, null, [[5, 27]]);
-      }));
-      function fetchUserPlantCode() {
-        return _fetchUserPlantCode.apply(this, arguments);
-      }
-      return fetchUserPlantCode;
-    }(),
-    // ====================================================================
-    // COST CENTERS
-    // ====================================================================
-    costCenters: [],
-    costCenterLoaded: false,
-    costCenterError: null,
-    fetchCostCentersOnce: function () {
-      var _fetchCostCentersOnce = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var _get2, costCenterLoaded, userPlantCode, plantCode, url, response, data, centers;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _get2 = get(), costCenterLoaded = _get2.costCenterLoaded, userPlantCode = _get2.userPlantCode;
-              if (!costCenterLoaded) {
-                _context2.next = 4;
-                break;
-              }
-              console.log("✅ Cost centers already loaded for plant:", userPlantCode);
-              return _context2.abrupt("return");
-            case 4:
-              _context2.prev = 4;
-              plantCode = userPlantCode;
-              if (plantCode) {
-                _context2.next = 11;
-                break;
-              }
-              console.log("⚠️ Plant code not loaded, fetching now...");
-              _context2.next = 10;
-              return get().fetchUserPlantCode();
-            case 10:
-              plantCode = _context2.sent;
-            case 11:
-              if (plantCode) {
-                _context2.next = 13;
-                break;
-              }
-              throw new Error("❌ FAILED: Unable to determine plant code");
-            case 13:
-              console.log("🎯 Using Plant Code:", plantCode);
-              url = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.COST_CENTER_MASTER, "?$filter=plant_code%20eq%20%27").concat(plantCode, "%27");
-              console.log("🔄 Fetching cost centers from:", url);
-              _context2.next = 18;
-              return fetch(url);
-            case 18:
-              response = _context2.sent;
-              if (response.ok) {
-                _context2.next = 21;
-                break;
-              }
-              throw new Error("HTTP ".concat(response.status, ": ").concat(response.statusText));
-            case 21:
-              _context2.next = 23;
-              return response.json();
-            case 23:
-              data = _context2.sent;
-              console.log("📥 Raw cost center response:", data);
-              centers = [];
-              if (data && Array.isArray(data.objects)) {
-                centers = data.objects;
-              } else if (Array.isArray(data)) {
-                centers = data;
-              }
-              console.log("\u2705 Loaded ".concat(centers.length, " cost centers"));
-              set({
-                costCenters: centers,
-                costCenterLoaded: true,
-                costCenterError: null
-              });
-              _context2.next = 35;
-              break;
-            case 31:
-              _context2.prev = 31;
-              _context2.t0 = _context2["catch"](4);
-              console.error("❌ Error loading cost centers:", _context2.t0);
-              set({
-                costCenterError: _context2.t0.message,
-                costCenterLoaded: true,
-                costCenters: []
-              });
-            case 35:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2, null, [[4, 31]]);
-      }));
-      function fetchCostCentersOnce() {
-        return _fetchCostCentersOnce.apply(this, arguments);
-      }
-      return fetchCostCentersOnce;
-    }(),
-    // ====================================================================
-    // VIEW TYPE & LOCATION
-    // ====================================================================
-    viewType: "production",
-    selectedLocation: null,
-    selectedPlantCode: null,
-    selectedType: "ALL",
-    setViewType: function setViewType(type) {
-      console.log("🔄 Changing view type to:", type);
-      set({
-        viewType: type
-      });
-    },
-    setSelectedLocation: function setSelectedLocation(location) {
-      console.log("📍 Setting location to:", location);
-      if (!location || location === "All") {
-        console.log("🌍 Setting to ALL plants (group level)");
-        set({
-          selectedLocation: null,
-          selectedPlantCode: null
-        });
-        return;
-      }
-      var plantCode = PLANT_CODE_MAPPING[location];
-      if (!plantCode) {
-        console.warn("\u26A0\uFE0F No plant code mapping found for: \"".concat(location, "\""));
-        console.warn("📋 Available mappings:", Object.keys(PLANT_CODE_MAPPING));
-      } else {
-        console.log("\uD83C\uDFED Mapped \"".concat(location, "\" \u2192 Plant Code: ").concat(plantCode));
-      }
-      set({
-        selectedLocation: location,
-        selectedPlantCode: plantCode || null
-      });
-      console.log("✅ State updated - selectedPlantCode:", plantCode || null);
-    },
-    setSelectedType: function setSelectedType(type) {
-      var _TYPE_MAPPING$type;
-      var TYPE_MAPPING = {
-        Forging: "ALL_FRG",
-        Machining: "ALL_MCH",
-        ALL: null
-      };
-      set({
-        selectedType: (_TYPE_MAPPING$type = TYPE_MAPPING[type]) !== null && _TYPE_MAPPING$type !== void 0 ? _TYPE_MAPPING$type : null
-      });
-    },
-    // ====================================================================
-    // DATE RANGE
-    // ====================================================================
-    currentYear: 2025,
-    monthRange: {
-      from: 1,
-      to: 6
-    },
-    currentPeriodMonth: new Date().getMonth() + 1,
-    loadingProgress: 0,
-    setMonthRange: function setMonthRange(from, to) {
-      console.log("📅 Setting month range:", from, "to", to);
-      set({
-        monthRange: {
-          from: from,
-          to: to
-        }
-      });
-    },
-    setCurrentPeriodMonth: function setCurrentPeriodMonth(month) {
-      console.log("📍 Setting current period month to:", month);
-      set({
-        currentPeriodMonth: month
-      });
-    },
-    // ====================================================================
-    // THEME
-    // ====================================================================
-    selectedTheme: "ocean",
-    setSelectedTheme: function setSelectedTheme(theme) {
-      console.log("🎨 Changing theme to:", theme);
-      set({
-        selectedTheme: theme
-      });
-    },
-    // ====================================================================
-    // API DATA & LOADING
-    // ====================================================================
-    apiData: [],
-    apiLoading: false,
-    apiError: null,
-    // ⭐⭐⭐ TARGET SUPPORT ⭐⭐⭐
-    kpiTargets: {},
-    targetLoading: false,
-    // ====================================================================
-    // ⭐⭐⭐ FIXED: FETCH KPI TARGETS WITH PROPER FIELD READING ⭐⭐⭐
-    // ====================================================================
-    fetchKpiTargets: function () {
-      var _fetchKpiTargets = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _get3, selectedPlantCode, selectedType, viewType, currentYear, monthRange, apiData, prodOrSale, apiType, filters, _apiUrl, _response, _result, currentKpis, targetsData, normalizedTargets, targets, latestTargets, matchedTargets, unmatchedTargets, apiUrl, response, result, _normalizedTargets;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.prev = 0;
-              _get3 = get(), selectedPlantCode = _get3.selectedPlantCode, selectedType = _get3.selectedType, viewType = _get3.viewType, currentYear = _get3.currentYear, monthRange = _get3.monthRange, apiData = _get3.apiData;
-              set({
-                targetLoading: true
-              });
-              console.log("🎯 ========== FETCHING KPI TARGETS ==========");
-              console.log("📊 Current Filters:", {
-                viewType: viewType,
-                selectedType: selectedType,
-                selectedPlantCode: selectedPlantCode,
-                year: currentYear,
-                months: monthRange
-              });
-              prodOrSale = viewType === "production" ? "Production" : "Sale"; // ⭐ TYPE MAPPING
-              apiType = null;
-              if (selectedType && selectedType !== "ALL") {
-                apiType = TYPE_MAPPING[selectedType] || selectedType;
-                console.log("\uD83D\uDD04 Type Mapping: \"".concat(selectedType, "\" \u2192 \"").concat(apiType, "\""));
-              }
+              targetsMap = {};
+              result.data.forEach(function (item) {
+                if (!item.kpi_name) return;
+                var normalizedKpiName = normalizeKpiName(item.kpi_name);
 
-              // ⭐ TRY NEW ENDPOINT FIRST (WITH FILTERS)
-              if (!_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS_FILTERED) {
-                _context3.next = 72;
-                break;
-              }
-              console.log("✅ Using NEW filtered endpoint");
-              filters = {
-                year: currentYear,
-                fromMonth: monthRange.from,
-                toMonth: monthRange.to,
-                prodOrSale: prodOrSale
-              };
-              if (selectedPlantCode) {
-                filters.plantCode = selectedPlantCode;
-                console.log("\uD83D\uDCCD Plant Filter: ".concat(selectedPlantCode));
-              }
-              if (apiType) {
-                filters.type = apiType;
-                console.log("\uD83C\uDFED Type Filter: ".concat(apiType));
-              }
-              _apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS_FILTERED(filters);
-              console.log("🌐 Target API URL:", _apiUrl);
-              console.log("📊 Final Filters:", filters);
-              _context3.prev = 16;
-              _context3.next = 19;
-              return fetch(_apiUrl);
-            case 19:
-              _response = _context3.sent;
-              if (_response.ok) {
-                _context3.next = 22;
-                break;
-              }
-              throw new Error("HTTP ".concat(_response.status, ": ").concat(_response.statusText));
+                // 🔥 cost_value = TARGET
+                if (item.cost_value != null && !isNaN(item.cost_value)) {
+                  targetsMap[normalizedKpiName] = Number(item.cost_value);
+                }
+              });
+              console.log("✅ [KPI Targets] Loaded targets:", targetsMap);
+              set({
+                kpiTargets: targetsMap,
+                targetLoading: false
+              });
+              return _context.abrupt("return", targetsMap);
             case 22:
-              _context3.next = 24;
-              return _response.json();
-            case 24:
-              _result = _context3.sent;
-              console.log("✅ KPI Targets API Response:", _result);
-
-              // Extract current KPI names from graph data
-              currentKpis = new Set();
-              if (apiData && Array.isArray(apiData)) {
-                apiData.forEach(function (item) {
-                  var kpiName = normalizeKpiName(item.kpi_name || item.cost_head || "");
-                  if (kpiName) {
-                    currentKpis.add(kpiName);
-                  }
-                });
-              }
-              console.log("📊 KPIs in current graph:", Array.from(currentKpis));
-
-              // Process response
-              targetsData = null;
-              if (!(_result.status === "success" && Array.isArray(_result.data))) {
-                _context3.next = 35;
-                break;
-              }
-              targetsData = _result.data;
-              console.log("\uD83D\uDCE6 Response Format: Array with ".concat(targetsData.length, " entries"));
-              _context3.next = 47;
-              break;
-            case 35:
-              if (!(_result.status === "success" && _result.targets)) {
-                _context3.next = 46;
-                break;
-              }
-              console.log("📦 Response Format: Object with targets");
-              normalizedTargets = {};
-              Object.entries(_result.targets).forEach(function (_ref3) {
-                var _ref4 = _slicedToArray(_ref3, 2),
-                  key = _ref4[0],
-                  value = _ref4[1];
-                var normalizedKey = normalizeKpiName(key);
-                normalizedTargets[normalizedKey] = parseFloat(value);
-                console.log("  \u2713 ".concat(key, " \u2192 ").concat(normalizedKey, " = \u20B9").concat(value));
-              });
-
-              // Check matching
-              console.log("🔍 Matching with graph data:");
-              Object.keys(normalizedTargets).forEach(function (kpi) {
-                var hasData = currentKpis.has(kpi);
-                console.log("  ".concat(hasData ? "✅" : "⚠️", " ").concat(kpi, ": \u20B9").concat(normalizedTargets[kpi], " ").concat(hasData ? "(HAS DATA)" : "(NO DATA)"));
-              });
-              set({
-                kpiTargets: normalizedTargets,
-                targetLoading: false
-              });
-              console.log("✅ KPI Targets loaded (object format):", normalizedTargets);
-              return _context3.abrupt("return", normalizedTargets);
-            case 46:
-              if (Array.isArray(_result)) {
-                targetsData = _result;
-                console.log("\uD83D\uDCE6 Response Format: Direct array with ".concat(targetsData.length, " entries"));
-              }
-            case 47:
-              if (!(targetsData && Array.isArray(targetsData))) {
-                _context3.next = 65;
-                break;
-              }
-              console.log("\uD83D\uDD04 Processing ".concat(targetsData.length, " target entries..."));
-              targets = {};
-              latestTargets = {};
-              matchedTargets = {};
-              unmatchedTargets = {};
-              targetsData.forEach(function (item, index) {
-                var kpiName = item.kpi_name || item.cost_head || "Other";
-                var normalizedName = normalizeKpiName(kpiName.trim());
-
-                // ⭐⭐⭐ FIXED: Read cost_value FIRST, then fallback to other fields ⭐⭐⭐
-                var targetValue = parseFloat(item.cost_value || item.target_per_ton || item.target_value || 0);
-                var entryDate = new Date(item.cost_date || item.entry_date || item.date || 0);
-                if (index < 5) {
-                  console.log("  [".concat(index, "] ").concat(kpiName, " \u2192 ").concat(normalizedName, " = \u20B9").concat(targetValue));
-                }
-                if (targetValue > 0) {
-                  if (!latestTargets[normalizedName] || entryDate > latestTargets[normalizedName].date) {
-                    latestTargets[normalizedName] = {
-                      value: targetValue,
-                      date: entryDate
-                    };
-                  }
-                }
-              });
-
-              // Extract values and check matching
-              Object.entries(latestTargets).forEach(function (_ref5) {
-                var _ref6 = _slicedToArray(_ref5, 2),
-                  kpi = _ref6[0],
-                  data = _ref6[1];
-                targets[kpi] = data.value;
-                if (currentKpis.has(kpi)) {
-                  matchedTargets[kpi] = data.value;
-                } else {
-                  unmatchedTargets[kpi] = data.value;
-                }
-              });
-              console.log("\n🔍 ========== MATCHING RESULTS ==========");
-              Object.keys(matchedTargets).forEach(function (kpi) {
-                console.log("\u2705 MATCHED: ".concat(kpi, " = \u20B9").concat(matchedTargets[kpi], " (Will show on graph)"));
-              });
-              Object.keys(unmatchedTargets).forEach(function (kpi) {
-                console.log("\u26A0\uFE0F UNMATCHED: ".concat(kpi, " = \u20B9").concat(unmatchedTargets[kpi], " (No graph data)"));
-              });
-              console.log("\n📊 ========== SUMMARY ==========");
-              console.log("Total Targets: ".concat(Object.keys(targets).length));
-              console.log("Matched (will show): ".concat(Object.keys(matchedTargets).length));
-              console.log("Unmatched: ".concat(Object.keys(unmatchedTargets).length));
-              set({
-                kpiTargets: targets,
-                targetLoading: false
-              });
-              console.log("✅ Final Processed Targets:", targets);
-              return _context3.abrupt("return", targets);
-            case 65:
-              console.warn("⚠️ No valid target data in new API response");
-              _context3.next = 72;
-              break;
-            case 68:
-              _context3.prev = 68;
-              _context3.t0 = _context3["catch"](16);
-              console.warn("⚠️ New API failed:", _context3.t0.message);
-              console.log("⚠️ Falling back to old endpoint...");
-            case 72:
-              // ⭐ FALLBACK TO OLD ENDPOINT
-              console.log("⚠️ Using OLD endpoint as fallback");
-              if (_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS) {
-                _context3.next = 77;
-                break;
-              }
-              console.warn("❌ No KPI_TARGETS endpoint configured");
-              set({
-                targetLoading: false,
-                kpiTargets: {}
-              });
-              return _context3.abrupt("return", null);
-            case 77:
-              apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.KPI_TARGETS + "?latest_only=true";
-              if (selectedPlantCode) {
-                apiUrl += "&plant_code=".concat(selectedPlantCode);
-              } else {
-                apiUrl += "&plant_code=0";
-              }
-              if (apiType) {
-                apiUrl += "&type=".concat(apiType);
-              } else if (selectedType && selectedType !== "ALL") {
-                apiUrl += "&type=".concat(selectedType);
-              } else {
-                apiUrl += "&type=ALL";
-              }
-              apiUrl += "&prod_or_sale=".concat(prodOrSale);
-              console.log("🎯 Old API URL:", apiUrl);
-              _context3.next = 84;
-              return fetch(apiUrl);
-            case 84:
-              response = _context3.sent;
-              _context3.next = 87;
-              return response.json();
-            case 87:
-              result = _context3.sent;
-              if (!(result.status === "success" && result.targets)) {
-                _context3.next = 96;
-                break;
-              }
-              _normalizedTargets = {};
-              Object.entries(result.targets).forEach(function (_ref7) {
-                var _ref8 = _slicedToArray(_ref7, 2),
-                  key = _ref8[0],
-                  value = _ref8[1];
-                var normalizedKey = normalizeKpiName(key);
-                _normalizedTargets[normalizedKey] = parseFloat(value);
-                console.log("  \u2713 ".concat(key, " \u2192 ").concat(normalizedKey, " = \u20B9").concat(value));
-              });
-              console.log("✅ Targets from old API:", _normalizedTargets);
-              set({
-                kpiTargets: _normalizedTargets,
-                targetLoading: false
-              });
-              return _context3.abrupt("return", _normalizedTargets);
-            case 96:
-              console.warn("⚠️ No targets from old API");
+              console.warn("⚠️ No KPI target data found");
               set({
                 kpiTargets: {},
                 targetLoading: false
               });
-              return _context3.abrupt("return", null);
-            case 99:
-              _context3.next = 106;
-              break;
-            case 101:
-              _context3.prev = 101;
-              _context3.t1 = _context3["catch"](0);
-              console.error("❌ Error fetching KPI targets:", _context3.t1);
+              return _context.abrupt("return", null);
+            case 27:
+              _context.prev = 27;
+              _context.t0 = _context["catch"](0);
+              console.error("❌ Error fetching KPI targets:", _context.t0);
               set({
                 targetLoading: false,
                 kpiTargets: {}
               });
-              return _context3.abrupt("return", null);
-            case 106:
+              return _context.abrupt("return", null);
+            case 32:
             case "end":
-              return _context3.stop();
+              return _context.stop();
           }
-        }, _callee3, null, [[0, 101], [16, 68]]);
+        }, _callee, null, [[0, 27]]);
       }));
       function fetchKpiTargets() {
         return _fetchKpiTargets.apply(this, arguments);
@@ -37663,74 +38140,110 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
       return fetchKpiTargets;
     }(),
     // ====================================================================
-    // FETCH COST DATA (UPDATED WITH NEW API LOGIC)
+    // 🔥🔥🔥 UPDATED FETCH COST DATA WITH DEFAULT API SUPPORT 🔥🔥🔥
     // ====================================================================
     fetchCostData: function () {
-      var _fetchCostData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(fromMonth, toMonth, year, viewType) {
-        var _get4, selectedLocation, selectedPlantCode, selectedType, cacheKey, cachedData, fromMonthName, toMonthName, apiUrl, timeoutId, progressInterval, response, result, data;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
+      var _fetchCostData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(fromMonth, fromYear, toMonth, toYear, viewType) {
+        var useDefaultApi,
+          dayRange,
+          _get5,
+          selectedLocation,
+          selectedPlantCode,
+          selectedType,
+          _get6,
+          viewMode,
+          cacheKey,
+          cachedData,
+          apiUrl,
+          from,
+          to,
+          _formatDate,
+          fromDate,
+          toDate,
+          timeoutId,
+          progressInterval,
+          response,
+          result,
+          data,
+          finalData,
+          _args2 = arguments;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
+              useDefaultApi = _args2.length > 5 && _args2[5] !== undefined ? _args2[5] : false;
+              dayRange = _args2.length > 6 && _args2[6] !== undefined ? _args2[6] : null;
               if (currentAbortController) {
                 console.log("⚠️ Aborting previous request...");
                 currentAbortController.abort();
               }
               currentAbortController = new AbortController();
-              _context4.prev = 2;
-              _get4 = get(), selectedLocation = _get4.selectedLocation, selectedPlantCode = _get4.selectedPlantCode, selectedType = _get4.selectedType;
-              cacheKey = cacheManager.generateKey(viewType, selectedLocation || "All Plants", fromMonth, toMonth, year); // ⭐⭐⭐ CACHE HIT SECTION - FIXED ⭐⭐⭐
+              _context2.prev = 4;
+              _get5 = get(), selectedLocation = _get5.selectedLocation, selectedPlantCode = _get5.selectedPlantCode, selectedType = _get5.selectedType; // 🔥 Generate cache key with useDefaultApi flag
+              _get6 = get(), viewMode = _get6.viewMode;
+              cacheKey = cacheManager.generateKey(viewType, viewMode, selectedLocation || "All Plants", fromMonth, fromYear, toMonth, toYear, useDefaultApi); // ⭐⭐⭐ CACHE HIT SECTION ⭐⭐⭐
               cachedData = cacheManager.get(cacheKey);
               if (!cachedData) {
-                _context4.next = 13;
+                _context2.next = 17;
                 break;
               }
               console.log("✅ Using cached data");
-
-              // ⭐ Don't try to extract targets from cost data cache
               set({
                 apiData: cachedData,
                 apiLoading: false
               });
 
-              // ⭐ Fetch targets separately with await
-              _context4.next = 11;
+              // 🔥 Target sirf MONTH view ke liye
+              if (!(get().viewMode !== "day")) {
+                _context2.next = 15;
+                break;
+              }
+              _context2.next = 15;
               return get().fetchKpiTargets();
-            case 11:
+            case 15:
               console.log("✅ Cached data loaded, targets fetched separately");
-              return _context4.abrupt("return");
-            case 13:
+              return _context2.abrupt("return");
+            case 17:
               set({
                 apiLoading: true,
                 apiError: null,
                 loadingProgress: 10
               });
-              fromMonthName = (0,_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.getMonthNameForApi)(fromMonth);
-              toMonthName = (0,_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.getMonthNameForApi)(toMonth);
-              // ⭐⭐⭐ NEW API LOGIC WITH 3 CASES ⭐⭐⭐
-              if (viewType === "production") {
-                // ✅ CASE 1: Plant selected → PLANT API
-                if (selectedPlantCode) {
-                  apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_PLANTWISE_CUSTOM(selectedPlantCode, year, fromMonth, toMonth);
-                  console.log("🏭 Using PLANT API for:", selectedPlantCode);
-                }
-                // ✅ CASE 2: Type selected (Forging / Machining)
-                else if (selectedType) {
-                  apiUrl = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_COST, "?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName, "&type=").concat(selectedType);
-                  console.log("🏭 Using TYPE API for:", selectedType);
-                }
-                // ✅ CASE 3: ALL
-                else {
-                  apiUrl = _utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.PROD_COST_CUSTOM(year, fromMonth, toMonth);
-                  console.log("🏭 Using ALL API");
+              // 🔥🔥🔥 NEW LOGIC: Use default base API or custom API 🔥🔥🔥
+              if (useDefaultApi) {
+                // 🔥 DEFAULT APIs
+                if (viewMode === "day") {
+                  // ✅ PLANT SELECTED
+                  if (selectedPlantCode) {
+                    apiUrl = "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=day&plantcode=").concat(selectedPlantCode, "&range=mtd");
+                    console.log("📆 DAY DEFAULT PLANT API (MTD)");
+                  }
+                  // ✅ GROUP LEVEL
+                  else {
+                    apiUrl = "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&range=mtd");
+                    console.log("📆 DAY DEFAULT GROUP API (MTD)");
+                  }
+                } else {
+                  apiUrl = "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month");
+                  console.log("📅 MONTH DEFAULT API");
                 }
               } else {
-                // Sale view logic (unchanged)
-                apiUrl = "".concat(_utils_apiConfig__WEBPACK_IMPORTED_MODULE_0__.API_ENDPOINTS.SALE_COST, "?view=month&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
-                if (selectedPlantCode) {
-                  apiUrl += "&plant_code=".concat(selectedPlantCode);
+                // 🔥 CUSTOM RANGE
+                from = "".concat(fromYear, "-").concat(String(fromMonth).padStart(2, "0"));
+                to = "".concat(toYear, "-").concat(String(toMonth).padStart(2, "0"));
+                if (viewMode === "day" && !useDefaultApi && dayRange !== null && dayRange !== void 0 && dayRange.fromDay && dayRange !== null && dayRange !== void 0 && dayRange.toDay) {
+                  _formatDate = function _formatDate(y, m, d) {
+                    return "".concat(y, "-").concat(String(m).padStart(2, "0"), "-").concat(String(d).padStart(2, "0"));
+                  };
+                  fromDate = _formatDate(fromYear, fromMonth, dayRange.fromDay);
+                  toDate = _formatDate(toYear, toMonth, dayRange.toDay);
+                  apiUrl = selectedPlantCode ? "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=day&plantcode=").concat(selectedPlantCode, "&from_date=").concat(fromDate, "&to_date=").concat(toDate) : "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&from_date=").concat(fromDate, "&to_date=").concat(toDate);
+                  console.log("📆 DAY CUSTOM DATE API");
+                } else {
+                  apiUrl = selectedPlantCode ? "".concat(API_BASE_URL, "/internal/frg_plt_prod_cpt?view=month&plantcode=").concat(selectedPlantCode, "&from_month=").concat(from, "&to_month=").concat(to) : "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=month&from_month=").concat(from, "&to_month=").concat(to);
+                  console.log("📅 MONTH CUSTOM API");
                 }
               }
-              console.log("\uD83D\uDCE1 [".concat(viewType.toUpperCase(), "] Fetching API:"), apiUrl);
+              console.log("\uD83D\uDCE1 [".concat(String(viewType || "").toUpperCase(), "] Fetching API:"), apiUrl);
               set({
                 loadingProgress: 30
               });
@@ -37747,117 +38260,122 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
                   };
                 });
               }, 500);
-              _context4.next = 23;
+              _context2.next = 25;
               return fetch(apiUrl, {
                 signal: currentAbortController.signal
               });
-            case 23:
-              response = _context4.sent;
+            case 25:
+              response = _context2.sent;
               clearTimeout(timeoutId);
               clearInterval(progressInterval);
               set({
                 loadingProgress: 95
               });
               if (response.ok) {
-                _context4.next = 29;
+                _context2.next = 31;
                 break;
               }
               throw new Error("HTTP ".concat(response.status, ": ").concat(response.statusText));
-            case 29:
-              _context4.next = 31;
-              return response.json();
             case 31:
-              result = _context4.sent;
+              _context2.next = 33;
+              return response.json();
+            case 33:
+              result = _context2.sent;
               console.log("✅ API Response received:", result);
 
-              // ⭐⭐⭐ FRESH API SUCCESS SECTION - FIXED ⭐⭐⭐
+              // ⭐⭐⭐ SUCCESS SECTION ⭐⭐⭐
               if (!(result.status === "success")) {
-                _context4.next = 43;
+                _context2.next = 47;
                 break;
               }
               data = result.data;
-              cacheManager.set(cacheKey, data);
-              console.log("\u2705 [".concat(viewType.toUpperCase(), "] Loaded ").concat(data.length, " records"));
-
-              // ⭐ Don't try to extract targets from cost data
+              finalData = viewMode === "day" ? data.map(function (item) {
+                var _item$tran_date;
+                return _objectSpread(_objectSpread({}, item), {}, {
+                  date: (_item$tran_date = item.tran_date) === null || _item$tran_date === void 0 ? void 0 : _item$tran_date.split(" ")[0],
+                  // YYYY-MM-DD
+                  cost_head: normalizeKpiName(item.cost_head),
+                  total_amount: Number(item.total_amount || 0)
+                });
+              }) : data;
+              cacheManager.set(cacheKey, finalData);
+              console.log("\u2705 [".concat(String(viewType || "").toUpperCase(), "] Loaded ").concat(data.length, " records"));
               set({
-                apiData: data,
+                apiData: finalData,
                 apiLoading: false,
                 loadingProgress: 100,
-                monthRange: {
-                  from: fromMonth,
-                  to: toMonth
-                },
                 apiError: null
               });
 
-              // ⭐ Fetch targets separately with await
-              _context4.next = 40;
+              // 🔥 Target sirf MONTH view ke liye
+              if (!(get().viewMode !== "day")) {
+                _context2.next = 44;
+                break;
+              }
+              _context2.next = 44;
               return get().fetchKpiTargets();
-            case 40:
+            case 44:
               console.log("✅ Fresh data loaded, targets fetched");
-              _context4.next = 53;
+              _context2.next = 58;
               break;
-            case 43:
+            case 47:
               if (!Array.isArray(result)) {
-                _context4.next = 52;
+                _context2.next = 57;
                 break;
               }
               cacheManager.set(cacheKey, result);
-              console.log("\u2705 [".concat(viewType.toUpperCase(), "] Loaded ").concat(result.length, " records"));
-
-              // ⭐ Don't try to extract targets from cost data
+              console.log("\u2705 [".concat(String(viewType || "").toUpperCase(), "] Loaded ").concat(result.length, " records"));
               set({
                 apiData: result,
                 apiLoading: false,
                 loadingProgress: 100,
-                monthRange: {
-                  from: fromMonth,
-                  to: toMonth
-                },
                 apiError: null
               });
 
-              // ⭐ Fetch targets separately with await
-              _context4.next = 49;
+              // 🔥 Target sirf MONTH view ke liye
+              if (!(get().viewMode !== "day")) {
+                _context2.next = 54;
+                break;
+              }
+              _context2.next = 54;
               return get().fetchKpiTargets();
-            case 49:
+            case 54:
               console.log("✅ Array data loaded, targets fetched");
-              _context4.next = 53;
+              _context2.next = 58;
               break;
-            case 52:
+            case 57:
               throw new Error(result.message || "Invalid API response format");
-            case 53:
-              _context4.next = 62;
+            case 58:
+              _context2.next = 67;
               break;
-            case 55:
-              _context4.prev = 55;
-              _context4.t0 = _context4["catch"](2);
-              if (!(_context4.t0.name === "AbortError")) {
-                _context4.next = 60;
+            case 60:
+              _context2.prev = 60;
+              _context2.t0 = _context2["catch"](4);
+              if (!(_context2.t0.name === "AbortError")) {
+                _context2.next = 65;
                 break;
               }
               console.log("⚠️ Request was cancelled");
-              return _context4.abrupt("return");
-            case 60:
-              console.error("❌ API Error:", _context4.t0.message, _context4.t0);
+              return _context2.abrupt("return");
+            case 65:
+              console.error("❌ API Error:", _context2.t0.message, _context2.t0);
               set({
-                apiError: _context4.t0.message || "Network error occurred",
+                apiError: _context2.t0.message || "Network error occurred",
                 apiLoading: false,
                 loadingProgress: 0,
                 kpiTargets: {}
               });
-            case 62:
-              _context4.prev = 62;
+            case 67:
+              _context2.prev = 67;
               currentAbortController = null;
-              return _context4.finish(62);
-            case 65:
+              return _context2.finish(67);
+            case 70:
             case "end":
-              return _context4.stop();
+              return _context2.stop();
           }
-        }, _callee4, null, [[2, 55, 62, 65]]);
+        }, _callee2, null, [[4, 60, 67, 70]]);
       }));
-      function fetchCostData(_x2, _x3, _x4, _x5) {
+      function fetchCostData(_x2, _x3, _x4, _x5, _x6) {
         return _fetchCostData.apply(this, arguments);
       }
       return fetchCostData;
@@ -37887,37 +38405,54 @@ var useCostStore = (0,zustand__WEBPACK_IMPORTED_MODULE_1__.create)((0,zustand_mi
     },
     setCurrentMonth: function setCurrentMonth() {
       var month = new Date().getMonth() + 1;
+      var year = new Date().getFullYear();
       set({
         monthRange: {
-          from: month,
-          to: month
+          fromMonth: month,
+          fromYear: year,
+          toMonth: month,
+          toYear: year
         },
         currentPeriodMonth: month
       });
       return month;
     },
+    setCurrentPeriodMonth: function setCurrentPeriodMonth(month) {
+      set({
+        currentPeriodMonth: month
+      });
+    },
     setLast12Months: function setLast12Months() {
-      var currentMonth = new Date().getMonth() + 1;
-      var from = Math.max(1, currentMonth - 11);
+      var now = new Date();
+      var currentMonth = now.getMonth() + 1;
+      var currentYear = now.getFullYear();
+      var fromMonth = currentMonth === 12 ? 1 : currentMonth;
+      var fromYear = currentMonth === 12 ? currentYear : currentYear - 1;
       set({
         monthRange: {
-          from: from,
-          to: currentMonth
+          fromMonth: fromMonth,
+          fromYear: fromYear,
+          toMonth: currentMonth,
+          toYear: currentYear
         },
         currentPeriodMonth: currentMonth
       });
       return {
-        from: from,
-        to: currentMonth
+        fromMonth: fromMonth,
+        fromYear: fromYear,
+        toMonth: currentMonth,
+        toYear: currentYear
       };
     },
     setFullYear: function setFullYear() {
+      var year = new Date().getFullYear();
       set({
         monthRange: {
-          from: 1,
-          to: 12
-        },
-        currentPeriodMonth: 12
+          fromMonth: 1,
+          fromYear: year,
+          toMonth: 12,
+          toYear: year
+        }
       });
       return {
         from: 1,
@@ -38023,6 +38558,7 @@ var API_ENDPOINTS = {
 
   // Default KPI Targets (month view)
   KPI_TARGETS: "".concat(API_BASE_URL, "/internal/cost_kpi_entry?view=month"),
+  // https://ktflceprd.kalyanicorp.com//internal/cost_kpi_entry?view=month&prod_or_sale=Production&plant_code=NULL
   // Filtered KPI Targets with parameters
   KPI_TARGETS_FILTERED: function KPI_TARGETS_FILTERED() {
     var filters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -38067,11 +38603,17 @@ var API_ENDPOINTS = {
   },
   // Day View - Default
   PROD_COST_DAY: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day"),
+  // 🔥 Day View - Default (Current Month - MTD)
+  PROD_COST_DAY_MTD: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&range=mtd"),
   // Day View - Custom Range
   PROD_COST_DAY_CUSTOM: function PROD_COST_DAY_CUSTOM(year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
     var toMonthName = getMonthNameForApi(toMonth);
     return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&year=").concat(year, "&from_month=").concat(fromMonthName, "&to_month=").concat(toMonthName);
+  },
+  // 🔥 Day View - Custom DATE range (YYYY-MM-DD)
+  PROD_COST_DAY_DATE_RANGE: function PROD_COST_DAY_DATE_RANGE(fromDate, toDate) {
+    return "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=day&from_date=").concat(fromDate, "&to_date=").concat(toDate);
   },
   // Year View - Default (Current year)
   PROD_COST_YEAR: "".concat(API_BASE_URL, "/internal/frg_grp_prod_cpt?view=year"),
@@ -38142,6 +38684,8 @@ var API_ENDPOINTS = {
   },
   // Day View - Default
   SALE_COST_DAY: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=day"),
+  // 🔥 Day View - Default (Current Month - MTD)
+  SALE_COST_DAY_MTD: "".concat(API_BASE_URL, "/internal/frg_grp_sale_cpt?view=day&range=mtd"),
   // Day View - Custom Range
   SALE_COST_DAY_CUSTOM: function SALE_COST_DAY_CUSTOM(year, fromMonth, toMonth) {
     var fromMonthName = getMonthNameForApi(fromMonth);
@@ -55957,6 +56501,7 @@ const persistImpl = (config, baseOptions) => (set, get, api) => {
     ...baseOptions
   };
   let hasHydrated = false;
+  let hydrationVersion = 0;
   const hydrationListeners = /* @__PURE__ */ new Set();
   const finishHydrationListeners = /* @__PURE__ */ new Set();
   let storage = options.storage;
@@ -55997,6 +56542,7 @@ const persistImpl = (config, baseOptions) => (set, get, api) => {
   const hydrate = () => {
     var _a, _b;
     if (!storage) return;
+    const currentVersion = ++hydrationVersion;
     hasHydrated = false;
     hydrationListeners.forEach((cb) => {
       var _a2;
@@ -56026,6 +56572,9 @@ const persistImpl = (config, baseOptions) => (set, get, api) => {
       return [false, void 0];
     }).then((migrationResult) => {
       var _a2;
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
       const [migrated, migratedState] = migrationResult;
       stateFromStorage = options.merge(
         migratedState,
@@ -56036,11 +56585,17 @@ const persistImpl = (config, baseOptions) => (set, get, api) => {
         return setItem();
       }
     }).then(() => {
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
       postRehydrationCallback == null ? void 0 : postRehydrationCallback(stateFromStorage, void 0);
       stateFromStorage = get();
       hasHydrated = true;
       finishHydrationListeners.forEach((cb) => cb(stateFromStorage));
     }).catch((e) => {
+      if (currentVersion !== hydrationVersion) {
+        return;
+      }
       postRehydrationCallback == null ? void 0 : postRehydrationCallback(void 0, e);
     });
   };
@@ -56287,4 +56842,4 @@ cs_web_components_base__WEBPACK_IMPORTED_MODULE_0__.Registry.registerReducer((0,
 /******/ })()
 ;
 });
-//# sourceMappingURL=kalyani-iot-costing.dev.1cd941947b0b0668ac8b.js.map
+//# sourceMappingURL=kalyani-iot-costing.dev.9fa1affddbe7f6240679.js.map
