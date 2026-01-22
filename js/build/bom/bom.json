@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.4",
   "version": 1,
-  "serialNumber": "urn:uuid:615fef62-1559-4f7b-ae91-4ff749d1a2a2",
+  "serialNumber": "urn:uuid:3a9aa199-2489-46df-96c1-2df8fb9872d3",
   "metadata": {
-    "timestamp": "2026-01-13T03:35:14.255Z",
+    "timestamp": "2026-01-21T03:24:02.791Z",
     "tools": [
       {
         "vendor": "@cyclonedx",
@@ -103,39 +103,6 @@
     },
     {
       "type": "library",
-      "name": "lucide-react",
-      "version": "0.555.0",
-      "bom-ref": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react",
-      "author": "Eric Fennis",
-      "description": "A Lucide icon library package for React applications.",
-      "licenses": [
-        {
-          "license": {
-            "id": "ISC"
-          }
-        }
-      ],
-      "purl": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/lucide-icons/lucide.git#packages/lucide-react",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
-        },
-        {
-          "url": "https://lucide.dev",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/lucide-icons/lucide/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "css-loader",
       "version": "6.7.3",
       "bom-ref": "pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git",
@@ -162,6 +129,39 @@
         },
         {
           "url": "https://github.com/webpack-contrib/css-loader/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lucide-react",
+      "version": "0.555.0",
+      "bom-ref": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react",
+      "author": "Eric Fennis",
+      "description": "A Lucide icon library package for React applications.",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/lucide-icons/lucide.git#packages/lucide-react",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://lucide.dev",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/lucide-icons/lucide/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -463,40 +463,6 @@
     },
     {
       "type": "library",
-      "name": "toolkit",
-      "group": "@reduxjs",
-      "version": "2.11.2",
-      "bom-ref": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
-      "author": "Mark Erikson",
-      "description": "The official, opinionated, batteries-included toolset for efficient Redux development",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "purl": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/reduxjs/redux-toolkit.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://redux-toolkit.js.org",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/reduxjs/redux-toolkit/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "react-is",
       "version": "16.13.1",
       "bom-ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is",
@@ -562,11 +528,12 @@
     },
     {
       "type": "library",
-      "name": "eventemitter3",
-      "version": "5.0.1",
-      "bom-ref": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git",
-      "author": "Arnout Kazemier",
-      "description": "EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.",
+      "name": "toolkit",
+      "group": "@reduxjs",
+      "version": "2.11.2",
+      "bom-ref": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
+      "author": "Mark Erikson",
+      "description": "The official, opinionated, batteries-included toolset for efficient Redux development",
       "licenses": [
         {
           "license": {
@@ -574,20 +541,20 @@
           }
         }
       ],
-      "purl": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git",
+      "purl": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
       "externalReferences": [
         {
-          "url": "git://github.com/primus/eventemitter3.git",
+          "url": "git+https://github.com/reduxjs/redux-toolkit.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "https://github.com/primus/eventemitter3#readme",
+          "url": "https://redux-toolkit.js.org",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/primus/eventemitter3/issues",
+          "url": "https://github.com/reduxjs/redux-toolkit/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -661,6 +628,39 @@
     },
     {
       "type": "library",
+      "name": "eventemitter3",
+      "version": "5.0.1",
+      "bom-ref": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git",
+      "author": "Arnout Kazemier",
+      "description": "EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git",
+      "externalReferences": [
+        {
+          "url": "git://github.com/primus/eventemitter3.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/primus/eventemitter3#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/primus/eventemitter3/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "immer",
       "version": "11.1.3",
       "bom-ref": "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git",
@@ -687,6 +687,38 @@
         },
         {
           "url": "https://github.com/immerjs/immer/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "redux",
+      "version": "5.0.1",
+      "bom-ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
+      "description": "Predictable state container for JavaScript apps",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/reduxjs/redux.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "http://redux.js.org",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/reduxjs/redux/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -727,31 +759,32 @@
     },
     {
       "type": "library",
-      "name": "redux",
-      "version": "5.0.1",
-      "bom-ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
-      "description": "Predictable state container for JavaScript apps",
+      "name": "d3-format",
+      "version": "3.1.0",
+      "bom-ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+      "author": "Mike Bostock",
+      "description": "Format numbers for human consumption.",
       "licenses": [
         {
           "license": {
-            "id": "MIT"
+            "id": "ISC"
           }
         }
       ],
-      "purl": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
+      "purl": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
       "externalReferences": [
         {
-          "url": "git+https://github.com/reduxjs/redux.git",
+          "url": "git+https://github.com/d3/d3-format.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "http://redux.js.org",
+          "url": "https://d3js.org/d3-format/",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/reduxjs/redux/issues",
+          "url": "https://github.com/d3/d3-format/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -825,39 +858,6 @@
     },
     {
       "type": "library",
-      "name": "d3-interpolate",
-      "version": "3.0.1",
-      "bom-ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
-      "author": "Mike Bostock",
-      "description": "Interpolate numbers, colors, strings, arrays, objects, whatever!",
-      "licenses": [
-        {
-          "license": {
-            "id": "ISC"
-          }
-        }
-      ],
-      "purl": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/d3/d3-interpolate.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://d3js.org/d3-interpolate/",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/d3/d3-interpolate/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "d3-array",
       "version": "3.2.4",
       "bom-ref": "pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git",
@@ -891,11 +891,11 @@
     },
     {
       "type": "library",
-      "name": "d3-format",
-      "version": "3.1.0",
-      "bom-ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "bom-ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
       "author": "Mike Bostock",
-      "description": "Format numbers for human consumption.",
+      "description": "Interpolate numbers, colors, strings, arrays, objects, whatever!",
       "licenses": [
         {
           "license": {
@@ -903,20 +903,20 @@
           }
         }
       ],
-      "purl": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git",
+      "purl": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
       "externalReferences": [
         {
-          "url": "git+https://github.com/d3/d3-format.git",
+          "url": "git+https://github.com/d3/d3-interpolate.git",
           "type": "vcs",
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "https://d3js.org/d3-format/",
+          "url": "https://d3js.org/d3-interpolate/",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/d3/d3-format/issues",
+          "url": "https://github.com/d3/d3-interpolate/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -1023,39 +1023,6 @@
     },
     {
       "type": "library",
-      "name": "base64-js",
-      "version": "1.5.1",
-      "bom-ref": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
-      "author": "T. Jameson Little",
-      "description": "Base64 encoding/decoding in pure JS",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
-      "purl": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
-      "externalReferences": [
-        {
-          "url": "git://github.com/beatgammit/base64-js.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/beatgammit/base64-js",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/beatgammit/base64-js/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "ieee754",
       "version": "1.2.1",
       "bom-ref": "pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git",
@@ -1082,6 +1049,39 @@
         },
         {
           "url": "https://github.com/feross/ieee754/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "base64-js",
+      "version": "1.5.1",
+      "bom-ref": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
+      "author": "T. Jameson Little",
+      "description": "Base64 encoding/decoding in pure JS",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git",
+      "externalReferences": [
+        {
+          "url": "git://github.com/beatgammit/base64-js.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/beatgammit/base64-js",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/beatgammit/base64-js/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         }
@@ -1136,10 +1136,10 @@
       "ref": "pkg:npm/style-loader@3.3.2?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/style-loader.git"
     },
     {
-      "ref": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react"
+      "ref": "pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git"
     },
     {
-      "ref": "pkg:npm/css-loader@6.7.3?vcs_url=git%2Bhttps%3A//github.com/webpack-contrib/css-loader.git"
+      "ref": "pkg:npm/lucide-react@0.555.0?vcs_url=git%2Bhttps%3A//github.com/lucide-icons/lucide.git#packages/lucide-react"
     },
     {
       "ref": "pkg:npm/zustand@5.0.10?vcs_url=git%2Bhttps%3A//github.com/pmndrs/zustand.git"
@@ -1191,15 +1191,6 @@
       "ref": "pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git"
     },
     {
-      "ref": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
-      "dependsOn": [
-        "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
-        "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git",
-        "pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git",
-        "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"
-      ]
-    },
-    {
       "ref": "pkg:npm/react-is@16.13.1?vcs_url=git%2Bhttps%3A//github.com/facebook/react.git#packages/react-is"
     },
     {
@@ -1209,7 +1200,13 @@
       ]
     },
     {
-      "ref": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"
+      "ref": "pkg:npm/%40reduxjs/toolkit@2.11.2?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-toolkit.git",
+      "dependsOn": [
+        "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git",
+        "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git",
+        "pkg:npm/reselect@5.1.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/reselect.git",
+        "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"
+      ]
     },
     {
       "ref": "pkg:npm/d3-shape@3.2.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-shape.git",
@@ -1229,13 +1226,19 @@
       ]
     },
     {
+      "ref": "pkg:npm/eventemitter3@5.0.1?vcs_url=git%3A//github.com/primus/eventemitter3.git"
+    },
+    {
       "ref": "pkg:npm/immer@11.1.3?vcs_url=git%2Bhttps%3A//github.com/immerjs/immer.git"
+    },
+    {
+      "ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"
     },
     {
       "ref": "pkg:npm/redux-thunk@3.1.0?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux-thunk.git"
     },
     {
-      "ref": "pkg:npm/redux@5.0.1?vcs_url=git%2Bhttps%3A//github.com/reduxjs/redux.git"
+      "ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"
     },
     {
       "ref": "pkg:npm/d3-time@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-time.git",
@@ -1250,19 +1253,16 @@
       ]
     },
     {
-      "ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
-      "dependsOn": [
-        "pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"
-      ]
-    },
-    {
       "ref": "pkg:npm/d3-array@3.2.4?vcs_url=git%2Bhttps%3A//github.com/d3/d3-array.git",
       "dependsOn": [
         "pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"
       ]
     },
     {
-      "ref": "pkg:npm/d3-format@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-format.git"
+      "ref": "pkg:npm/d3-interpolate@3.0.1?vcs_url=git%2Bhttps%3A//github.com/d3/d3-interpolate.git",
+      "dependsOn": [
+        "pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"
+      ]
     },
     {
       "ref": "pkg:npm/buffer@5.7.1?vcs_url=git%3A//github.com/feross/buffer.git",
@@ -1278,10 +1278,10 @@
       "ref": "pkg:npm/internmap@2.0.3?vcs_url=git%2Bhttps%3A//github.com/mbostock/internmap.git"
     },
     {
-      "ref": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"
+      "ref": "pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"
     },
     {
-      "ref": "pkg:npm/ieee754@1.2.1?vcs_url=git%3A//github.com/feross/ieee754.git"
+      "ref": "pkg:npm/base64-js@1.5.1?vcs_url=git%3A//github.com/beatgammit/base64-js.git"
     },
     {
       "ref": "pkg:npm/d3-color@3.1.0?vcs_url=git%2Bhttps%3A//github.com/d3/d3-color.git"

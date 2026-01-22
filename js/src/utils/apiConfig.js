@@ -35,13 +35,14 @@ export const API_BASE_URL = getApiBaseUrl();
 /**
  * Convert month number (1-12) to API format (Jan, Feb, etc.)
  */
-export const getMonthNameForApi = (monthNum) => {
-  const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ];
-  return months[monthNum - 1] || "Jan";
+export const getMonthForApi = (monthNum) => {
+  return String(monthNum).padStart(2, "0");   // 8 -> "08"
 };
+
+export const getYearMonthForApi = (year, monthNum) => {
+  return `${year}-${getMonthForApi(monthNum)}`; // 2025,8 -> "2025-08"
+};
+
 
 // ============================================================================
 // ⭐⭐⭐ COMPLETE API ENDPOINTS ⭐⭐⭐
@@ -106,11 +107,13 @@ export const API_ENDPOINTS = {
   PROD_COST_DEFAULT: `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=month`,
 
   // Month View - Custom Range
-  PROD_COST_CUSTOM: (year, fromMonth, toMonth) => {
-    const fromMonthName = getMonthNameForApi(fromMonth);
-    const toMonthName = getMonthNameForApi(toMonth);
-    return `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=month&year=${year}&from_month=${fromMonthName}&to_month=${toMonthName}`;
-  },
+PROD_COST_CUSTOM: (fromYear, fromMonth, toYear, toMonth) => {
+  const from = getYearMonthForApi(fromYear, fromMonth);
+  const to = getYearMonthForApi(toYear, toMonth);
+
+  return `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=month&from_month=${from}&to_month=${to}`;
+},
+
 
   // Day View - Default
   PROD_COST_DAY: `${API_BASE_URL}/internal/frg_grp_prod_cpt?view=day`,

@@ -11,10 +11,98 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ArrowLeft,
+  Building2,
 } from "lucide-react";
 
 import { getAuthHeadersWithCSRF } from "../utils/authFetch";
-import { API_ENDPOINTS, API_BASE_URL } from "../utils/apiConfig"; // ✅ IMPORT API CONFIG
+import { API_ENDPOINTS, API_BASE_URL } from "../utils/apiConfig";
+
+// ✅ PLANT CODE MAPPING
+const PLANT_CODE_MAPPING = {
+  // Full Names
+  Mundhwa: "2001",
+  "Ranjangaon E-84": "2002",
+  "Transmission Ranjangaon": "2101",
+  "Transmission Baramati": "2102",
+  Chakan: "2020",
+  "Khed-1": "2021",
+  "Khed-2": "2027",
+  "Ambethan-1": "2022",
+  "Ambethan-2": "2023",
+  "Ambethan-3": "2028",
+  "Baramati KTFL": "2024",
+  Bhiwadi: "2025",
+  Gujarat: "2026",
+  "Heat Treatment": "2081",
+  "Inmet Jejuri": "2201",
+  "Yokoha Jejuri": "2301",
+
+  // Short Codes
+  MDWA: "2001",
+  RNGN: "2002",
+  KTPL: "2101",
+  BRFT: "2102",
+  CHKN: "2020",
+  KHD: "2021",
+  KHD2: "2027",
+  AMBT: "2022",
+  CHGR: "2023",
+  "AMBT-3": "2028",
+  BRM2: "2024",
+  BHWD: "2025",
+  GUJR: "2026",
+  HTRN: "2081",
+  MIMJ: "2201",
+  YOKOHA: "2301",
+
+  // Alternative variations
+  Ranjangaon: "2002",
+  "Ranjangaon-2": "2101",
+  RGN: "2002",
+  "RGN-2": "2101",
+  MUN: "2001",
+  CHK: "2020",
+  Khed: "2021",
+  Baramati: "2024",
+  BRM: "2024",
+  BWD: "2025",
+  GUT: "2026",
+  "Ambhethan-1": "2022",
+  "Ambhethan-2": "2023",
+  "Ambhethan-3": "2028",
+};
+
+// ✅ Reverse mapping: plant_code -> plant_name
+const PLANT_NAME_BY_CODE = {
+  2001: "Mundhwa",
+  2002: "Ranjangaon E-84",
+  2101: "Transmission Ranjangaon",
+  2102: "Transmission Baramati",
+  2020: "Chakan",
+  2021: "Khed-1",
+  2027: "Khed-2",
+  2022: "Ambethan-1",
+  2023: "Ambethan-2",
+  2028: "Ambethan-3",
+  2024: "Baramati KTFL",
+  2025: "Bhiwadi",
+  2026: "Gujarat",
+  2081: "Heat Treatment",
+  2201: "Inmet Jejuri",
+  2301: "Yokoha Jejuri",
+};
+
+const getPlantNameFromCode = (code) => {
+  if (!code) return "";
+  return PLANT_NAME_BY_CODE[code] || code;
+};
+
+// ✅ HELPER: Convert plant name to plant code
+const getPlantCode = (plantName) => {
+  if (!plantName) return null;
+  return PLANT_CODE_MAPPING[plantName] || null;
+};
 
 // ✅ SUB-PARAMETER DEFINITIONS WITH PREFIXES
 const SUB_PARAMS = {
@@ -40,7 +128,7 @@ const SUB_PARAMS = {
   ],
 };
 
-const CostCenterMaster = () => {
+const CostCenterMaster = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("master");
   const [costCenters, setCostCenters] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,11 +137,11 @@ const CostCenterMaster = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedPlantCode, setSelectedPlantCode] = useState(""); // ✅ NEW: Plant filter
   const [formData, setFormData] = useState({
     applicable_for_fuel: 0,
     applicable_for_power: 0,
     applicable_for_subcontract: 0,
-    company_code: "",
     cost_center: "",
     cost_center_category: "",
     description: "",
@@ -100,7 +188,6 @@ const CostCenterMaster = () => {
   const fetchCostCenters = async () => {
     setLoading(true);
     try {
-      // ✅ USE API_ENDPOINTS instead of hardcoded URL
       const response = await fetch(API_ENDPOINTS.COST_CENTER_MASTER);
       const data = await response.json();
       setCostCenters(data.objects || []);
@@ -167,7 +254,7 @@ const CostCenterMaster = () => {
 
         if (type === "subcontract") {
           const requirements = updateSubcontractRequirements(
-            updated.subcontract
+            updated.subcontract,
           );
           return {
             ...prevForm,
@@ -226,7 +313,6 @@ const CostCenterMaster = () => {
     setSaving(true);
     try {
       const authOptions = await getAuthHeadersWithCSRF("POST");
-      // ✅ USE API_ENDPOINTS
       const response = await fetch(API_ENDPOINTS.COST_CENTER_MASTER, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -254,7 +340,6 @@ const CostCenterMaster = () => {
     setSaving(true);
     try {
       const authOptions = await getAuthHeadersWithCSRF("PUT");
-      // ✅ USE API_ENDPOINTS with ID
       const response = await fetch(
         `${API_ENDPOINTS.COST_CENTER_MASTER}/${formData.cdb_object_id}`,
         {
@@ -262,7 +347,7 @@ const CostCenterMaster = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
           ...authOptions,
-        }
+        },
       );
 
       if (response.ok) {
@@ -294,7 +379,6 @@ const CostCenterMaster = () => {
       applicable_for_fuel: center.applicable_for_fuel || 0,
       applicable_for_power: center.applicable_for_power || 0,
       applicable_for_subcontract: center.applicable_for_subcontract || 0,
-      company_code: center.company_code || "",
       cost_center: center.cost_center || "",
       cost_center_category: center.cost_center_category || "",
       description: center.description || "",
@@ -322,7 +406,7 @@ const CostCenterMaster = () => {
       applicable_for_fuel: 0,
       applicable_for_power: 0,
       applicable_for_subcontract: 0,
-      company_code: "",
+
       cost_center: "",
       cost_center_category: "",
       description: "",
@@ -347,14 +431,15 @@ const CostCenterMaster = () => {
     });
   };
 
+  // ✅ FILTERED DATA WITH PLANT CODE FILTER
   const filteredCenters = useMemo(() => {
     return costCenters.filter((center) => {
       const matchesSearch =
         debouncedSearch === "" ||
         center.line_name
           ?.toLowerCase()
-          .includes(debouncedSearch.toLowerCase()) || // ⭐ line_name search करो
-        center.machine?.toLowerCase().includes(debouncedSearch.toLowerCase()) || // ⭐ machine search करो
+          .includes(debouncedSearch.toLowerCase()) ||
+        center.machine?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
         center.description
           ?.toLowerCase()
           .includes(debouncedSearch.toLowerCase()) ||
@@ -366,9 +451,33 @@ const CostCenterMaster = () => {
         selectedCategory === "" ||
         center.cost_center_category === selectedCategory;
 
-      return matchesSearch && matchesCategory;
+      // ✅ NEW: Plant code filter
+      const centerPlantCode =
+        getPlantCode(center.plant_details) || center.plant_code;
+      const matchesPlantCode =
+        selectedPlantCode === "" || centerPlantCode === selectedPlantCode;
+
+      return matchesSearch && matchesCategory && matchesPlantCode;
     });
-  }, [costCenters, debouncedSearch, selectedCategory]);
+  }, [costCenters, debouncedSearch, selectedCategory, selectedPlantCode]);
+
+  // ✅ GET UNIQUE PLANTS (code + name) for dropdown
+  const uniquePlants = useMemo(() => {
+    const map = new Map(); // code -> name
+
+    costCenters.forEach((center) => {
+      const code = getPlantCode(center.plant_details) || center.plant_code;
+      if (!code) return;
+
+      const name = getPlantNameFromCode(code);
+      map.set(code, name);
+    });
+
+    // sort by plant name
+    return Array.from(map.entries())
+      .map(([code, name]) => ({ code, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [costCenters]);
 
   // ✅ PAGINATION LOGIC
   const totalPages = Math.ceil(filteredCenters.length / pageSize);
@@ -418,7 +527,7 @@ const CostCenterMaster = () => {
 
   const categories = useMemo(() => {
     return [...new Set(costCenters.map((c) => c.cost_center_category))].filter(
-      Boolean
+      Boolean,
     );
   }, [costCenters]);
 
@@ -431,7 +540,7 @@ const CostCenterMaster = () => {
           "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
       }}
     >
-      {/* ✅ STICKY HEADER */}
+      {/* ✅ STICKY HEADER WITH CLOSE BUTTON */}
       <div
         style={{
           position: "fixed",
@@ -448,269 +557,169 @@ const CostCenterMaster = () => {
           zIndex: 999,
         }}
       >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "1.5rem",
-            fontWeight: "700",
-            color: "#ffffff",
-            letterSpacing: "0.3px",
-          }}
-        >
-          Kalyani Technoforge Ltd.
-        </h1>
-
-        <div
-          style={{
-            display: "flex",
-            gap: "0.75rem",
-            alignItems: "center",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <button
-            onClick={() => (window.location.href = API_ENDPOINTS.DETAILS)}
+            onClick={onClose}
             style={{
-              background: "#ffffff",
-              border: "2px solid #ffffff",
-              color: "#1e40af",
-              padding: "0.5rem 1.5rem",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "600",
-              fontSize: "0.95rem",
-              transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow = "0 4px 12px rgba(255, 255, 255, 0.3)";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "none";
-            }}
-          >
-            Details
-          </button>
-          <button
-            onClick={() => setActiveTab("master")}
-            style={{
-              background:
-                activeTab === "master" ? "#ffffff" : "rgba(255, 255, 255, 0.2)",
-              border: "2px solid transparent",
+              background: "rgba(255, 255, 255, 0.2)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
               color: "#ffffff",
-              padding: "0.5rem 1.5rem",
-              borderRadius: "6px",
+              padding: "0.5rem",
+              borderRadius: "8px",
               cursor: "pointer",
-              fontWeight: "600",
-              fontSize: "0.95rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               transition: "all 0.3s ease",
             }}
             onMouseEnter={(e) => {
-              if (activeTab !== "master") {
-                e.target.style.background = "rgba(255, 255, 255, 0.3)";
-              }
+              e.target.style.background = "rgba(255, 255, 255, 0.3)";
             }}
             onMouseLeave={(e) => {
-              if (activeTab !== "master") {
-                e.target.style.background = "rgba(255, 255, 255, 0.2)";
-              }
+              e.target.style.background = "rgba(255, 255, 255, 0.2)";
             }}
           >
-            Master Data
+            <ArrowLeft size={20} />
           </button>
-        </div>
-      </div>
 
-      {/* ✅ DEBUG: Show API Base URL */}
-      <div
-        style={{
-          marginTop: "80px",
-          padding: "0.75rem 1.5rem",
-          background: "#dbeafe",
-          border: "1px solid #0ea5e9",
-          borderRadius: "8px",
-          margin: "80px 1.5rem 1.5rem 1.5rem",
-          fontSize: "0.875rem",
-          color: "#0c4a6e",
-        }}
-      >
-        <strong>🌐 API Base URL:</strong> {API_BASE_URL}
-        <br />
-        <strong>📍 Environment:</strong>{" "}
-        {window.location.hostname === "localhost" ? "LOCAL DEV" : "PRODUCTION"}
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "1.5rem",
+              fontWeight: "700",
+              color: "#ffffff",
+              letterSpacing: "0.3px",
+            }}
+          >
+            Cost Center Master - Kalyani Technoforge Ltd.
+          </h1>
+        </div>
       </div>
 
       {/* ✅ MAIN CONTENT - ADJUSTED FOR FIXED HEADER */}
       <div
         style={{
-          marginTop: "0px",
+          marginTop: "60px",
           padding: "1.5rem",
-          minHeight: "calc(100vh - 80px)",
+          minHeight: "calc(100vh - 60px)",
         }}
       >
-        {/* Header */}
-        <div style={{ marginBottom: "1.5rem" }}>
+        {/* ✅ FILTERS ROW */}
+        <div
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e2e8f0",
+            borderRadius: "12px",
+            padding: "1rem",
+            marginBottom: "1.5rem",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  fontSize: "1.75rem",
-                  fontWeight: "700",
-                  margin: 0,
-                  color: "#1e293b",
-                }}
-              >
-                Cost Center Master
-              </h2>
-              <p
-                style={{
-                  color: "#64748b",
-                  margin: "0.5rem 0 0 0",
-                  fontSize: "0.9375rem",
-                }}
-              >
-                {loading
-                  ? "Loading..."
-                  : `Showing ${startIndex + 1}-${Math.min(
-                      endIndex,
-                      filteredCenters.length
-                    )} of ${filteredCenters.length} records`}
-              </p>
-            </div>
-            <button
-              onClick={openCreateModal}
-              style={{
-                background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-                border: "none",
-                color: "white",
-                padding: "0.875rem 1.75rem",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "600",
-                fontSize: "0.9375rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                (e.target.style.transform = "translateY(-2px)")
-              }
-              onMouseLeave={(e) => (e.target.style.transform = "translateY(0)")}
-            >
-              <Plus size={18} />
-              Add New
-            </button>
-          </div>
-
-          {/* Filters */}
-          <div
-            style={{
-              display: "flex",
+              display: "grid",
+              gridTemplateColumns: "2fr 1fr",
               gap: "1rem",
-              marginBottom: "1rem",
               alignItems: "center",
             }}
           >
-            <div style={{ position: "relative", flex: "1" }}>
+            {/* Search Box */}
+            <div style={{ position: "relative" }}>
               <Search
-                size={18}
                 style={{
                   position: "absolute",
-                  left: "0.75rem",
+                  left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
                   color: "#94a3b8",
+                  width: "18px",
+                  height: "18px",
                 }}
               />
               <input
                 type="text"
-                placeholder="Search cost centers... (auto-search after 300ms)"
+                placeholder="Search by line name, machine, description..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
                   width: "100%",
-                  padding: "0.75rem 0.75rem 0.75rem 2.75rem",
-                  background: "#ffffff",
+                  paddingLeft: "40px",
+                  paddingRight: "12px",
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
+                  fontSize: "0.9375rem",
                   border: "1px solid #e2e8f0",
                   borderRadius: "8px",
-                  color: "#1e293b",
-                  fontSize: "0.9375rem",
                   outline: "none",
+                  transition: "all 0.2s",
+                  boxSizing: "border-box",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#3b82f6";
+                  e.target.style.boxShadow =
+                    "0 0 0 3px rgba(59, 130, 246, 0.1)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e2e8f0";
+                  e.target.style.boxShadow = "none";
                 }}
               />
-              {searchTerm && searchTerm !== debouncedSearch && (
-                <span
-                  style={{
-                    position: "absolute",
-                    right: "0.75rem",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    fontSize: "0.8125rem",
-                    color: "#94a3b8",
-                  }}
-                >
-                  Searching...
-                </span>
-              )}
             </div>
-            <select
-              value={selectedCategory}
-              onChange={(e) => {
-                setSelectedCategory(e.target.value);
-                setCurrentPage(1);
-              }}
-              style={{
-                padding: "0.75rem 2rem 0.75rem 0.75rem",
-                background: "#ffffff",
-                border: "1px solid #e2e8f0",
-                borderRadius: "8px",
-                color: "#1e293b",
-                fontSize: "0.9375rem",
-                outline: "none",
-                cursor: "pointer",
-                minWidth: "150px",
-              }}
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
 
-            {/* ✅ PAGE SIZE SELECTOR */}
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              style={{
-                padding: "0.75rem 2rem 0.75rem 0.75rem",
-                background: "#ffffff",
-                border: "1px solid #e2e8f0",
-                borderRadius: "8px",
-                color: "#1e293b",
-                fontSize: "0.9375rem",
-                outline: "none",
-                cursor: "pointer",
-              }}
-            >
-              <option value={10}>10 / page</option>
-              <option value={20}>20 / page</option>
-              <option value={50}>50 / page</option>
-              <option value={100}>100 / page</option>
-            </select>
+            {/* Plant Code Filter */}
+            <div style={{ position: "relative" }}>
+              <Building2
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#94a3b8",
+                  width: "18px",
+                  height: "18px",
+                  pointerEvents: "none",
+                  zIndex: 1,
+                }}
+              />
+              <select
+                value={selectedPlantCode}
+                onChange={(e) => {
+                  setSelectedPlantCode(e.target.value);
+                  setCurrentPage(1);
+                }}
+                style={{
+                  width: "100%",
+                  paddingLeft: "40px",
+                  paddingRight: "12px",
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
+                  fontSize: "0.9375rem",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "8px",
+                  outline: "none",
+                  cursor: "pointer",
+                  background: "#ffffff",
+                  transition: "all 0.2s",
+                  boxSizing: "border-box",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#3b82f6";
+                  e.target.style.boxShadow =
+                    "0 0 0 3px rgba(59, 130, 246, 0.1)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e2e8f0";
+                  e.target.style.boxShadow = "none";
+                }}
+              >
+                <option value="">All Plants</option>
+                {uniquePlants.map(({ code, name }) => (
+                  <option key={code} value={code}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -746,7 +755,7 @@ const CostCenterMaster = () => {
                       <th style={headerStyle}>Machine</th>
                       <th style={headerStyle}>Description</th>
                       <th style={headerStyle}>Plant</th>
-                      <th style={headerStyle}>Company</th>
+                      <th style={headerStyle}>Plant Code</th>
                       <th style={headerStyle}>Status</th>
                       <th style={headerStyle}>Actions</th>
                     </tr>
@@ -796,17 +805,14 @@ const CostCenterMaster = () => {
                             (e.currentTarget.style.background = "transparent")
                           }
                         >
-                          {/* Line Name - पहले Cost Center था */}
                           <td style={cellStyle}>
                             <span
                               style={{ fontWeight: "600", color: "#3b82f6" }}
                             >
-                              {center.line_name || "-"}{" "}
-                              {/* ⭐ line_name दिखाओ */}
+                              {center.line_name || "-"}
                             </span>
                           </td>
 
-                          {/* Machine - पहले Category था */}
                           <td style={cellStyle}>
                             <span
                               style={{
@@ -818,24 +824,33 @@ const CostCenterMaster = () => {
                                 fontWeight: "600",
                               }}
                             >
-                              {center.machine || "-"} {/* ⭐ machine दिखाओ */}
+                              {center.machine || "-"}
                             </span>
                           </td>
 
-                          {/* Description */}
                           <td style={cellStyle}>{center.description || "-"}</td>
 
-                          {/* Plant */}
                           <td style={cellStyle}>
                             {center.plant_details || "-"}
                           </td>
 
-                          {/* Company */}
                           <td style={cellStyle}>
-                            {center.company_code || "-"}
+                            <span
+                              style={{
+                                background: "#dbeafe",
+                                color: "#0284c7",
+                                padding: "0.375rem 0.875rem",
+                                borderRadius: "6px",
+                                fontSize: "0.8125rem",
+                                fontWeight: "600",
+                              }}
+                            >
+                              {getPlantCode(center.plant_details) ||
+                                center.plant_code ||
+                                "-"}
+                            </span>
                           </td>
 
-                          {/* Status */}
                           <td style={cellStyle}>
                             <span
                               style={{
@@ -853,7 +868,6 @@ const CostCenterMaster = () => {
                             </span>
                           </td>
 
-                          {/* Actions */}
                           <td style={cellStyle}>
                             <button
                               onClick={() => openEditModal(center)}
@@ -955,7 +969,7 @@ const CostCenterMaster = () => {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
 
                     <button
@@ -983,7 +997,7 @@ const CostCenterMaster = () => {
         </div>
       </div>
 
-      {/* Form Modal */}
+      {/* ✅ COMPACT MODAL */}
       {showModal && (
         <div
           style={{
@@ -998,33 +1012,37 @@ const CostCenterMaster = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 1000,
-            padding: "2rem",
+            padding: "1rem",
           }}
         >
           <div
             style={{
               background: "#ffffff",
               width: "100%",
-              height: "100%",
-              borderRadius: "0px",
-              overflowY: "auto",
-              boxShadow: "none",
+              maxWidth: "900px",
+              maxHeight: "90vh",
+              borderRadius: "12px",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3)",
             }}
           >
+            {/* Modal Header */}
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                padding: "1.5rem 2rem",
+                padding: "1rem 1.5rem",
                 borderBottom: "1px solid #e2e8f0",
                 background: "#f8fafc",
+                borderRadius: "12px 12px 0 0",
               }}
             >
               <h3
                 style={{
                   margin: 0,
-                  fontSize: "1.5rem",
+                  fontSize: "1.25rem",
                   fontWeight: "700",
                   color: "#1e293b",
                 }}
@@ -1037,8 +1055,8 @@ const CostCenterMaster = () => {
                   background: "#fee2e2",
                   border: "1px solid #fecaca",
                   color: "#dc2626",
-                  width: "36px",
-                  height: "36px",
+                  width: "32px",
+                  height: "32px",
                   borderRadius: "6px",
                   cursor: "pointer",
                   display: "flex",
@@ -1046,16 +1064,17 @@ const CostCenterMaster = () => {
                   justifyContent: "center",
                 }}
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
-            <div style={{ padding: "2rem" }}>
+            {/* Modal Body - Scrollable */}
+            <div style={{ padding: "1.5rem", overflowY: "auto", flex: 1 }}>
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "1.5rem",
+                  gap: "1rem",
                 }}
               >
                 <FormField
@@ -1072,6 +1091,18 @@ const CostCenterMaster = () => {
                   onChange={handleInputChange}
                   required
                 />
+                <FormField
+                  label="Line Name"
+                  name="line_name"
+                  value={formData.line_name}
+                  onChange={handleInputChange}
+                />
+                <FormField
+                  label="Machine"
+                  name="machine"
+                  value={formData.machine}
+                  onChange={handleInputChange}
+                />
                 <div style={{ gridColumn: "1 / -1" }}>
                   <FormField
                     label="Description"
@@ -1080,13 +1111,7 @@ const CostCenterMaster = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-                <FormField
-                  label="Company Code"
-                  name="company_code"
-                  value={formData.company_code}
-                  onChange={handleInputChange}
-                  required
-                />
+
                 <FormField
                   label="Plant Code"
                   name="plant_code"
@@ -1108,83 +1133,51 @@ const CostCenterMaster = () => {
                   value={formData.profit_center}
                   onChange={handleInputChange}
                 />
-                <FormField
-                  label="Line Name"
-                  name="line_name"
-                  value={formData.line_name}
-                  onChange={handleInputChange}
-                />
-                <div style={{ gridColumn: "1 / -1" }}>
-                  <FormField
-                    label="Machine"
-                    name="machine"
-                    value={formData.machine}
-                    onChange={handleInputChange}
-                  />
-                </div>
 
-                {/* ✅ APPLICABLE FOR SECTION WITH SUB-PARAMETERS */}
-                <div style={{ gridColumn: "1 / -1", marginTop: "1rem" }}>
+                {/* ✅ COMPACT APPLICABLE FOR SECTION */}
+                <div style={{ gridColumn: "1 / -1", marginTop: "0.5rem" }}>
                   <label
                     style={{
                       display: "block",
-                      fontSize: "0.9375rem",
+                      fontSize: "0.875rem",
                       fontWeight: "700",
                       color: "#1e293b",
-                      marginBottom: "1rem",
+                      marginBottom: "0.75rem",
                     }}
                   >
                     Applicable For
                   </label>
 
-                  {/* ✅ FUEL SECTION */}
-                  <div
-                    style={{
-                      background:
-                        formData.applicable_for_fuel === 1
-                          ? "#fef3c7"
-                          : "#f8fafc",
-                      border:
-                        formData.applicable_for_fuel === 1
-                          ? "2px solid #fbbf24"
-                          : "2px solid #e2e8f0",
-                      borderRadius: "8px",
-                      padding: "1.5rem",
-                      marginBottom: "1rem",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    <CheckboxField
-                      label="⛽ Fuel"
-                      name="applicable_for_fuel"
-                      checked={formData.applicable_for_fuel === 1}
-                      onChange={handleInputChange}
-                    />
+                  <div style={{ display: "grid", gap: "0.75rem" }}>
+                    {/* FUEL - Compact */}
+                    <div
+                      style={{
+                        background:
+                          formData.applicable_for_fuel === 1
+                            ? "#fef3c7"
+                            : "#f8fafc",
+                        border:
+                          formData.applicable_for_fuel === 1
+                            ? "2px solid #fbbf24"
+                            : "1px solid #e2e8f0",
+                        borderRadius: "6px",
+                        padding: "0.75rem",
+                      }}
+                    >
+                      <CheckboxField
+                        label="⛽ Fuel"
+                        name="applicable_for_fuel"
+                        checked={formData.applicable_for_fuel === 1}
+                        onChange={handleInputChange}
+                      />
 
-                    {formData.applicable_for_fuel === 1 && (
-                      <div
-                        style={{
-                          marginTop: "1rem",
-                          paddingTop: "1rem",
-                          borderTop: "1px solid #fbbf24",
-                        }}
-                      >
-                        <label
-                          style={{
-                            display: "block",
-                            fontSize: "0.875rem",
-                            fontWeight: "600",
-                            color: "#92400e",
-                            marginBottom: "0.75rem",
-                          }}
-                        >
-                          Select Fuel Types:
-                        </label>
+                      {formData.applicable_for_fuel === 1 && (
                         <div
                           style={{
+                            marginTop: "0.75rem",
                             display: "grid",
                             gridTemplateColumns: "repeat(3, 1fr)",
-                            gap: "1rem",
+                            gap: "0.5rem",
                           }}
                         >
                           {SUB_PARAMS.fuel.map((param) => (
@@ -1193,110 +1186,73 @@ const CostCenterMaster = () => {
                               label={param.label}
                               value={param.value}
                               checked={selectedSubParams.fuel.includes(
-                                param.value
+                                param.value,
                               )}
                               onChange={(e) =>
                                 handleSubParamChange(
                                   "fuel",
                                   param.value,
-                                  e.target.checked
+                                  e.target.checked,
                                 )
                               }
                             />
                           ))}
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
-                  {/* ✅ POWER SECTION */}
-                  <div
-                    style={{
-                      background:
-                        formData.applicable_for_power === 1
-                          ? "#dbeafe"
-                          : "#f8fafc",
-                      border:
-                        formData.applicable_for_power === 1
-                          ? "2px solid #0ea5e9"
-                          : "2px solid #e2e8f0",
-                      borderRadius: "8px",
-                      padding: "1.5rem",
-                      marginBottom: "1rem",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
+                    {/* POWER - Compact */}
                     <div
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        background:
+                          formData.applicable_for_power === 1
+                            ? "#dbeafe"
+                            : "#f8fafc",
+                        border:
+                          formData.applicable_for_power === 1
+                            ? "2px solid #0ea5e9"
+                            : "1px solid #e2e8f0",
+                        borderRadius: "6px",
+                        padding: "0.75rem",
                       }}
                     >
-                      <CheckboxField
-                        label="⚡ Power"
-                        name="applicable_for_power"
-                        checked={formData.applicable_for_power === 1}
-                        onChange={handleInputChange}
-                      />
-                      {formData.applicable_for_power === 1 && (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.5rem",
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontSize: "0.875rem",
-                              fontWeight: "600",
-                              color: "#0c4a6e",
-                            }}
-                          >
-                            Unit:
-                          </span>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CheckboxField
+                          label="⚡ Power"
+                          name="applicable_for_power"
+                          checked={formData.applicable_for_power === 1}
+                          onChange={handleInputChange}
+                        />
+                        {formData.applicable_for_power === 1 && (
                           <span
                             style={{
                               background: "#ffffff",
                               border: "1px solid #0ea5e9",
-                              padding: "0.375rem 0.875rem",
-                              borderRadius: "6px",
-                              fontSize: "0.875rem",
+                              padding: "0.25rem 0.625rem",
+                              borderRadius: "4px",
+                              fontSize: "0.75rem",
                               fontWeight: "700",
                               color: "#0284c7",
                             }}
                           >
                             {formData.power_unit}
                           </span>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
 
-                    {formData.applicable_for_power === 1 && (
-                      <div
-                        style={{
-                          marginTop: "1rem",
-                          paddingTop: "1rem",
-                          borderTop: "1px solid #0ea5e9",
-                        }}
-                      >
-                        <label
-                          style={{
-                            display: "block",
-                            fontSize: "0.875rem",
-                            fontWeight: "600",
-                            color: "#0c4a6e",
-                            marginBottom: "0.75rem",
-                          }}
-                        >
-                          Select Power Types:
-                        </label>
+                      {formData.applicable_for_power === 1 && (
                         <div
                           style={{
+                            marginTop: "0.75rem",
                             display: "grid",
                             gridTemplateColumns: "repeat(2, 1fr)",
-                            gap: "1rem",
+                            gap: "0.5rem",
                           }}
                         >
                           {SUB_PARAMS.power.map((param) => (
@@ -1305,354 +1261,219 @@ const CostCenterMaster = () => {
                               label={param.label}
                               value={param.value}
                               checked={selectedSubParams.power.includes(
-                                param.value
+                                param.value,
                               )}
                               onChange={(e) =>
                                 handleSubParamChange(
                                   "power",
                                   param.value,
-                                  e.target.checked
+                                  e.target.checked,
                                 )
                               }
                             />
                           ))}
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
-                  {/* ✅ SUBCONTRACT SECTION */}
-                  <div
-                    style={{
-                      background:
-                        formData.applicable_for_subcontract === 1
-                          ? "#fce7f3"
-                          : "#f8fafc",
-                      border:
-                        formData.applicable_for_subcontract === 1
-                          ? "2px solid #ec4899"
-                          : "2px solid #e2e8f0",
-                      borderRadius: "8px",
-                      padding: "1.5rem",
-                      marginBottom: "1rem",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    <CheckboxField
-                      label="🔧 Subcontract"
-                      name="applicable_for_subcontract"
-                      checked={formData.applicable_for_subcontract === 1}
-                      onChange={handleInputChange}
-                    />
-
-                    {formData.applicable_for_subcontract === 1 && (
-                      <div
-                        style={{
-                          marginTop: "1rem",
-                          paddingTop: "1rem",
-                          borderTop: "1px solid #ec4899",
-                        }}
-                      >
-                        <label
-                          style={{
-                            display: "block",
-                            fontSize: "0.875rem",
-                            fontWeight: "600",
-                            color: "#831843",
-                            marginBottom: "0.75rem",
-                          }}
-                        >
-                          Select Subcontract Types:
-                        </label>
-                        <div
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(2, 1fr)",
-                            gap: "1rem",
-                            marginBottom: "1rem",
-                          }}
-                        >
-                          {SUB_PARAMS.subcontract.map((param) => (
-                            <SubParamCheckboxField
-                              key={param.value}
-                              label={param.label}
-                              value={param.value}
-                              checked={selectedSubParams.subcontract.includes(
-                                param.value
-                              )}
-                              onChange={(e) =>
-                                handleSubParamChange(
-                                  "subcontract",
-                                  param.value,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          ))}
-                        </div>
-
-                        {/* ✅ SHOW REQUIRED FIELDS BASED ON SUBCONTRACT SELECTION */}
-                        {selectedSubParams.subcontract.length > 0 && (
-                          <div
-                            style={{
-                              background: "#f0f9ff",
-                              border: "1px solid #7dd3fc",
-                              borderRadius: "6px",
-                              padding: "1rem",
-                              marginTop: "1rem",
-                            }}
-                          >
-                            <label
-                              style={{
-                                display: "block",
-                                fontSize: "0.8125rem",
-                                fontWeight: "700",
-                                color: "#0c4a6e",
-                                marginBottom: "0.75rem",
-                              }}
-                            >
-                              📋 Automatically Required Fields:
-                            </label>
-                            <div
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(3, 1fr)",
-                                gap: "0.75rem",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  padding: "0.75rem",
-                                  background:
-                                    formData.requires_line === 1
-                                      ? "#dcfce7"
-                                      : "#f1f5f9",
-                                  border:
-                                    formData.requires_line === 1
-                                      ? "2px solid #16a34a"
-                                      : "1px solid #cbd5e1",
-                                  borderRadius: "6px",
-                                  textAlign: "center",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "0.8125rem",
-                                    fontWeight: "600",
-                                    color: "#334155",
-                                  }}
-                                >
-                                  requires_line
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: "1.25rem",
-                                    fontWeight: "700",
-                                    color:
-                                      formData.requires_line === 1
-                                        ? "#16a34a"
-                                        : "#cbd5e1",
-                                  }}
-                                >
-                                  {formData.requires_line === 1 ? "✓" : "-"}
-                                </div>
-                              </div>
-
-                              <div
-                                style={{
-                                  padding: "0.75rem",
-                                  background:
-                                    formData.requires_die === 1
-                                      ? "#dcfce7"
-                                      : "#f1f5f9",
-                                  border:
-                                    formData.requires_die === 1
-                                      ? "2px solid #16a34a"
-                                      : "1px solid #cbd5e1",
-                                  borderRadius: "6px",
-                                  textAlign: "center",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "0.8125rem",
-                                    fontWeight: "600",
-                                    color: "#334155",
-                                  }}
-                                >
-                                  requires_die
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: "1.25rem",
-                                    fontWeight: "700",
-                                    color:
-                                      formData.requires_die === 1
-                                        ? "#16a34a"
-                                        : "#cbd5e1",
-                                  }}
-                                >
-                                  {formData.requires_die === 1 ? "✓" : "-"}
-                                </div>
-                              </div>
-
-                              <div
-                                style={{
-                                  padding: "0.75rem",
-                                  background:
-                                    formData.requires_vendor === 1
-                                      ? "#dcfce7"
-                                      : "#f1f5f9",
-                                  border:
-                                    formData.requires_vendor === 1
-                                      ? "2px solid #16a34a"
-                                      : "1px solid #cbd5e1",
-                                  borderRadius: "6px",
-                                  textAlign: "center",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    fontSize: "0.8125rem",
-                                    fontWeight: "600",
-                                    color: "#334155",
-                                  }}
-                                >
-                                  requires_vendor
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: "1.25rem",
-                                    fontWeight: "700",
-                                    color:
-                                      formData.requires_vendor === 1
-                                        ? "#16a34a"
-                                        : "#cbd5e1",
-                                  }}
-                                >
-                                  {formData.requires_vendor === 1 ? "✓" : "-"}
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* ✅ SHOW MAPPING */}
-                            <div
-                              style={{
-                                marginTop: "0.75rem",
-                                fontSize: "0.75rem",
-                                color: "#0c4a6e",
-                                fontStyle: "italic",
-                              }}
-                            >
-                              <div>POST_PROCESS → requires_line = 1</div>
-                              <div>
-                                MPI → requires_die = 1 + requires_line = 1
-                              </div>
-                              <div>
-                                OUTSOURCE → requires_die = 1 + requires_vendor =
-                                1
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* ✅ ACTIVE STATUS */}
-                  <div
-                    style={{
-                      background: "#f1f5f9",
-                      border: "2px solid #cbd5e1",
-                      borderRadius: "8px",
-                      padding: "1.5rem",
-                    }}
-                  >
-                    <CheckboxField
-                      label="✓ Active Status"
-                      name="isactive"
-                      checked={formData.isactive === 1}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  {/* ✅ DEBUG: SHOW GENERATED sub_param_type */}
-                  {formData.sub_param_type && (
+                    {/* SUBCONTRACT - Compact */}
                     <div
                       style={{
-                        marginTop: "1rem",
-                        padding: "1rem",
-                        background: "#e0f2fe",
-                        border: "1px solid #0ea5e9",
-                        borderRadius: "8px",
-                        fontSize: "0.875rem",
+                        background:
+                          formData.applicable_for_subcontract === 1
+                            ? "#fce7f3"
+                            : "#f8fafc",
+                        border:
+                          formData.applicable_for_subcontract === 1
+                            ? "2px solid #ec4899"
+                            : "1px solid #e2e8f0",
+                        borderRadius: "6px",
+                        padding: "0.75rem",
                       }}
                     >
-                      <strong>sub_param_type will be:</strong>
-                      <br />
-                      <code>{formData.sub_param_type}</code>
+                      <CheckboxField
+                        label="🔧 Subcontract"
+                        name="applicable_for_subcontract"
+                        checked={formData.applicable_for_subcontract === 1}
+                        onChange={handleInputChange}
+                      />
+
+                      {formData.applicable_for_subcontract === 1 && (
+                        <div style={{ marginTop: "0.75rem" }}>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "repeat(2, 1fr)",
+                              gap: "0.5rem",
+                              marginBottom: "0.75rem",
+                            }}
+                          >
+                            {SUB_PARAMS.subcontract.map((param) => (
+                              <SubParamCheckboxField
+                                key={param.value}
+                                label={param.label}
+                                value={param.value}
+                                checked={selectedSubParams.subcontract.includes(
+                                  param.value,
+                                )}
+                                onChange={(e) =>
+                                  handleSubParamChange(
+                                    "subcontract",
+                                    param.value,
+                                    e.target.checked,
+                                  )
+                                }
+                              />
+                            ))}
+                          </div>
+
+                          {selectedSubParams.subcontract.length > 0 && (
+                            <div
+                              style={{
+                                background: "#f0f9ff",
+                                border: "1px solid #7dd3fc",
+                                borderRadius: "4px",
+                                padding: "0.5rem",
+                                fontSize: "0.75rem",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  fontWeight: "700",
+                                  color: "#0c4a6e",
+                                  marginBottom: "0.375rem",
+                                }}
+                              >
+                                Required Fields:
+                              </div>
+                              <div style={{ display: "flex", gap: "0.5rem" }}>
+                                {formData.requires_line === 1 && (
+                                  <span
+                                    style={{
+                                      background: "#dcfce7",
+                                      color: "#16a34a",
+                                      padding: "0.25rem 0.5rem",
+                                      borderRadius: "3px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    Line
+                                  </span>
+                                )}
+                                {formData.requires_die === 1 && (
+                                  <span
+                                    style={{
+                                      background: "#dcfce7",
+                                      color: "#16a34a",
+                                      padding: "0.25rem 0.5rem",
+                                      borderRadius: "3px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    Die
+                                  </span>
+                                )}
+                                {formData.requires_vendor === 1 && (
+                                  <span
+                                    style={{
+                                      background: "#dcfce7",
+                                      color: "#16a34a",
+                                      padding: "0.25rem 0.5rem",
+                                      borderRadius: "3px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    Vendor
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  )}
+
+                    {/* Active Status */}
+                    <div
+                      style={{
+                        background: "#f1f5f9",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "6px",
+                        padding: "0.75rem",
+                      }}
+                    >
+                      <CheckboxField
+                        label="✓ Active Status"
+                        name="isactive"
+                        checked={formData.isactive === 1}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div
+            {/* Modal Footer */}
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                padding: "1rem 1.5rem",
+                borderTop: "1px solid #e2e8f0",
+                background: "#f8fafc",
+                borderRadius: "0 0 12px 12px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                onClick={() => setShowModal(false)}
                 style={{
-                  display: "flex",
-                  gap: "1rem",
-                  marginTop: "2rem",
-                  justifyContent: "flex-end",
+                  background: "#f1f5f9",
+                  border: "1px solid #e2e8f0",
+                  color: "#334155",
+                  padding: "0.625rem 1.25rem",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  fontSize: "0.875rem",
                 }}
               >
-                <button
-                  onClick={() => setShowModal(false)}
-                  style={{
-                    background: "#f1f5f9",
-                    border: "1px solid #e2e8f0",
-                    color: "#334155",
-                    padding: "0.75rem 1.5rem",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    fontWeight: "600",
-                    fontSize: "0.9375rem",
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={editMode ? handleUpdate : handleCreate}
-                  disabled={saving}
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-                    border: "none",
-                    color: "white",
-                    padding: "0.75rem 1.75rem",
-                    borderRadius: "8px",
-                    cursor: saving ? "not-allowed" : "pointer",
-                    fontWeight: "600",
-                    fontSize: "0.9375rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    opacity: saving ? 0.7 : 1,
-                  }}
-                >
-                  {saving ? (
-                    <>
-                      <Loader2
-                        size={18}
-                        style={{ animation: "spin 1s linear infinite" }}
-                      />{" "}
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Save size={18} /> {editMode ? "Update" : "Create"}
-                    </>
-                  )}
-                </button>
-              </div>
+                Cancel
+              </button>
+              <button
+                onClick={editMode ? handleUpdate : handleCreate}
+                disabled={saving}
+                style={{
+                  background:
+                    "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                  border: "none",
+                  color: "white",
+                  padding: "0.625rem 1.5rem",
+                  borderRadius: "6px",
+                  cursor: saving ? "not-allowed" : "pointer",
+                  fontWeight: "600",
+                  fontSize: "0.875rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  opacity: saving ? 0.7 : 1,
+                }}
+              >
+                {saving ? (
+                  <>
+                    <Loader2
+                      size={16}
+                      style={{ animation: "spin 1s linear infinite" }}
+                    />{" "}
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} /> {editMode ? "Update" : "Create"}
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -1741,10 +1562,10 @@ const FormField = ({
     <label
       style={{
         display: "block",
-        fontSize: "0.9375rem",
+        fontSize: "0.8125rem",
         fontWeight: "600",
         color: "#475569",
-        marginBottom: "0.5rem",
+        marginBottom: "0.375rem",
         fontFamily:
           "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
       }}
@@ -1758,12 +1579,12 @@ const FormField = ({
       onChange={onChange}
       style={{
         width: "100%",
-        padding: "0.75rem 1rem",
+        padding: "0.625rem 0.875rem",
         background: "#f8fafc",
         border: "1px solid #e2e8f0",
-        borderRadius: "8px",
+        borderRadius: "6px",
         color: "#1e293b",
-        fontSize: "0.9375rem",
+        fontSize: "0.875rem",
         outline: "none",
         boxSizing: "border-box",
         fontFamily:
@@ -1778,23 +1599,10 @@ const CheckboxField = ({ label, name, checked, onChange }) => (
     style={{
       display: "flex",
       alignItems: "center",
-      gap: "0.625rem",
+      gap: "0.5rem",
       cursor: "pointer",
-      padding: "0.875rem",
-      background: "#ffffff",
-      borderRadius: "8px",
-      border: "2px solid #e2e8f0",
-      transition: "all 0.2s",
       fontFamily:
         "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.background = "#e0f2fe";
-      e.currentTarget.style.borderColor = "#3b82f6";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.background = "#ffffff";
-      e.currentTarget.style.borderColor = "#e2e8f0";
     }}
   >
     <input
@@ -1803,15 +1611,13 @@ const CheckboxField = ({ label, name, checked, onChange }) => (
       checked={checked}
       onChange={onChange}
       style={{
-        width: "20px",
-        height: "20px",
+        width: "18px",
+        height: "18px",
         cursor: "pointer",
         accentColor: "#3b82f6",
       }}
     />
-    <span
-      style={{ fontSize: "0.9375rem", fontWeight: "600", color: "#334155" }}
-    >
+    <span style={{ fontSize: "0.875rem", fontWeight: "600", color: "#334155" }}>
       {label}
     </span>
   </label>
@@ -1822,11 +1628,11 @@ const SubParamCheckboxField = ({ label, value, checked, onChange }) => (
     style={{
       display: "flex",
       alignItems: "center",
-      gap: "0.625rem",
+      gap: "0.375rem",
       cursor: "pointer",
-      padding: "0.75rem",
+      padding: "0.5rem",
       background: "#ffffff",
-      borderRadius: "6px",
+      borderRadius: "4px",
       border: "1px solid #cbd5e1",
       transition: "all 0.2s",
       fontFamily:
@@ -1847,13 +1653,15 @@ const SubParamCheckboxField = ({ label, value, checked, onChange }) => (
       checked={checked}
       onChange={onChange}
       style={{
-        width: "18px",
-        height: "18px",
+        width: "16px",
+        height: "16px",
         cursor: "pointer",
         accentColor: "#22c55e",
       }}
     />
-    <span style={{ fontSize: "0.875rem", fontWeight: "500", color: "#334155" }}>
+    <span
+      style={{ fontSize: "0.8125rem", fontWeight: "500", color: "#334155" }}
+    >
       {label}
     </span>
   </label>

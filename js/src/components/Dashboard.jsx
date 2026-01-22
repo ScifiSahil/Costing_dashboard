@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import { themes } from "../constants/themes";
+import React, { useState, useRef, useEffect } from "react";
 import AllPlants from "./AllPlants";
 import CostCenterMaster from "./CostCenterMaster";
 import { Suspense, lazy, useMemo, useCallback } from "react";
+import CostKPIEntry from "./CostKPIEntry";
 
-// 2. Add skeleton component
+import {
+  Zap,
+  Palette,
+  Check,
+  Database,
+  LogOut,
+  Menu,
+  FileText,
+  Factory,
+  TrendingUp,
+} from "lucide-react";
+import PlantM from "./PlantM";
+import { useCostStore } from "../store/costStore"; // path tumhare project ke hisab se
+import GLMaster from "./GLMaster";
+import PlantMaster from "./PlantMaster";
+
+// Skeleton Component
 const LoadingSkeletons = React.memo(() => (
   <div className="min-h-screen bg-gray-100 p-6">
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -17,10 +35,11 @@ const LoadingSkeletons = React.memo(() => (
   </div>
 ));
 
-const Dashboard = () => {
+const Dashboard = ({ currentTheme = { bg: "from-blue-600 to-cyan-600" } }) => {
   const [showChatBot, setShowChatBot] = useState(false);
   const [chartMode, setChartMode] = useState("Machining");
-  const [showDetailsPage, setShowDetailsPage] = useState(false);
+  const [showGLMaster, setShowGLMaster] = useState(false);
+  const [showCostKPIEntry, setShowCostKPIEntry] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     {
       type: "bot",
@@ -30,6 +49,26 @@ const Dashboard = () => {
   ]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [showMasterData, setShowMasterData] = useState(false);
+  const [showPlantMaster, setShowPlantMaster] = useState(false);
+  const selectedTheme = useCostStore((state) => state.selectedTheme);
+  const setSelectedTheme = useCostStore((state) => state.setSelectedTheme);
+
+  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const themeSelectorRef = useRef(null);
+  const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+  const headerMenuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (headerMenuRef.current && !headerMenuRef.current.contains(e.target)) {
+        setShowHeaderMenu(false);
+        setShowThemeSelector(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const kpiData = [
     {
@@ -69,9 +108,20 @@ const Dashboard = () => {
   const totalTarget = kpiData.reduce((sum, kpi) => sum + kpi.target, 0);
   const totalPredictive = kpiData.reduce((sum, kpi) => sum + kpi.predictive, 0);
   const overallEfficiency = ((totalTarget / totalCost) * 100).toFixed(1);
+
   const handleLogout = () => {
     window.location.href = "/server/__quit__";
   };
+
+  // ✅ FIXED: Open modal instead of redirecting to URL
+  const handlePlantMaster = () => {
+    setShowPlantMaster(true);
+  };
+
+  const openPowerForm = () => {
+    window.location.href = `${window.location.origin}/kalyani.iot/costing_entry`;
+  };
+
   const plants = {
     "All Plant": {
       category: "Overview",
@@ -99,7 +149,6 @@ const Dashboard = () => {
         },
       },
     },
-    // ... rest of plants data
   };
 
   const handleSendMessage = () => {
@@ -119,31 +168,21 @@ const Dashboard = () => {
     const allPlantData = plants["All Plant"];
     const totalProduction = allPlantData.data.tonnage.reduce(
       (a, b) => a + b,
-      0
+      0,
     );
     const totalCost = allPlantData.data.costs.total.reduce((a, b) => a + b, 0);
     const avgCost = Math.round(totalCost / 4);
     const avgProduction = Math.round(totalProduction / 4);
 
     if (lowerMessage.includes("cost")) {
-      return `All plants have a combined average monthly cost of ₹${(
-        avgCost / 1000
-      ).toFixed(
-        1
-      )}K. The total cost across all plants for the 4-month period is ₹${(
-        totalCost / 100000
-      ).toFixed(1)}L.`;
+      return `All plants have a combined average monthly cost of ₹${(avgCost / 1000).toFixed(1)}K. The total cost across all plants for the 4-month period is ₹${(totalCost / 100000).toFixed(1)}L.`;
     } else if (lowerMessage.includes("efficiency")) {
       const avgEfficiency =
         Object.values(plants)
           .filter((p) => p.efficiency)
           .reduce((sum, p) => sum + p.efficiency, 0) /
         Object.keys(plants).length;
-      return `The average efficiency across all plants is ${avgEfficiency.toFixed(
-        1
-      )}%. This includes ${
-        Object.keys(plants).length
-      } production units across Forging, Machining, and Other categories.`;
+      return `The average efficiency across all plants is ${avgEfficiency.toFixed(1)}%. This includes ${Object.keys(plants).length} production units across Forging, Machining, and Other categories.`;
     } else if (lowerMessage.includes("production")) {
       return `All plants combined produced ${totalProduction} tonnes over the 4-month period. The monthly average is ${avgProduction} tonnes across all facilities.`;
     } else if (
@@ -151,17 +190,15 @@ const Dashboard = () => {
       lowerMessage.includes("count")
     ) {
       const forgingCount = Object.values(plants).filter(
-        (p) => p.category === "Forging"
+        (p) => p.category === "Forging",
       ).length;
       const machiningCount = Object.values(plants).filter(
-        (p) => p.category === "Machining"
+        (p) => p.category === "Machining",
       ).length;
       const otherCount = Object.values(plants).filter(
-        (p) => p.category === "Other" || p.category === "other"
+        (p) => p.category === "Other" || p.category === "other",
       ).length;
-      return `We have ${
-        Object.keys(plants).length
-      } plants total: ${forgingCount} in Forging, ${machiningCount} in Machining, and ${otherCount} in Other categories.`;
+      return `We have ${Object.keys(plants).length} plants total: ${forgingCount} in Forging, ${machiningCount} in Machining, and ${otherCount} in Other categories.`;
     } else if (lowerMessage.includes("trend")) {
       const trend =
         allPlantData.data.costs.total[3] > allPlantData.data.costs.total[0]
@@ -172,184 +209,229 @@ const Dashboard = () => {
           allPlantData.data.costs.total[0]) *
         100
       ).toFixed(1);
-      return `Cost trends are ${trend} by ${Math.abs(
-        change
-      )}% over the 4-month period. Production shows ${
-        allPlantData.data.tonnage[3] > allPlantData.data.tonnage[0]
-          ? "growth"
-          : "decline"
-      } from ${allPlantData.data.tonnage[0]} to ${
-        allPlantData.data.tonnage[3]
-      } tonnes.`;
+      return `Cost trends are ${trend} by ${Math.abs(change)}% over the 4-month period. Production shows ${allPlantData.data.tonnage[3] > allPlantData.data.tonnage[0] ? "growth" : "decline"} from ${allPlantData.data.tonnage[0]} to ${allPlantData.data.tonnage[3]} tonnes.`;
     } else {
       return `I can analyze costs, efficiency, production, and trends across all plants. Try asking about "total costs", "plant efficiency", "production trends", or "plant count by category".`;
     }
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col h-screen">
-      {/* HEADER SECTION */}
-      <div
-        style={{
-          background: "linear-gradient(90deg, #1e3a8a, #1d4ed8, #3b82f6)",
-          padding: "14px 24px",
-          color: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          boxShadow: "0 3px 10px rgba(0,0,0,0.25)",
-          borderBottom: "2px solid rgba(255,255,255,0.2)",
-        }}
-      >
-        {/* LEFT SIDE – Company Name Only */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <h1 style={{ fontSize: "20px", margin: 0, fontWeight: "700" }}>
-            Kalyani Technoforge Ltd.
-          </h1>
-        </div>
+    <div
+      className="bg-gray-50 flex flex-col h-screen"
+      style={{
+        fontFamily:
+          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      }}
+    >
+      {/* ENHANCED PROFESSIONAL HEADER */}
+      <header className="bg-blue-600 shadow-2xl">
+        <div className="px-8 flex items-center justify-between">
+          {/* Left: Company Name with Enhanced Typography */}
+          <div className="flex items-center">
+            <div className="flex flex-col">
+              <h1
+                className="text-3xl font-extrabold text-white tracking-tight leading-none drop-shadow-md"
+                style={{
+                  letterSpacing: "-0.02em",
+                  fontFamily:
+                    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                }}
+              >
+                Kalyani Technoforge Ltd.
+              </h1>
+              <div className="h-0.5 w-16 bg-white/40 mt-1.5 rounded-full"></div>
+            </div>
+          </div>
 
-        {/* CENTER BADGES */}
-        {/* <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            fontSize: "13px",
-            flex: 1,
-            justifyContent: "center",
-          }}
-        >
-          <span
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              backdropFilter: "blur(4px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-            }}
-          >
-            {Object.keys(plants).length} Units
-          </span>
+          {/* Right: Enhanced Action Buttons */}
+          {/* Right: Single Menu Button */}
+          <div className="flex items-center gap-3" ref={headerMenuRef}>
+            <div style={{ position: "relative" }}>
+              {/* MENU BUTTON */}
+              <button
+                onClick={() => setShowHeaderMenu((p) => !p)}
+                className="group flex items-center gap-2 px-4 py-2.5 bg-white/25 hover:bg-white/35 backdrop-blur-md rounded-xl border border-white/40 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                title="Actions"
+              >
+                <Menu className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white tracking-wide">
+                  Actions
+                </span>
+              </button>
 
-          <span
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              backdropFilter: "blur(4px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-            }}
-          >
-            87.3% Avg Efficiency
-          </span>
+              {/* DROPDOWN */}
+              {showHeaderMenu && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    marginTop: "12px",
+                    width: "260px",
+                    background: "white",
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+                    zIndex: 9999,
+                    border: "1px solid rgba(0,0,0,0.06)",
+                  }}
+                >
+                  {/* ITEM: POWER ENTRY */}
+                  <button
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      openPowerForm();
+                    }}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center gap-3"
+                  >
+                    <Zap className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-semibold text-gray-800">
+                      Power Entry
+                    </span>
+                  </button>
 
-          <span
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              backdropFilter: "blur(4px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-            }}
-          >
-            Active Status
-          </span>
-        </div> */}
+                  {/* ITEM: MASTER DATA */}
+                  <button
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      setShowMasterData(true);
+                    }}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center gap-3"
+                  >
+                    <Database className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-semibold text-gray-800">
+                      Master Data
+                    </span>
+                  </button>
+                  {/* ITEM: GL MASTER */}
+                  <button
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      setShowGLMaster(true);
+                    }}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center gap-3"
+                  >
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-semibold text-gray-800">
+                      GL Master
+                    </span>
+                  </button>
 
-        {/* RIGHT SIDE BUTTONS */}
-        <div style={{ display: "flex", gap: "10px", marginLeft: "auto" }}>
-          {/* DETAILS BUTTON */}
-          <button
-            onClick={() => setShowDetailsPage(!showDetailsPage)}
-            style={{
-              background: "white",
-              color: "#0f172a",
-              padding: "6px 14px",
-              fontSize: "12px",
-              fontWeight: 600,
-              borderRadius: "8px",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              transition: "0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.target.style.transform = "translateY(-2px)")
-            }
-            onMouseLeave={(e) => (e.target.style.transform = "translateY(0px)")}
-          >
-            {showDetailsPage ? "Show Comparison" : "Details"}
-          </button>
+                  {/* ITEM: PLANT MASTER */}
+                  <button
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      handlePlantMaster();
+                    }}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center gap-3"
+                  >
+                    <Factory className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-semibold text-gray-800">
+                      Plant Master
+                    </span>
+                  </button>
 
-          {/* MASTER DATA BUTTON */}
-          <button
-            onClick={() => setShowMasterData(true)}
-            style={{
-              background: "linear-gradient(135deg, #93c5fd, #3b82f6)",
-              color: "white",
-              padding: "6px 14px",
-              fontSize: "12px",
-              fontWeight: 600,
-              borderRadius: "8px",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              transition: "0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.target.style.transform = "translateY(-2px)")
-            }
-            onMouseLeave={(e) => (e.target.style.transform = "translateY(0px)")}
-          >
-            Master Data
-          </button>
-          <button
-            onClick={handleLogout}
-            title="Logout"
-            style={{
-              background: "rgba(255,255,255,0.15)",
-              color: "white",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              transition: "0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "translateY(-2px)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.transform = "translateY(0px)")
-            }
-          >
-            {/* Logout Icon */}
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+                  {/* ITEM: COST KPI ENTRY - NEW */}
+                  <button
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      setShowCostKPIEntry(true);
+                    }}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center gap-3"
+                  >
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-semibold text-gray-800">
+                      Cost KPI Entry
+                    </span>
+                  </button>
+
+                  {/* DIVIDER */}
+                  <div className="h-px bg-gray-200 my-1" />
+
+                  {/* THEME SELECTOR INSIDE MENU */}
+                  <button
+                    onClick={() => setShowThemeSelector((p) => !p)}
+                    className="w-full px-4 py-3 hover:bg-gray-50 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Palette className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-semibold text-gray-800">
+                        Theme
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {themes[selectedTheme]?.name || "Select"}
+                    </span>
+                  </button>
+
+                  {/* THEME LIST */}
+                  {showThemeSelector && (
+                    <div className="border-t border-gray-200">
+                      {Object.entries(themes).map(([key, theme]) => (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            setSelectedTheme(key);
+                            setShowThemeSelector(false);
+                            setShowHeaderMenu(false);
+                          }}
+                          className={`w-full px-4 py-2 flex items-center justify-between hover:bg-gray-50 ${
+                            selectedTheme === key ? "bg-blue-50" : ""
+                          }`}
+                        >
+                          <span className="text-sm font-medium text-gray-700">
+                            {theme.name}
+                          </span>
+                          {selectedTheme === key && (
+                            <Check className="w-4 h-4 text-blue-600" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* DIVIDER */}
+                  <div className="h-px bg-gray-200 my-1" />
+
+                  {/* ITEM: LOGOUT */}
+                </div>
+              )}
+            </div>
+            {/* LOGOUT BUTTON - OUTSIDE MENU */}
+            <button
+              onClick={handleLogout}
+              className="
+    group relative overflow-hidden
+    flex items-center gap-2
+    px-4 py-2.5
+    rounded-xl
+    bg-white text-red-600
+    border border-white/60
+    shadow-lg shadow-black/20
+    hover:shadow-xl hover:shadow-black/30
+    transition-all duration-300
+    hover:scale-[1.05]
+  "
+              title="Logout"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"
-              />
-            </svg>
-          </button>
+              {/* subtle red glow bg */}
+              <span className="absolute inset-0 bg-gradient-to-r from-red-50 via-white to-red-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* content */}
+              <LogOut className="w-4 h-4 relative z-10" />
+              <span className="text-sm font-extrabold tracking-wide relative z-10">
+                Logout
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
+
+        {/* Bottom Accent Line */}
+        <div className="h-1 bg-white/30"></div>
+      </header>
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <AllPlants showDetailsPage={showDetailsPage} chartMode={chartMode} />
+        <AllPlants chartMode={chartMode} />
       </div>
 
       {/* ChatBot Button */}
@@ -357,6 +439,7 @@ const Dashboard = () => {
         onClick={() => setShowChatBot(true)}
         className="fixed bottom-6 right-6 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full shadow-xl flex items-center gap-2 transition-all hover:scale-110 z-40"
         title="ProfitPulse — Plant Costing Assistant"
+        style={{ fontFamily: "system-ui, sans-serif" }}
       >
         <svg
           className="w-6 h-6"
@@ -374,57 +457,38 @@ const Dashboard = () => {
         <span className="font-medium">ProfitPulse</span>
       </button>
 
-      {/* ✅ MASTER DATA MODAL - Near Full Screen Overlay */}
+      {/* Master Data Modal */}
       {showMasterData && (
         <div className="fixed inset-0 bg-white z-50">
-          <div className="w-full h-full flex flex-col overflow-hidden">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-                <div>
-                  <h2 className="text-xl font-bold">Master Data Management</h2>
-                  <p className="text-xs text-blue-100">
-                    Configure Cost Center Master
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowMasterData(false)}
-                className="p-2 rounded-lg hover:bg-white/20 transition-all"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
+          <div className="flex-1 overflow-auto bg-gray-50">
+            <CostCenterMaster onClose={() => setShowMasterData(false)} />
+          </div>
+        </div>
+      )}
 
-            {/* Modal Body - Cost Center Master Component */}
-            <div className="flex-1 overflow-auto bg-gray-50">
-              <CostCenterMaster />
-            </div>
+      {/* Plant Master Modal */}
+      {showPlantMaster && (
+        <div className="fixed inset-0 bg-white z-50">
+          <div className="flex-1 overflow-auto bg-gray-50">
+            <PlantM onClose={() => setShowPlantMaster(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Cost KPI Entry Modal - NEW */}
+      {showCostKPIEntry && (
+        <div className="fixed inset-0 bg-white z-50">
+          <div className="flex-1 overflow-auto bg-gray-50">
+            <CostKPIEntry onClose={() => setShowCostKPIEntry(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* GL Master Modal */}
+      {showGLMaster && (
+        <div className="fixed inset-0 bg-white z-50">
+          <div className="flex-1 overflow-auto bg-gray-50">
+            <GLMaster onClose={() => setShowGLMaster(false)} />
           </div>
         </div>
       )}
@@ -432,8 +496,13 @@ const Dashboard = () => {
       {/* ChatBot Modal */}
       {showChatBot && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-end justify-end p-6 z-50">
-          <div className="bg-white rounded-xl shadow-2xl w-96 h-[600px] flex flex-col animate-in slide-in-from-bottom border border-gray-200">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-4 rounded-t-xl flex justify-between items-center">
+          <div
+            className="bg-white rounded-xl shadow-2xl w-96 h-[600px] flex flex-col animate-in slide-in-from-bottom border border-gray-200"
+            style={{ fontFamily: "system-ui, sans-serif" }}
+          >
+            <div
+              className={`bg-gradient-to-r ${currentTheme.bg} text-white px-5 py-4 rounded-t-xl flex justify-between items-center`}
+            >
               <div>
                 <h3 className="font-bold">Plant Analytics Assistant</h3>
                 <p className="text-xs opacity-90">
@@ -464,9 +533,7 @@ const Dashboard = () => {
               {chatMessages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`flex ${
-                    msg.type === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
                     className={`max-w-[85%] p-3 rounded-lg text-sm ${
